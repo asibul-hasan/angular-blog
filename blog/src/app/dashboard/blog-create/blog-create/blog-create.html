@@ -1,0 +1,16 @@
+<div class="container py-4">
+  <h3>Create New Blog</h3>
+  <div class="mb-3">
+    <label>Title</label>
+    <input [(ngModel)]="newBlog.title" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label>Content</label>
+    <textarea
+      [(ngModel)]="newBlog.content"
+      class="form-control"
+      rows="6"
+    ></textarea>
+  </div>
+  <button (click)="createBlog()" class="btn btn-primary">Publish Blog</button>
+</div>
