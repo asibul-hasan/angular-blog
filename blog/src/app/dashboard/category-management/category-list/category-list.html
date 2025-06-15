@@ -1,0 +1,23 @@
+<div class="container py-4">
+  <h3>Categories</h3>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th style="width: 150px">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cat of categories">
+        <td>{{ cat.name }}</td>
+        <td>
+          <a
+            class="btn btn-sm btn-outline-primary me-1"
+            [routerLink]="['/dashboard/categories/edit', cat.id]"
+            >Edit</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
