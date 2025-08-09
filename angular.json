@@ -3,52 +3,99 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "blog": {
+    "infoAidTech": {
       "projectType": "application",
-      "root": ".",
+      "schematics": {},
+      "root": "",
       "sourceRoot": "src",
-      "prefix": "blog",
+      "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@analogjs/platform:vite",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "configFile": "vite.config.ts",
+            "outputPath": "dist/info-aid-tech",
+            "index": "src/index.html",
             "main": "src/main.ts",
-            "outputPath": "dist/client",
-            "tsConfig": "tsconfig.app.json"
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
           },
-          "defaultConfiguration": "production",
           "configurations": {
-            "development": {
-              "mode": "development"
-            },
             "production": {
-              "sourcemap": false,
-              "mode": "production"
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@analogjs/platform:vite-dev-server",
-          "defaultConfiguration": "development",
-          "options": {
-            "buildTarget": "blog:build",
-            "port": 5173
-          },
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "development": {
-              "buildTarget": "blog:build:development",
-              "hmr": true
-            },
             "production": {
-              "buildTarget": "blog:build:production"
+              "browserTarget": "infoAidTech:build:production"
+            },
+            "development": {
+              "browserTarget": "infoAidTech:build:development"
             }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "infoAidTech:build"
           }
         },
         "test": {
-          "builder": "@analogjs/vitest-angular:test"
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "bd48dbfe-93c0-454f-982f-50eacca98c81"
   }
 }
