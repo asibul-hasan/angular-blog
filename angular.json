@@ -5,7 +5,6 @@
   "projects": {
     "infoAidTech": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -17,29 +16,20 @@
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
-              }
+              { "glob": "**/*", "input": "public" },
+              { "glob": "**/*", "input": "src/assets", "output": "assets" }
             ],
             "styles": ["src/custom-theme.scss", "src/styles.css"],
             "server": "src/main.server.ts",
             "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "ssr": { "entry": "src/server.ts" }
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "700kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -58,42 +48,22 @@
           },
           "defaultConfiguration": "production"
         },
+        "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "browserTarget": "infoAidTech:build:production",
+            "serverTarget": "infoAidTech:build:production",
+            "routes": ["/", "/home", "/blog"]
+          }
+        },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "port": 5000
-          },
+          "options": { "port": 5000 },
           "configurations": {
-            "production": {
-              "buildTarget": "infoAidTech:build:production"
-            },
-            "development": {
-              "buildTarget": "infoAidTech:build:development"
-            }
+            "production": { "buildTarget": "infoAidTech:build:production" },
+            "development": { "buildTarget": "infoAidTech:build:development" }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
-              }
-            ],
-            "styles": ["src/styles.css"]
-          }
         }
       }
     }

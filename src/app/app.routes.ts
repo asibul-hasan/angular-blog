@@ -1,4 +1,3 @@
-// app.routes.ts (No change needed here for this specific error)
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
