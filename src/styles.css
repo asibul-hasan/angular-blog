@@ -1,4 +1,113 @@
 /* You can add global styles to this file, and also import other style files */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "flowbite";
+
+:root {
+  --secondary-color: #1e90ff;
+  --white: #ffffff;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem; /* 16px base */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 2.5rem); /* Responsive: min 32px, max 40px */
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem); /* min 24px, max 32px */
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.5rem); /* min 20px, max 24px */
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem); /* min 18px, max 20px */
+  line-height: 1.4;
+}
+
+h5 {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h6 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  /* max-width: 65ch; Optimal line length for readability */
+  line-height: 1.6; /* Matches body line-height */
+}
+
+ul {
+  list-style-type: disc; /* Default disc for unordered lists */
+}
+
+ol {
+  list-style-type: decimal; /* Default decimal for ordered lists */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Spacing between list items for better readability */
+  line-height: 1.6; /* Matches body line-height */
+  list-style-type: none;
+}
+
+/* For nested lists */
+ul ul,
+ul ol,
+ol ul,
+ol ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem; /* Consistent indentation */
+}
+
+.section-sub-title {
+  color: var(--secondary-color);
+  font-family: "Source Serif Pro";
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 22px;
+  letter-spacing: 3px;
+  margin: 0px 0px 10px 0px;
+}
+
+.section-title {
+  font-family: "Inter";
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}

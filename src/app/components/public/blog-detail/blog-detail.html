@@ -1,0 +1,195 @@
+<div
+  class="mx-auto p-6 md:p-10 bg-black bg-opacity-70 shadow-lg backdrop-blur-md"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+      <!-- Main Content Area -->
+      <main class="lg:col-span-2">
+        <!-- Featured Image -->
+
+        <img
+          [alt]="blog?.title"
+          class="w-full h-auto rounded-xl shadow-lg mb-8"
+          *ngIf="blog"
+          [src]="blog.image || defaultImg"
+        />
+
+        <!-- Blog Title -->
+        <h1
+          class="text-4xl sm:text-5xl font-bold text-white mb-4 leading-tight"
+        >
+          {{ blog?.title }}
+        </h1>
+        <!-- Metadata -->
+        <div class="flex items-center space-x-4 text-sm text-gray-400 mb-6">
+          <div class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-1 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              ></path>
+            </svg>
+            <span>{{ blog?.author }}</span>
+          </div>
+          <div class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-1 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
+            </svg>
+            <span>{{ blog?.updatedAt | date }}</span>
+          </div>
+          <div class="flex items-center">
+            <svg
+              class="w-4 h-4 mr-1 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span>{{ readTime }} min read</span>
+          </div>
+        </div>
+        <!-- Social Share Icons (Placeholder) -->
+        <app-social-icon />
+
+        <!-- Body Content -->
+
+        <div
+          class="prose prose-invert prose-base text-gray-300 leading-relaxed space-y-6"
+          [innerHTML]="blog?.blog_content"
+        ></div>
+      </main>
+      <!-- Sidebar -->
+      <aside class="mt-12 lg:mt-0 lg:col-span-1 space-y-8">
+        <!-- About Author Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold text-white mb-4">
+            About the Author
+          </h3>
+          <div class="flex flex-col items-center text-center">
+            <img
+              src="https://placehold.co/100x100/663399/FFFFFF?text=JD"
+              alt="Author John Doe"
+              class="w-24 h-24 rounded-full object-cover mb-4 border-2 border-blue-500"
+            />
+            <h4 class="text-lg font-semibold text-white">John Doe</h4>
+            <p class="text-sm text-gray-400 mb-4">Tech Writer & AI Ethicist</p>
+            <p class="text-gray-300 text-sm mb-4">
+              John is passionate about exploring the intersection of technology
+              and society, with a focus on artificial intelligence and its
+              impact on the future of work.
+            </p>
+            <div class="flex space-x-4 text-gray-400">
+              <a href="#" class="hover:text-blue-500 transition duration-300">
+                <svg
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.776-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.262c-1.225 0-1.62.753-1.62 1.543V12h2.77l-.44 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                  ></path>
+                </svg>
+              </a>
+              <a href="#" class="hover:text-blue-500 transition duration-300">
+                <svg
+                  class="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M8.29 20.251c1.329 0 2.542-.644 3.303-1.629 3.033.42 5.562-1.311 6.843-3.232l-2.046-2.04c-.754.195-1.554.29-2.348.29-.461 0-.916-.056-1.353-.162l-.763-.18-1.571 1.564c-.452.448-1.077.7-1.74.7-.663 0-1.288-.252-1.74-.7L6.082 12.5c-.753-.746-1.168-1.722-1.168-2.77 0-1.048.415-2.024 1.168-2.77L7.697 5.48c.452-.448 1.077-.7 1.74-.7.663 0 1.288.252 1.74.7l.763.18c.437.106.892.162 1.353.162.794 0 1.594-.095 2.348-.29l2.046 2.04c-.78.93-1.84 1.638-3.033 1.956-1.329 0-2.542.644-3.303 1.629L8.29 20.251z"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Recent Posts Section -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold text-white mb-4">Recent Posts</h3>
+          <div class="space-y-4">
+            <!-- <a
+            *ngFor="let post of blog"
+            href="{{ post.link }}"
+            class="flex items-center space-x-4 group"
+          >
+            <img
+              src="{{ post?.img }}"
+              alt="{{ post?.alt }}"
+              class="w-16 h-16 rounded-lg object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div>
+              <p
+                class="text-base text-white font-medium group-hover:text-blue-400 transition duration-300"
+              >
+                {{ post.title }}
+              </p>
+              <p class="text-xs text-gray-400">{{ post.date }}</p>
+            </div>
+          </a> -->
+          </div>
+        </div>
+        <!-- Tags Section -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+          <h3 class="text-xl font-semibold text-white mb-4">Tags</h3>
+          <div class="flex flex-wrap gap-2">
+            <!-- <a
+              *ngFor="let tag of tags"
+              href="{{ tag.link }}"
+              class="inline-block bg-blue-700 text-white text-xs px-3 py-1 rounded-full hover:bg-blue-600 transition duration-300"
+              >{{ tag.name }}</a
+            > -->
+          </div>
+        </div>
+        <!-- Newsletter Signup -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg text-center">
+          <h3 class="text-xl font-semibold text-white mb-4">Stay Updated</h3>
+          <p class="text-gray-300 text-sm mb-4">
+            Subscribe to our newsletter for the latest insights and articles.
+          </p>
+          <form class="flex flex-col space-y-4">
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              class="bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
