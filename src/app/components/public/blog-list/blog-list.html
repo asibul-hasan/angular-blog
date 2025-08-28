@@ -18,7 +18,9 @@
       *ngFor="let blog of blogs; index as i"
       class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] hover:bg-white/15 transform hover:scale-[1.03] transition-all duration-300 overflow-hidden"
     >
-      <app-blog-card [blog]="blog"></app-blog-card>
+      <!-- <app-blog-card [blog]="blog" ></app-blog-card> -->
+      <!-- ✅ Correct: skip hydration at component level -->
+      <app-blog-card [blog]="blog" ngSkipHydration></app-blog-card>
     </div>
   </div>
 </div>
