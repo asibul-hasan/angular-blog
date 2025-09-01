@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve",
-    "build": "ng build",
+    "build": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build",
     "build-prod": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --output-path=dist/prod",
     "ng-high-memory": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --configuration=prod",
     "watch": "ng build --watch --configuration development",
@@ -12,7 +12,7 @@
     "go": "node --max_old_space_size=4096 node_modules/@angular/cli/bin/ng serve",
     "postbuild": "node generate-sitemap.js",
     "serve:ssr:infoAidTech": "node dist/infoAidTech/server/server.mjs",
-    "build:ssr": "ng build && ng run my-app:server"
+    "build:ssr": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build"
   },
   "prettier": {
     "overrides": [
