@@ -54,6 +54,23 @@ app.get('/sitemap.xml', (req, res) => {
   res.send(sitemap);
 });
 
+// Add this function to provide a list of IDs for the prerenderer
+export function getPrerenderParams(): Promise<any[]> {
+  // In a real application, you would fetch this data from a database or API
+  // For demonstration, let's use a static list
+  const blogPostIds = [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+    { id: 'my-first-blog-post' },
+  ];
+
+  return Promise.resolve([
+    ...blogPostIds,
+    // You can also add parameters for other dynamic routes if you have them
+  ]);
+}
+
 // Handle Angular SSR
 app.use((req, res, next) => {
   angularApp
