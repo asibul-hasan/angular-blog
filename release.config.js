@@ -1,14 +1,10 @@
 module.exports = {
-  branches: ["main"], // adjust if your default branch is different
+  repositoryUrl: "https://github.com/Asibul07/angular-blog.git",
+  branches: ["main"],
   plugins: [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    [
-      "@semantic-release/changelog",
-      {
-        changelogFile: "CHANGELOG.md",
-      },
-    ],
+    ["@semantic-release/changelog", { changelogFile: "CHANGELOG.md" }],
     [
       "@semantic-release/git",
       {
