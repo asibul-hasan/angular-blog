@@ -6,13 +6,14 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
-import { environment } from './environments/environment';
+import { environment } from '../src/environments/environment';
+import { existsSync } from 'fs';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+const browserDistFolder = join(process.cwd(), 'dist/infoAidTech/browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-// Serve static assets
+// Serve static assets from browser directory
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -21,7 +22,7 @@ app.use(
   })
 );
 
-// Sitemap.xml example
+// Sitemap.xml
 app.get('/sitemap.xml', (req, res) => {
   const siteUrl = environment.SITE_URL || 'http://localhost:5000';
   const posts = [
@@ -54,23 +55,6 @@ app.get('/sitemap.xml', (req, res) => {
   res.send(sitemap);
 });
 
-// Add this function to provide a list of IDs for the prerenderer
-export function getPrerenderParams(): Promise<any[]> {
-  // In a real application, you would fetch this data from a database or API
-  // For demonstration, let's use a static list
-  const blogPostIds = [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-    { id: 'my-first-blog-post' },
-  ];
-
-  return Promise.resolve([
-    ...blogPostIds,
-    // You can also add parameters for other dynamic routes if you have them
-  ]);
-}
-
 // Handle Angular SSR
 app.use((req, res, next) => {
   angularApp
@@ -81,11 +65,24 @@ app.use((req, res, next) => {
     .catch(next);
 });
 
+// Vercel requires this default export
+export default createNodeRequestHandler(app);
+
+// Local development
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
+
+  // Ensure index.html exists for fallback
+  const indexHtmlPath = join(browserDistFolder, 'index.html');
+  const indexCsrPath = join(browserDistFolder, 'index.csr.html');
+
+  if (!existsSync(indexHtmlPath) && existsSync(indexCsrPath)) {
+    const fs = require('fs');
+    fs.copyFileSync(indexCsrPath, indexHtmlPath);
+    console.log('Created index.html from index.csr.html for local development');
+  }
+
   app.listen(port, () =>
     console.log(`Node Express server listening on http://localhost:${port}`)
   );
 }
-
-export const reqHandler = createNodeRequestHandler(app);

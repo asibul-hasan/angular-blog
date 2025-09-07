@@ -13,6 +13,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "server": "src/main.server.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -20,9 +21,10 @@
               { "glob": "**/*", "input": "src/assets", "output": "assets" }
             ],
             "styles": ["src/custom-theme.scss", "src/styles.css"],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": { "entry": "src/server.ts" }
+            "ssr": {
+              "entry": "src/server.ts"
+            },
+            "outputPath": "dist/infoAidTech"
           },
           "configurations": {
             "production": {
@@ -38,7 +40,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": true
             },
             "development": {
               "optimization": false,
@@ -48,22 +51,44 @@
           },
           "defaultConfiguration": "production"
         },
-        "prerender": {
-          "builder": "@angular-devkit/build-angular:prerender",
-          "options": {
-            "browserTarget": "infoAidTech:build:production",
-            "serverTarget": "infoAidTech:build:production",
-            "routes": ["/", "/home", "/blog"]
-          }
-        },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": { "port": 5000 },
+          "options": {
+            "port": 5000
+          },
           "configurations": {
-            "production": { "buildTarget": "infoAidTech:build:production" },
-            "development": { "buildTarget": "infoAidTech:build:development" }
+            "production": {
+              "buildTarget": "infoAidTech:build:production"
+            },
+            "development": {
+              "buildTarget": "infoAidTech:build:development"
+            }
           },
           "defaultConfiguration": "development"
+        },
+        "serve-ssr": {
+          "builder": "@angular/build:ssr-dev-server",
+          "options": {
+            "browserTarget": "infoAidTech:build:development",
+            "serverTarget": "infoAidTech:build:development"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "infoAidTech:build:production",
+              "serverTarget": "infoAidTech:build:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@angular/build:prerender",
+          "options": {
+            "routes": ["/", "/home", "/blog"]
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "infoAidTech:build:production"
+            }
+          }
         }
       }
     }
