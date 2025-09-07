@@ -1,5 +1,4 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/infoaidtech/infoaidtech.net/
-    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R * /home/infoaidt/public_html/
