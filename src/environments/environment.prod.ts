@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
 
   // blogsApiBaseUrl: 'http://localhost:3000/api/blog',
   blogsApiBaseUrl: 'https://infoaidtech.vercel.app/api/blog',

@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve",
-    "build": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build",
-    "build-prod": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --output-path=dist/prod && npm run fix-index",
-    "fix-index": "copy dist\\prod\\browser\\index.csr.html dist\\prod\\browser\\index.html",
-    "ng-high-memory": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --configuration=prod",
+    "start": "ng serve",
+    "serve:ssr": "node dist/infoAidTech/server/server.mjs",
+    "clean": "rimraf dist",
+    "build": "ng build && npm run fix-index",
+    "build:prod": "ng build --configuration production && npm run fix-index",
+    "build:ssr": "ng build --configuration production && npm run fix-index",
+    "serve:production": "ng serve --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "go": "node --max_old_space_size=4096 node_modules/@angular/cli/bin/ng serve",
-    "postbuild": "node generate-sitemap.js",
-    "serve:ssr:infoAidTech": "node dist/infoAidTech/server/server.mjs",
-    "build:ssr": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build"
+    "fix-index": "copy dist\\infoAidTech\\browser\\index.csr.html dist\\infoAidTech\\browser\\index.html",
+    "postbuild": "npm run fix-index && node generate-sitemap.js"
   },
   "prettier": {
     "overrides": [
@@ -68,6 +68,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "rimraf": "^6.0.1",
     "semantic-release": "^24.2.7",
     "typescript": "~5.8.2"
   }
