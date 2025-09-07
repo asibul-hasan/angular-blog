@@ -4,16 +4,17 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "serve:ssr": "node dist/infoAidTech/server/server.mjs",
     "clean": "rimraf dist",
-    "build": "ng build && npm run fix-index",
-    "build:prod": "ng build --configuration production && npm run fix-index",
-    "build:ssr": "ng build --configuration production && npm run fix-index",
+    "build": "npm run clean && ng build --configuration production && npm run build:server",
+    "build:prod": "ng build --configuration production && npm run build:server && npm run fix-index",
+    "build:server": "ng run infoAidTech:server",
     "serve:production": "ng serve --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "fix-index": "copy dist\\infoAidTech\\browser\\index.csr.html dist\\infoAidTech\\browser\\index.html",
-    "postbuild": "npm run fix-index && node generate-sitemap.js"
+    "postbuild": "npm run fix-index && node generate-sitemap.js",
+    "build:ssr": "ng build --configuration production && npm run fix-index",
+    "serve:ssr": "node dist/infoAidTech/server/server.mjs",
+    "fix-index": "cp dist/infoAidTech/browser/index.csr.html dist/infoAidTech/browser/index.html || true"
   },
   "prettier": {
     "overrides": [
