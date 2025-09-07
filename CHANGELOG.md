@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/Asibul07/angular-blog/compare/v1.0.2...v1.0.3) (2025-09-07)
+
+
+### Bug Fixes
+
+* fixed ([4c08f30](https://github.com/Asibul07/angular-blog/commit/4c08f304580e09bfde4e31593746361718b7a0fa))
+
 ## [1.0.2](https://github.com/Asibul07/angular-blog/compare/v1.0.1...v1.0.2) (2025-09-07)
 
 
