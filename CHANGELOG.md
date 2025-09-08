@@ -17,7 +17,7 @@
 
 ### Bug Fixes
 
-* buld ([116e9af](https://github.com/Asibul07/angular-blog/commit/116e9af6c3fe6c46713854511629c3a48ce58f57))
+* build ([116e9af](https://github.com/Asibul07/angular-blog/commit/116e9af6c3fe6c46713854511629c3a48ce58f57))
 
 ## [1.0.1](https://github.com/Asibul07/angular-blog/compare/v1.0.0...v1.0.1) (2025-09-03)
 
