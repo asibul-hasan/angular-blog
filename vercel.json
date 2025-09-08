@@ -14,10 +14,7 @@
   ],
   "functions": {
     "dist/infoAidTech/server.mjs": {
-      "includeFiles": [
-        "dist/infoAidTech/browser/**",
-        "dist/infoAidTech/server/**"
-      ],
+      "includeFiles": "dist/infoAidTech/{browser/**,server/**}",
       "maxDuration": 30
     }
   }
