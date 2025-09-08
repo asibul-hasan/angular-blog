@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/Asibul07/angular-blog/compare/v1.0.3...v1.0.4) (2025-09-08)
+
+
+### Bug Fixes
+
+* vercel.json ([8679646](https://github.com/Asibul07/angular-blog/commit/8679646595f5eddbccf1d8020c223294f6ba3f4f))
+
 ## [1.0.3](https://github.com/Asibul07/angular-blog/compare/v1.0.2...v1.0.3) (2025-09-07)
 
 
