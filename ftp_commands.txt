@@ -1,0 +1,7 @@
+open ftp.infoaidtech.net
+asibul@infoaidtech.net
+Asibul@hasan7
+lcd dist\infoAidTech
+cd public_html
+mput *.*
+bye

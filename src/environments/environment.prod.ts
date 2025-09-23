@@ -4,7 +4,8 @@ export const environment = {
   // blogsApiBaseUrl: 'http://localhost:3000/api/blog',
   blogsApiBaseUrl: 'https://infoaidtech.vercel.app/api/blog',
   //   SITE_URL: 'http://localhost:5000/',
-  SITE_URL: 'www.infoaidtech.net/',
+  apiUrl: 'https://infoaidtech.vercel.app/api/blog',
+  SITE_URL: 'https://infoaidtech.net',
   endpoints: [
     {
       blog: 'blog',
@@ -23,3 +24,8 @@ export const environment = {
     },
   ],
 };
+// export const environment = {
+//   production: true,
+//   apiUrl: 'https://infoaidtech.vercel.app/api',
+//   SITE_URL: 'https://your-cpanel-domain.com' // Replace with your actual domain
+// };

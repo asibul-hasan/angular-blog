@@ -33,6 +33,6 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling()
     ),
     provideServerRendering(),
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(),
   ],
 };
