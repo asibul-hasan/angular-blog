@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/Asibul07/angular-blog/compare/v1.0.4...v1.0.5) (2025-09-23)
+
+
+### Bug Fixes
+
+* deployment process ([b5826c7](https://github.com/Asibul07/angular-blog/commit/b5826c730f9afc3077b3adde3c4da6859f453004))
+
 ## [1.0.4](https://github.com/Asibul07/angular-blog/compare/v1.0.3...v1.0.4) (2025-09-08)
 
 
