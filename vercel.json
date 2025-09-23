@@ -1,11 +1,17 @@
 {
   "version": 2,
-  "builds": [{ "src": "api/**/*.ts", "use": "@vercel/node" }],
-  "functions": {
-    "api/server.ts": {
-      "includeFiles": "dist/infoAidTech/**"
+  "public": true,
+  "name": "info-aid-tech",
+  "builds": [
+    {
+      "src": "dist/infoAidTech/browser/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "dist/infoAidTech/server/server.mjs",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/assets/(.*)",
@@ -13,7 +19,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api/server.ts"
+      "dest": "dist/infoAidTech/server/server.mjs"
     }
   ]
 }
