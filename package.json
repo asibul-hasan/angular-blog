@@ -19,7 +19,8 @@
     "serve": "npx serve -s dist/infoAidTech/browser",
     "bs": "ng b && npx serve -s dist/infoAidTech/browser",
     "serve:ssr:infoAidTech": "node dist/infoAidTech/server/server.mjs",
-    "build:vercel": "npm run build:ssr"
+    "build:vercel": "npm run build:ssr",
+    "vercel-build": "npm run build:ssr"
   },
   "prettier": {
     "overrides": [
