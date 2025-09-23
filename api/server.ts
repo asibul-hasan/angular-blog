@@ -1,10 +1,14 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { resolve } from 'node:path';
 
 // The SSR server build must exist at deploy time (built by "vercel-build").
 // Dynamically import the ESM bundle to avoid CJS require issues with .mjs.
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   try {
-    const mod = await import('../dist/infoAidTech/server/server.mjs');
+    const serverEntry = resolve(
+      process.cwd(),
+      'dist/infoAidTech/server/server.mjs'
+    );
+    const mod = await import(serverEntry);
     const reqHandler = mod.reqHandler as (
       req: any,
       res: any
