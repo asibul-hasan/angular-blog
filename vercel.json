@@ -2,20 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/infoAidTech/server.mjs",
-      "use": "@vercel/node"
+      "src": "package.json",
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["dist/infoAidTech/**"] }
     }
   ],
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "dest": "/dist/infoAidTech/browser/assets/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/dist/infoAidTech/server.mjs"
+      "dest": "dist/infoAidTech/server/server.mjs"
     }
-  ],
-  "functions": {
-    "dist/infoAidTech/server.mjs": {
-      "includeFiles": "dist/infoAidTech/{browser/**,server/**}",
-      "maxDuration": 30
-    }
-  }
+  ]
 }

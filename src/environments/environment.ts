@@ -3,7 +3,11 @@ export const environment = {
 
   // blogsApiBaseUrl: 'http://localhost:3000/api/blog',
   blogsApiBaseUrl: 'https://infoaidtech.vercel.app/api/blog',
-  SITE_URL: 'http://localhost:5000/',
+  apiUrl: 'https://infoaidtech.vercel.app/api/blog',
+
+  //   SITE_URL: 'http://localhost:5000/',
+
+  SITE_URL: 'https://infoaidtech.net',
   endpoints: [
     {
       blog: 'blog',

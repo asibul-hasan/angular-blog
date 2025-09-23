@@ -3,18 +3,23 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "clean": "rimraf dist",
-    "build": "npm run clean && ng build --configuration production && npm run build:server",
-    "build:prod": "ng build --configuration production && npm run build:server && npm run fix-index",
-    "build:server": "ng run infoAidTech:server",
-    "serve:production": "ng serve --configuration production",
+    "start": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve",
+    "build": "npm run clean && node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build",
+    "build:ssr": "npm run clean && node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=production",
+    "build:prerender": "npm run clean && node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng run infoAidTech:prerender:production",
+    "serve:ssr": "node dist/infoAidTech/server/server.mjs",
+    "dev:ssr": "ng run infoAidTech:serve-ssr",
+    "build-prod": "npm run build:ssr",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postbuild": "npm run fix-index && node generate-sitemap.js",
-    "build:ssr": "ng build --configuration production && npm run fix-index",
-    "serve:ssr": "node dist/infoAidTech/server/server.mjs",
-    "fix-index": "cp dist/infoAidTech/browser/index.csr.html dist/infoAidTech/browser/index.html || true"
+    "go": "node --max_old_space_size=4096 node_modules/@angular/cli/bin/ng serve",
+    "postbuild": "node generate-sitemap.js",
+    "clean": "rimraf dist",
+    "lint": "ng lint",
+    "serve": "npx serve -s dist/infoAidTech/browser",
+    "bs": "ng b && npx serve -s dist/infoAidTech/browser",
+    "serve:ssr:infoAidTech": "node dist/infoAidTech/server/server.mjs",
+    "build:vercel": "npm run build:ssr"
   },
   "prettier": {
     "overrides": [
@@ -27,6 +32,10 @@
     ]
   },
   "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
   "dependencies": {
     "@angular/cdk": "^20.1.5",
     "@angular/common": "^20.1.0",
@@ -44,6 +53,7 @@
     "@types/three": "^0.179.0",
     "express": "^5.1.0",
     "flowbite": "^3.1.2",
+    "node-fetch": "^3.3.2",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.11",
@@ -63,6 +73,7 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "@types/node-fetch": "^2.6.13",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

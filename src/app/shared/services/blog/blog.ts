@@ -8,8 +8,8 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root',
 })
 export class BlogApiService {
-  private apiUrl = environment.blogsApiBaseUrl;
-
+  private apiUrl = environment.apiUrl;
+  // private apiUrl = environment.apiUrl;
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object

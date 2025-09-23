@@ -41,12 +41,20 @@
                 }
               ],
               "outputHashing": "all",
-              "optimization": true
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": true
+              },
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -54,7 +62,7 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "port": 5000
+            "port": 4200
           },
           "configurations": {
             "production": {
@@ -66,34 +74,45 @@
           },
           "defaultConfiguration": "development"
         },
-        "serve-ssr": {
-          "builder": "@angular/build:ssr-dev-server",
+
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n",
           "options": {
-            "browserTarget": "infoAidTech:build:development",
-            "serverTarget": "infoAidTech:build:development"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "infoAidTech:build:production",
-              "serverTarget": "infoAidTech:build:production"
-            }
+            "buildTarget": "infoAidTech:build"
           }
         },
-        "prerender": {
-          "builder": "@angular/build:prerender",
+        "test": {
+          "builder": "@angular/build:karma",
           "options": {
-            "routes": ["/", "/home", "/blog"]
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              { "glob": "**/*", "input": "public" },
+              { "glob": "**/*", "input": "src/assets", "output": "assets" }
+            ],
+            "styles": ["src/custom-theme.scss", "src/styles.css"]
+          }
+        },
+        "serve-ssr": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "server": "src/main.server.ts",
+            "tsConfig": "tsconfig.app.json"
           },
           "configurations": {
-            "production": {
-              "buildTarget": "infoAidTech:build:production"
-            }
-          }
+            "production": {},
+            "development": {}
+          },
+          "defaultConfiguration": "development"
         }
       }
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "cache": {
+      "enabled": true
+    }
   }
 }
