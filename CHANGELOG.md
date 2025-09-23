@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/Asibul07/angular-blog/compare/v1.0.5...v1.0.6) (2025-09-23)
+
+
+### Bug Fixes
+
+* vercel deployment ([9e5158a](https://github.com/Asibul07/angular-blog/commit/9e5158a705c8a15d1aa0b55e4569f078fda66191))
+
 ## [1.0.5](https://github.com/Asibul07/angular-blog/compare/v1.0.4...v1.0.5) (2025-09-23)
 
 
