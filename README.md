@@ -1,3 +1,7 @@
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/asibul-hasan/angular-blog?utm_source=oss&utm_medium=github&utm_campaign=asibul-hasan%2Fangular-blog&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
+
+
 # InfoAidTech
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
@@ -57,3 +61,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+
+
