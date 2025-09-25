@@ -1,17 +1,32 @@
 import { Injectable } from '@angular/core';
 import { LanguageService } from '../../app/shared/services/language/lang.service';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  private chooseUsData: any[];
-  private aboutUsData: any[];
-  private ourServiceData: any[];
-  private ourTechnologyData: any[];
+  private _chooseUsData = new BehaviorSubject<any[]>([]);
+  private _aboutUsData = new BehaviorSubject<any[]>([]);
+  private _ourServiceData = new BehaviorSubject<any[]>([]);
+  private _ourTechnologyData = new BehaviorSubject<any[]>([]);
 
-  constructor(public langService: LanguageService) {
-    this.chooseUsData = [
+  constructor(private langService: LanguageService) {
+    combineLatest([this.langService.isLoaded$, this.langService.lang$])
+      .pipe(
+        filter(([isLoaded, lang]) => isLoaded && Object.keys(lang).length > 0)
+      )
+      .subscribe(() => {
+        this._chooseUsData.next(this.initializeChooseUsData());
+        this._aboutUsData.next(this.initializeAboutUsData());
+        this._ourServiceData.next(this.initializeOurServiceData());
+        this._ourTechnologyData.next(this.initializeOurTechnologyData());
+      });
+  }
+
+  private initializeChooseUsData(): any[] {
+    return [
       {
         icon: '',
         title: this.langService.lang.bestStrategy,
@@ -41,8 +56,10 @@ export class DataService {
             .enjoyQualityServicesAtAnAffordablePriceWePrioritizeDeliveringValueToOurCustomersWithoutCompromisingOnQuality,
       },
     ];
+  }
 
-    this.aboutUsData = [
+  private initializeAboutUsData(): any[] {
+    return [
       {
         icon: '',
         title: this.langService.lang.boostYourWebsiteForBetterResults,
@@ -65,7 +82,10 @@ export class DataService {
             .ourSocialMediaExpertiseEnsuresYourBrandConnectsWithAWiderAudienceBuildingALoyalCommunityAndDrivingEngagement,
       },
     ];
-    this.ourServiceData = [
+  }
+
+  private initializeOurServiceData(): any[] {
+    return [
       {
         icon: '',
         title: this.langService.lang.design,
@@ -116,7 +136,10 @@ export class DataService {
             .weHelpBusinessesAlignGoalsWithInnovationThroughActionableStrategiesThatFuelLongTermSuccessOurFocusAreasIncludeBusinessStrategyDigitalTransformationGoToMarketAndInnovationStrategy,
       },
     ];
-    this.ourTechnologyData = [
+  }
+
+  private initializeOurTechnologyData(): any[] {
+    return [
       // {
       //   icon: '',
       //   title: this.langService.lang.,
@@ -125,20 +148,19 @@ export class DataService {
     ];
   }
 
-  // Optionally, provide getters if you need access outside:
-  getChooseUsData() {
-    return this.chooseUsData;
+  getChooseUsData(): Observable<any[]> {
+    return this._chooseUsData.asObservable();
   }
 
-  getAboutUsData() {
-    return this.aboutUsData;
+  getAboutUsData(): Observable<any[]> {
+    return this._aboutUsData.asObservable();
   }
 
-  getOurServiceData() {
-    return this.ourServiceData;
+  getOurServiceData(): Observable<any[]> {
+    return this._ourServiceData.asObservable();
   }
 
-  getOurTechnologyData() {
-    return this.ourTechnologyData;
+  getOurTechnologyData(): Observable<any[]> {
+    return this._ourTechnologyData.asObservable();
   }
 }

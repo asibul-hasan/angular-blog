@@ -15,7 +15,7 @@ export interface SeoData {
 })
 export class SeoService {
   private siteName = 'infoAidTech';
-  private siteUrl = 'https://www.infoaidtech.net';
+  private siteUrl = 'https://infoaidtech.net';
   private twitterHandle = '@mytwitter';
 
   constructor(

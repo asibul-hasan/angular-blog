@@ -81,18 +81,18 @@ export class BlogCard implements OnInit {
   constructor(private apiService: BlogApiService, private router: Router) {}
   ngOnInit(): void {
     this.imgUrl =
-      this.blog.blog_image ??
+      this.blog?.blog_image ??
       'https://res.cloudinary.com/dfcir8epp/image/upload/v1755703537/FFFFFF_hi6y3z.svg';
-    this.title = this.blog.title;
-    this.description = this.blog.short_desc;
+    this.title = this.blog?.title || 'Untitled';
+    this.description = this.blog?.short_desc || 'No description available';
   }
   onLinkClick(event: Event) {
-    this.router.navigate([`/blog/${this.blog.slug}`], {
-      state: { blog: this.blog._id },
-    });
-
-    // this.apiService.getBlogById(this.blog._id).subscribe((res) => {
-    //   // this.router.navigate(['/blog', this.blog.id]);
-    // });
+    if (this.blog?.slug) {
+      this.router.navigate([`/blog/${this.blog.slug}`], {
+        state: { blog: this.blog._id },
+      });
+    } else {
+      console.error('Blog slug is missing');
+    }
   }
 }

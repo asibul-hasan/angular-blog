@@ -6,7 +6,6 @@ import { Categories } from './categories/categories';
 // import { Home } from '../public/home/home';
 
 const routes: Routes = [
-  // { path: '', component: DashboardModule },
   {
     path: 'blogs',
     component: Blogs,
@@ -18,7 +17,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'blogs', pathMatch: 'full' },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'blogs',
   },
 ];
 
