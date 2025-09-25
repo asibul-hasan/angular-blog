@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/Asibul07/angular-blog/compare/v1.0.7...v1.1.0) (2025-09-25)
+
+
+### Bug Fixes
+
+* deployment ([6db54e8](https://github.com/Asibul07/angular-blog/commit/6db54e8e096d24d5dec9f18d14858502775de4b0))
+
+
+### Features
+
+* Remove SSR and prepare for static deployment ([83ba481](https://github.com/Asibul07/angular-blog/commit/83ba481bfb26e1c8457356579ce7f0d4e53be94b))
+
 ## [1.0.7](https://github.com/Asibul07/angular-blog/compare/v1.0.6...v1.0.7) (2025-09-25)
 
 
