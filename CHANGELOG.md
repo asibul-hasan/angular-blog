@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/Asibul07/angular-blog/compare/v1.0.6...v1.0.7) (2025-09-25)
+
+
+### Bug Fixes
+
+* **routing:** handle wildcard routes in server for SPA ([b595f61](https://github.com/Asibul07/angular-blog/commit/b595f619c94403eaf9cdfda8871d2f0cf8ded07c))
+
 ## [1.0.6](https://github.com/Asibul07/angular-blog/compare/v1.0.5...v1.0.6) (2025-09-23)
 
 
