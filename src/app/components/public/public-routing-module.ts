@@ -5,10 +5,10 @@ import { BlogList } from './blog-list/blog-list';
 import { BlogDetail } from './blog-detail/blog-detail';
 
 const routes: Routes = [
+  { path: '', component: Home, pathMatch: 'full' },
   { path: 'home', component: Home },
   { path: 'blog', component: BlogList },
   { path: 'blog/:id', component: BlogDetail }, // SSR-only
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({
