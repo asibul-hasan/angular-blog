@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "builds": [{ "src": "api/server.ts", "use": "@vercel/node" }],
-  "functions": {
-    "api/server.ts": {
-      "includeFiles": "dist/infoAidTech/**"
+  "builds": [
+    {
+      "src": "api/server.ts",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/assets/(.*)",
@@ -25,7 +25,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api/server.ts"
+      "dest": "api/server.ts"
     }
   ]
 }

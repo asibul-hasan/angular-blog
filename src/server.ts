@@ -62,25 +62,18 @@ app.use(
 /**
  * Handle all other requests by rendering the Angular application.
  */
-// Ensure manifests are loaded before handling requests
-app.use((req, _res, next) => {
-  manifestsLoaded
-    .then(() => {
-      if (!angularApp) {
-        angularApp = new AngularNodeAppEngine();
-      }
-      next();
-    })
-    .catch(next);
-});
-
-app.use((req, res, next) => {
-  (angularApp as AngularNodeAppEngine)
-    .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next()
-    )
-    .catch(next);
+app.get('*', (req, res, next) => {
+  manifestsLoaded.then(() => {
+    if (!angularApp) {
+      angularApp = new AngularNodeAppEngine();
+    }
+    (angularApp as AngularNodeAppEngine)
+      .handle(req)
+      .then((response) =>
+        response ? writeResponseToNodeResponse(response, res) : next()
+      )
+      .catch(next);
+  }).catch(next);
 });
 
 /**

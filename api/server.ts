@@ -1,7 +1,6 @@
 import { resolve } from 'node:path';
 
-// The SSR server build must exist at deploy time (built by "vercel-build").
-// Dynamically import the ESM bundle to avoid CJS require issues with .mjs.
+// Vercel serverless function entrypoint that delegates to the built Angular SSR handler.
 export default async function handler(req: any, res: any) {
   try {
     const serverEntry = resolve(
@@ -13,7 +12,7 @@ export default async function handler(req: any, res: any) {
       req: any,
       res: any
     ) => Promise<void> | void;
-    await reqHandler(req as any, res as any);
+    await reqHandler(req, res);
   } catch (error) {
     console.error('SSR handler error:', error);
     res.status(500).send('SSR handler error');
