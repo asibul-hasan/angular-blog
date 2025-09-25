@@ -38,29 +38,36 @@ export class BlogDetail implements OnInit {
   }
 
   ngOnInit() {
-    this.blogId = this.route.snapshot.paramMap.get('id') || '';
+this.blogId = this.route.snapshot.paramMap.get('id') || '';
 
     if (this.blogId) {
       this.apiService.getBlogById(this.blogId).subscribe({
         next: (res) => {
-          this.blog = res.body[0];
+          if (res.body && res.body.length > 0) {
+            this.blog = res.body[0];
 
-          // use meta services
-          this.seo.updateTags({
-            title: this.blog.title,
-            description: this.blog.meta_description,
-            image: this.blog.image ?? this.defaultImg,
-            slug: this.blog.slug,
-            type: 'article',
-          });
+            // use meta services
+            this.seo.updateTags({
+              title: this.blog.title,
+              description: this.blog.meta_description,
+              image: this.blog.image ?? this.defaultImg,
+              slug: this.blog.slug,
+              type: 'article',
+            });
 
-          // debugger;
-          this.calculateReadingTime(this.blog.blog_content);
+            this.calculateReadingTime(this.blog.blog_content);
+          } else {
+            console.error('Blog not found');
+            this.router.navigate(['/blog']); // Redirect to blog list
+          }
         },
         error: (err) => {
           console.error('Error loading blog:', err);
+          this.router.navigate(['/blog']); // Redirect to blog list on error
         },
       });
+    } else {
+      this.router.navigate(['/blog']); // Redirect if no ID provided
     }
   }
   calculateReadingTime(content: string) {

@@ -83,5 +83,16 @@
 
   "_________footer_________": "_________pied de page_________",
   "footer": "Pied de page",
-  "noNeedToWorryCommaWeWillHelpYouMakeSenseOfItAll": "Pas d’inquiétude, nous vous aiderons à y voir clair."
+  "noNeedToWorryCommaWeWillHelpYouMakeSenseOfItAll": "Pas d'inquiétude, nous vous aiderons à y voir clair.",
+  "pages": "Pages",
+  "quickLinks": "Liens rapides",
+  "termsOfService": "Conditions d'utilisation",
+  "privacyPolicy": "Politique de confidentialité",
+  "contactUs": "Nous contacter",
+  "subscribe": "S'abonner",
+  "copyrightSymbol": "©",
+  "copyright": "Droits d'auteur",
+  "copyrightWithSymbol": "Droits d'auteur ©",
+  "allRightsReserved": "Tous droits réservés.",
+  "disclimer": "Avertissement"
 }

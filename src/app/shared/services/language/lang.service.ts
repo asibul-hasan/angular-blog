@@ -1,54 +1,63 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageService {
-  // Renamed from LanguageService if that was its previous name
-  private _currentLang = new BehaviorSubject<string>('en'); // Holds the current language string
-  public readonly currentLang$: Observable<string> =
-    this._currentLang.asObservable(); // Observable for current language
-
-  // Use a separate BehaviorSubject for language data to ensure `lang` is always up-to-date
   private _langData = new BehaviorSubject<any>({});
-  public lang: any = {}; // Public property for direct access to translation data
+  public readonly lang$: Observable<any> = this._langData.asObservable();
+
+  private _isLoaded = new BehaviorSubject<boolean>(false);
+  public readonly isLoaded$: Observable<boolean> =
+    this._isLoaded.asObservable();
+
+  public get lang(): any {
+    return this._langData.getValue();
+  }
+
+  public getTranslation(key: string): string {
+    return this.lang[key] || key;
+  }
+
+  private _currentLang = new BehaviorSubject<string>('en');
+  public readonly currentLang$: Observable<string> =
+    this._currentLang.asObservable();
 
   constructor(private http: HttpClient) {
-    // Subscribe internally to update the `lang` property whenever _langData changes
-    this._langData.subscribe((data) => {
-      this.lang = data;
-    });
+    this.loadInitialLanguage();
+  }
 
-    // Subscribe to the _currentLang changes to load new translation files
-    this._currentLang.subscribe((lang) => {
-      this.loadLanguageData(lang);
-    });
-
-    // Initialize with a default language
+  private loadInitialLanguage(): void {
     this.changeLanguage('en');
   }
 
-  // Method to load the language JSON data
-  private loadLanguageData(lang: string): void {
-    this.http
-      .get(`./assets/i18n/${lang}.json`)
-      .pipe(
-        map((data) => {
-          this._langData.next(data); // Update _langData when new JSON is loaded
-        })
-      )
-      .subscribe({
-        next: () => console.log(`Loaded language: ${lang}`),
-        error: (error) =>
-          console.error(`Error loading language file for ${lang}:`, error),
-      });
+  changeLanguage(lang: string): void {
+    this._currentLang.next(lang);
+    this._isLoaded.next(false);
+
+    this.http.get(`./assets/i18n/${lang}.json`).subscribe({
+      next: (data) => {
+        this._langData.next(data);
+        this._isLoaded.next(true);
+        console.log(`Loaded language: ${lang}`);
+      },
+      error: (error) => {
+        console.error(`Error loading language file for ${lang}:`, error);
+        // Load fallback or empty object
+        this._langData.next({});
+        this._isLoaded.next(true);
+      },
+    });
   }
 
-  // Public method to change the application's language
-  changeLanguage(lang: string): void {
-    this._currentLang.next(lang); // Update the current language
+  // Helper method to wait for language to load
+  waitForLanguageLoad(): Observable<any> {
+    return this.isLoaded$.pipe(
+      filter((loaded) => loaded),
+      switchMap(() => this.lang$)
+    );
   }
 }

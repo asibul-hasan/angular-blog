@@ -37,13 +37,15 @@ export class Navbar {
         document.documentElement.classList.add('dark');
       }
     }
-    this.navItems = [
-      { path: '/', label: this.langService.lang.home },
-      { path: '#', label: this.langService.lang.about },
-      { path: '/blog', label: this.langService.lang.blog },
-      { path: '#', label: this.langService.lang.services },
-      { path: '#', label: this.langService.lang.contact },
-    ];
+    this.langService.waitForLanguageLoad().subscribe(() => {
+      this.navItems = [
+        { path: '/', label: this.langService.lang.home },
+        { path: '#', label: this.langService.lang.about },
+        { path: '/blog', label: this.langService.lang.blog },
+        { path: '#', label: this.langService.lang.services },
+        { path: '#', label: this.langService.lang.contact },
+      ];
+    });
   }
   isActive(path: string): boolean {
     return this.router.url === path;
@@ -57,6 +59,8 @@ export class Navbar {
     this.isOpen = false;
   }
   toggleDarkMode(): void {
+    if (!this.isBrowser) return; // Only run in browser
+
     this.isDark = !this.isDark;
     if (this.isDark) {
       document.documentElement.classList.add('dark');

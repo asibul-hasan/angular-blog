@@ -12,6 +12,9 @@ import { CommonModule } from '@angular/common';
 export class BlogList implements OnInit {
   blogs: any[] = [];
   buttonText: string = 'Read More';
+  loading = true;
+  error: string | null = null;
+
   constructor(private apiService: BlogApiService) {}
 
   ngOnInit() {
@@ -19,14 +22,29 @@ export class BlogList implements OnInit {
   }
 
   getBlogs() {
-    this.apiService.getBlogs().subscribe((res) => {
-      let list = res.body.map((el: any) => {
-        el['short_desc'] = el.blog_content.slice(0, 120);
+    this.loading = true;
+    this.error = null;
 
-        return el;
-      });
-      this.blogs = list;
-      // console.table(this.blogs);
+    this.apiService.getBlogs().subscribe({
+      next: (res) => {
+        if (res.body && Array.isArray(res.body)) {
+          let list = res.body.map((el: any) => {
+            el['short_desc'] = el.blog_content
+              ? el.blog_content.slice(0, 120)
+              : '';
+            return el;
+          });
+          this.blogs = list;
+        } else {
+          this.blogs = [];
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load blogs';
+        this.loading = false;
+        console.error('Error loading blogs:', err);
+      },
     });
   }
 }
