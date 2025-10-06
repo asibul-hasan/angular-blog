@@ -13,15 +13,20 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
-            
+
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               { "glob": "**/*", "input": "public" },
               { "glob": "**/*", "input": "src/assets", "output": "assets" },
-              { "glob": "**/*", "input": "src/assets/i18n", "output": "assets/i18n" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/i18n",
+                "output": "assets/i18n"
+              }
             ],
-            "styles": ["src/custom-theme.scss", "src/styles.css"],
+            "styles": ["src/custom-theme.scss", "src/styles.css", "node_modules/aieditor/dist/style.css"],
+            "scripts": [],
 
             "outputPath": "dist/infoAidTech"
           },

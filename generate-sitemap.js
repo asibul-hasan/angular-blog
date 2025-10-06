@@ -1,91 +1,282 @@
 const fs = require("fs");
 const path = require("path");
+const https = require("https");
+const { URL } = require("url");
+const glob = require("glob");
 
-// ✅ Decide BASE_URL dynamically
-const BASE_URL =
-  process.env.BASE_URL || "https://infoaidtech.net" || "http://localhost:5000";
+const BLOG_LIST_URL = "https://infoaidtech.vercel.app/api/blog/get-blog-list";
+const SITE_URL = "https://infoaidtech.net";
 
-// Try both routing styles
-const possibleFiles = [
-  // path.join(__dirname, "src", "app", "app-routing.module.ts"),
-  path.join(__dirname, "src", "app", "app.routes.ts"),
-  path.join(__dirname, "src", "app", "app.routes.server.ts"),
-  path.join(
-    __dirname,
-    "src",
-    "app",
-    "components",
-    "public",
-    "public-routing-module.ts"
-  ),
-  path.join(
-    __dirname,
-    "src",
-    "app",
-    "components",
-    "dashboard",
-    "dashboard-routing-module.ts"
-  ),
-];
+/**
+ * Simple HTTP GET request using built-in modules
+ */
+function httpGet(url) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const request = https.get(
+      {
+        hostname: urlObj.hostname,
+        path: urlObj.pathname + urlObj.search,
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "Sitemap Generator",
+        },
+      },
+      (response) => {
+        let data = "";
 
-let routingFile = null;
+        response.on("data", (chunk) => {
+          data += chunk;
+        });
 
-for (const file of possibleFiles) {
-  if (fs.existsSync(file)) {
-    routingFile = file;
-    break;
+        response.on("end", () => {
+          if (response.statusCode >= 200 && response.statusCode < 300) {
+            try {
+              resolve(JSON.parse(data));
+            } catch (error) {
+              reject(new Error(`JSON Parse Error: ${error.message}`));
+            }
+          } else {
+            reject(
+              new Error(
+                `HTTP Error ${response.statusCode}: ${response.statusMessage}`
+              )
+            );
+          }
+        });
+      }
+    );
+
+    request.on("error", reject);
+    request.setTimeout(10000, () => {
+      request.destroy();
+      reject(new Error("Request timeout"));
+    });
+  });
+}
+
+/**
+ * Fetch blog slugs directly from API using native HTTP
+ */
+async function getDynamicBlogRoutes() {
+  try {
+    console.log(`📡 Fetching blog data from: ${BLOG_LIST_URL}`);
+
+    const data = await httpGet(BLOG_LIST_URL);
+
+    // Handle the API response structure (based on diagnostic results)
+    let blogs = [];
+    if (data.body && Array.isArray(data.body)) {
+      blogs = data.body;
+    } else if (Array.isArray(data)) {
+      blogs = data;
+    } else {
+      console.warn("⚠️ Unexpected API response structure:", Object.keys(data));
+      return [];
+    }
+
+    console.log(`📊 Total blogs found: ${blogs.length}`);
+
+    // Filter only published blogs
+    const publishedBlogs = blogs.filter((blog) => blog.isPublished === true);
+    console.log(`📊 Published blogs: ${publishedBlogs.length}`);
+
+    // Sanitize slugs and map to routes
+    const blogRoutes = publishedBlogs
+      .filter((blog) => blog.slug && blog.slug.trim()) // remove null/empty slugs
+      .map((blog) => {
+        const cleanSlug = blog.slug.trim().replace(/\/+$/, ""); // remove trailing slashes
+        return `/blog/${cleanSlug}`;
+      });
+
+    // Check for duplicates or invalids
+    const duplicates = blogRoutes.filter(
+      (route, idx, arr) => arr.indexOf(route) !== idx
+    );
+    if (duplicates.length > 0) {
+      console.warn("⚠️ Duplicate blog routes detected:", duplicates);
+    }
+
+    const invalid = publishedBlogs.filter(
+      (blog) => !blog.slug || blog.slug.trim() === ""
+    );
+    if (invalid.length > 0) {
+      console.warn(
+        "⚠️ Blogs with invalid/missing slugs:",
+        invalid.map((b) => b.id || b._id || b.title || JSON.stringify(b))
+      );
+    }
+
+    // Log some sample slugs for verification
+    if (blogRoutes.length > 0) {
+      console.log(`📝 Sample blog slugs:`, blogRoutes.slice(0, 5));
+    }
+
+    return blogRoutes;
+  } catch (error) {
+    console.error("❌ Error fetching blogs:", error.message);
+    return [];
   }
 }
 
-if (!routingFile) {
-  console.error(
-    "❌ No routing file found (app-routing.module.ts or app.routes.ts)."
-  );
-  process.exit(1);
+/**
+ * Extract static Angular routes from routing files
+ */
+function getStaticRoutes() {
+  console.log("🔍 Searching for Angular routing files...");
+
+  const routingFiles = glob
+    .sync("src/app/**/*.ts")
+    .filter((file) => file.includes("routing") || file.includes("routes"));
+
+  if (!routingFiles.length) {
+    console.error("❌ No routing files found.");
+    return [];
+  }
+
+  console.log("📂 Found routing files:", routingFiles);
+
+  const staticRoutes = new Set();
+  const routeRegex = /path:\s*['"]([^'"]*)['"]/g;
+
+  for (const file of routingFiles) {
+    try {
+      const content = fs.readFileSync(file, "utf8");
+      let match;
+      while ((match = routeRegex.exec(content)) !== null) {
+        const route = match[1];
+        // Skip empty routes, wildcards, and parameter routes
+        if (route && !route.includes("*") && !route.includes(":")) {
+          staticRoutes.add(route === "" ? "/" : `/${route}`);
+        }
+      }
+    } catch (error) {
+      console.warn(`⚠️ Could not read routing file ${file}:`, error.message);
+    }
+  }
+
+  return [...staticRoutes];
 }
 
-console.log("📂 Using routing file:", routingFile);
-
-// Read routing content
-const routingContent = fs.readFileSync(routingFile, "utf8");
-
-// ✅ Extract routes
-const routeRegex = /path:\s*['"]([^'"]*)['"]/g;
-const routes = [];
-let match;
-
-while ((match = routeRegex.exec(routingContent)) !== null) {
-  routes.push(match[1] === "" ? "/" : `/${match[1]}`);
+/**
+ * Determine priority based on route type
+ */
+function getRoutePriority(route) {
+  if (route === "/") return "1.0";
+  if (route.startsWith("/blog/")) return "0.8";
+  if (["/about", "/contact", "/services"].includes(route)) return "0.9";
+  return "0.7";
 }
 
-const uniqueRoutes = [...new Set(routes)];
+/**
+ * Determine change frequency based on route type
+ */
+function getChangeFreq(route) {
+  if (route === "/") return "weekly";
+  if (route.startsWith("/blog/")) return "monthly";
+  if (["/about", "/contact", "/services"].includes(route)) return "monthly";
+  return "yearly";
+}
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+/**
+ * Generate and save sitemap
+ */
+async function generateSitemap() {
+  console.log("⚙️ Generating sitemap...");
+
+  const staticRoutes = getStaticRoutes();
+  const blogRoutes = await getDynamicBlogRoutes();
+
+  const allRoutes = [...new Set([...staticRoutes, ...blogRoutes])];
+
+  console.log(`📌 Static routes: ${staticRoutes.length}`);
+  console.log(`📌 Blog routes: ${blogRoutes.length}`);
+  console.log(`📌 Total unique routes: ${allRoutes.length}`);
+
+  const today = new Date().toISOString().split("T")[0];
+
+  // Build XML with proper formatting
+  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${uniqueRoutes
-    .map(
-      (route) => `
-    <url>
-      <loc>${BASE_URL}${route}</loc>
-      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>${route === "/" ? "1.0" : "0.8"}</priority>
-    </url>`
-    )
-    .join("")}
+${allRoutes
+  .sort()
+  .map((route) => {
+    const priority = getRoutePriority(route);
+    const changefreq = getChangeFreq(route);
+
+    return `  <url>
+    <loc>${SITE_URL}${route}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+  })
+  .join("\n")}
 </urlset>`;
 
-// ✅ Ensure dist exists (adjust to your build output folder!)
-const sitemapPath = path.join(
-  __dirname,
-  "dist",
-  "infoAidTech",
-  "browser",
-  "sitemap.xml"
-);
-fs.mkdirSync(path.dirname(sitemapPath), { recursive: true });
+  // Ensure the output directory exists
+  const sitemapPath = path.join(__dirname, "dist", "browser", "sitemap.xml");
+  const outputDir = path.dirname(sitemapPath);
 
-// Write sitemap
-fs.writeFileSync(sitemapPath, sitemap, "utf8");
+  try {
+    fs.mkdirSync(outputDir, { recursive: true });
+    fs.writeFileSync(sitemapPath, sitemapXml, "utf8");
 
-console.log("✅ sitemap.xml generated at:", sitemapPath);
+    console.log("✅ Sitemap successfully generated at:", sitemapPath);
+    console.log(
+      `📄 File size: ${(fs.statSync(sitemapPath).size / 1024).toFixed(2)} KB`
+    );
+
+    // Also save a copy to the src/assets folder for development
+    const devSitemapPath = path.join(__dirname, "src", "assets", "sitemap.xml");
+    try {
+      fs.mkdirSync(path.dirname(devSitemapPath), { recursive: true });
+      fs.writeFileSync(devSitemapPath, sitemapXml, "utf8");
+      console.log("📄 Development copy saved to:", devSitemapPath);
+    } catch (devError) {
+      console.warn("⚠️ Could not save development copy:", devError.message);
+    }
+  } catch (error) {
+    console.error("❌ Error saving sitemap:", error.message);
+    process.exit(1);
+  }
+}
+
+/**
+ * Validate the generated sitemap
+ */
+function validateSitemap(sitemapPath) {
+  try {
+    const content = fs.readFileSync(sitemapPath, "utf8");
+    const urlCount = (content.match(/<url>/g) || []).length;
+    const locCount = (content.match(/<loc>/g) || []).length;
+
+    if (urlCount !== locCount) {
+      console.warn(
+        "⚠️ Sitemap validation warning: URL and LOC counts don't match"
+      );
+    } else {
+      console.log(`✅ Sitemap validation passed: ${urlCount} URLs found`);
+    }
+  } catch (error) {
+    console.error("❌ Sitemap validation failed:", error.message);
+  }
+}
+
+// Execute the sitemap generation
+async function main() {
+  try {
+    await generateSitemap();
+
+    // Validate the generated sitemap
+    const sitemapPath = path.join(__dirname, "dist", "browser", "sitemap.xml");
+    if (fs.existsSync(sitemapPath)) {
+      validateSitemap(sitemapPath);
+    }
+  } catch (error) {
+    console.error("❌ Sitemap generation failed:", error.message);
+    process.exit(1);
+  }
+}
+
+main();

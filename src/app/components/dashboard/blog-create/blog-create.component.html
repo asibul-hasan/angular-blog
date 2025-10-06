@@ -1,0 +1,136 @@
+<div class="w-full p-4 md:p-8 bg-white min-h-screen">
+  <!-- <h1 class="text-3xl font-extrabold text-gray-900 mb-8">
+    📝 Modern Blog Editor
+  </h1> -->
+  <form [formGroup]="blogForm" (ngSubmit)="createBlog()" class="space-y-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-6">
+        <div>
+          <label for="title" class="block text-sm font-semibold text-gray-700">
+            Title
+          </label>
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            placeholder="The engaging title for your blog post"
+            class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 text-lg transition duration-150"
+          />
+        </div>
+
+        <!-- <div
+          class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-white hover:border-blue-500 transition duration-150 ease-in-out cursor-pointer"
+          (click)="fileInput.click()"
+        >
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Featured Image Upload
+          </label>
+          <p class="text-sm text-gray-500">
+            Drag and drop your image here, or
+            <span class="text-blue-600 font-medium cursor-pointer"
+              >click to browse</span
+            >
+          </p>
+          <input
+            type="file"
+            #fileInput
+            class="sr-only"
+            formControlName="imageFile"
+          />
+        </div> -->
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">
+            Content Editor
+          </label>
+
+          <div
+            class="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm"
+          >
+            <div
+              id="editor"
+              class="w-full min-h-[350px] text-base"
+              formControlName="blog_content"
+              placeholder="Start writing your amazing content here..."
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="lg:col-span-1 space-y-6 bg-gray-50 p-6 rounded-lg shadow-lg h-fit sticky top-4"
+      >
+        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4">
+          ⚙️ SEO & Settings
+        </h2>
+
+        <!-- <app-char-count-input
+          [parentForm]="blogForm"
+          controlName="metaTitle"
+          label="Meta Title"
+          [maxLength]="60"
+          placeholder="Max 60 characters for best display"
+        ></app-char-count-input> -->
+
+        <app-char-count-input
+          [parentForm]="blogForm"
+          controlName="meta_description"
+          label="Meta Description"
+          [maxLength]="160"
+          placeholder="Max 160 characters for best display"
+        ></app-char-count-input>
+
+        <textarea
+          type="text"
+          formControlName="description"
+          class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 transition duration-150"
+        >
+        </textarea>
+
+        <app-char-count-input
+          [parentForm]="blogForm"
+          controlName="slug"
+          label="Slug (URL Path)"
+          [maxLength]="100"
+          placeholder="e.g., my-awesome-blog-post"
+          helpText="This will be the URL fragment."
+        ></app-char-count-input>
+
+        <div>
+          <label
+            for="category"
+            class="block text-sm font-semibold text-gray-700"
+          >
+            Categories
+          </label>
+          <mat-select formControlName="category" multiple>
+            <mat-option *ngFor="let cat of categories" [value]="cat._id">
+              {{ cat.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700">Tags</label>
+          <input
+            type="text"
+            formControlName="tags"
+            placeholder="Separate tags with commas (e.g., angular, tailwind, dev)"
+            class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 transition duration-150"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-8 flex justify-end">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow-md hover:bg-blue-700 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="blogForm.invalid"
+      >
+        Publish Blog Post
+      </button>
+    </div>
+  </form>
+</div>
+<p-toast position="bottom-right"></p-toast>

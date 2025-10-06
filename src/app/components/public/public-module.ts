@@ -1,14 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { PublicRoutingModule } from './public-routing-module';
-import { HttpClientModule } from '@angular/common/http';
-import { BlogApiService } from '../../shared/services/blog/blog';
-// import { HttpClientModule } from '@angular/common/http';
+import { PublicLayout } from './public-layout/public-layout.component';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, PublicRoutingModule, HttpClientModule],
-  providers: [BlogApiService],
+  imports: [PublicRoutingModule],
 })
 export class PublicModule {}
