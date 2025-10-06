@@ -1,15 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @import "flowbite";
-
+@import "flowbite/dist/flowbite.css";
 :root {
-  --secondary-color: #1e90ff;
-  --white: #ffffff;
+  --color-accent: #f76179; /* Bright Orange */
+  --color-bg-main: #0b192c; /* Very Deep Blue (Main Background) */
+  --color-bg-secondary: #1e3e62; /* Dark Slate Blue (Secondary/Card Background) */
+  --color-text-light: #ffffff; /* White (Primary Text) */
 }
+/* In your global stylesheet (e.g., styles.css) */
 
+html {
+  scroll-behavior: smooth;
+  transition: scroll-behavior 0.5s ease-in-out;
+}
 html,
 body {
   height: 100%;
+  scroll-behavior: smooth;
 }
 body {
   margin: 0;
@@ -95,7 +103,7 @@ ol ol {
 }
 
 .section-sub-title {
-  color: var(--secondary-color);
+  color: var(--color-accent);
   font-family: "Source Serif Pro";
   font-size: 16px;
   font-weight: 600;
@@ -110,4 +118,74 @@ ol ol {
   font-size: 2.5rem;
   font-weight: 600;
   text-transform: capitalize;
+}
+
+.testimonial-home-section {
+  position: relative;
+  background: url("./assets/images/testimonial-bg.jpg") center/cover no-repeat;
+}
+
+.testimonial-home-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #000; /* 50% opacity overlay */
+  backdrop-filter: blur(2px);
+}
+
+/* .choose-us-home-section {
+  position: relative;
+  background: linear-gradient(180deg, #000 0%, #ffffff 100%);
+  color: #fff;
+} */
+
+/* Add a subtle gradient overlay for depth */
+/* .choose-us-home-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(0, 0, 0, 0.3)
+  );
+  z-index: 0;
+} */
+
+/* Decorative blurred circles for modern effect */
+.choose-us-home-section::after,
+.home-service-section::after {
+  content: "";
+  position: absolute;
+  /* top: -100px;
+  right: -100px; */
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 105, 180, 0.25),
+    transparent 70%
+  );
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.home-service-section,
+.choose-us-home-section {
+  background-color: #000;
+}
+
+/* Optional: Add a subtle textured overlay for depth, similar to the other sections' ::before */
+.home-service-section::before,
+.choose-us-home-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* A very light, transparent gradient for subtle texture */
+  background: radial-gradient(
+    circle at top left,
+    rgba(255, 255, 255, 0.03),
+    transparent 50%
+  );
+  z-index: 0;
 }

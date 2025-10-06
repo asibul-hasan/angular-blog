@@ -9,7 +9,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./components/dashboard/dashboard-module').then(
+      import('./components/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
   },
