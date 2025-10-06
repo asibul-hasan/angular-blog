@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Asibul07/angular-blog/compare/v1.1.0...v1.2.0) (2025-10-06)
+
+
+### Features
+
+* added new features ([bd7a39f](https://github.com/Asibul07/angular-blog/commit/bd7a39f0f3cc0fd935ae93b9fa293ffdbf995e2c))
+
 # [1.1.0](https://github.com/Asibul07/angular-blog/compare/v1.0.7...v1.1.0) (2025-09-25)
 
 
