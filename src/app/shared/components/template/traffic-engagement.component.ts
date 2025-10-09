@@ -1,23 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-traffic-engagement',
   standalone: true,
-  imports: [BaseChartDirective],
-  template: `<div class="w-full h-full">
-    <canvas
-      baseChart
-      [data]="lineChartData"
-      [options]="lineChartOptions"
-      chartType="line"
-    >
-    </canvas>
-  </div> `,
+  imports: [BaseChartDirective, CommonModule],
+  template: `
+    <div class="w-full h-full" *ngIf="isBrowser">
+      <canvas
+        baseChart
+        [data]="lineChartData"
+        [options]="lineChartOptions"
+        chartType="line"
+      ></canvas>
+    </div>
+    <div *ngIf="!isBrowser" class="text-gray-400 text-center">
+      Chart is not rendered on the server
+    </div>
+  `,
 })
 export class TrafficEngagementComponent {
-  // Line chart config
+  isBrowser = false;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [
       'Day 1',

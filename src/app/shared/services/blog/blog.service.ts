@@ -1,4 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable, of } from 'rxjs';
@@ -8,11 +8,10 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root',
 })
 export class BlogApiService {
+  private http = inject(HttpClient);
+
   private apiUrl = environment.apiUrl + '/blog';
-  constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   getBlogs(): Observable<any> {
     return this.http.get(`${this.apiUrl}/get-blog-list`);

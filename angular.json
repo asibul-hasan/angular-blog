@@ -10,64 +10,47 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "outputPath": "dist/infoAidTech",
+            "index": "src/index.html",
             "browser": "src/main.ts",
-
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              { "glob": "**/*", "input": "public" },
-              { "glob": "**/*", "input": "src/assets", "output": "assets" },
-              {
-                "glob": "**/*",
-                "input": "src/assets/i18n",
-                "output": "assets/i18n"
-              }
-            ],
-            "styles": ["src/custom-theme.scss", "src/styles.css", "node_modules/aieditor/dist/style.css"],
-            "scripts": [],
-
-            "outputPath": "dist/infoAidTech"
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "server": "src/main.server.ts",
+            "prerender": false,
+            "ssr": {
+              "entry": "src/server.ts"
+            }
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "700kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
                 }
               ],
-              "outputHashing": "all",
-              "optimization": {
-                "scripts": true,
-                "styles": true,
-                "fonts": true
-              },
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
-          "options": {
-            "port": 4200
-          },
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "infoAidTech:build:production"
@@ -78,32 +61,37 @@
           },
           "defaultConfiguration": "development"
         },
-
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n",
-          "options": {
-            "buildTarget": "infoAidTech:build"
-          }
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              { "glob": "**/*", "input": "public" },
-              { "glob": "**/*", "input": "src/assets", "output": "assets" }
-            ],
-            "styles": ["src/custom-theme.scss", "src/styles.css"]
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": []
           }
+        },
+        "serve-ssr": {
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "infoAidTech:build:development",
+              "serverTarget": "infoAidTech:build:development"
+            },
+            "production": {
+              "browserTarget": "infoAidTech:build:production",
+              "serverTarget": "infoAidTech:build:production"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
     }
   },
   "cli": {
-    "analytics": false,
-    "cache": {
-      "enabled": true
-    }
+    "analytics": "85920b9c-7ecd-4b5f-a8e5-6a7cf732d567"
   }
 }

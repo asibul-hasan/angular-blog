@@ -15,52 +15,10 @@
       class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
     >
       <app-kpi-dashboard></app-kpi-dashboard>
-    </div>
-  </section>
-
-  <!-- Visitor & Site Analysis -->
-  <section class="mb-10">
-    <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
-      Visitor & Site Analysis
-    </h2>
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div
-        class="lg:col-span-7 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-      >
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Traffic & Engagement (30 Days)
-        </h3>
-        <app-traffic-engagement></app-traffic-engagement>
-      </div>
-
-      <div
-        class="lg:col-span-5 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-      >
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Impressions by Category
-        </h3>
-        <app-impressions-category></app-impressions-category>
-      </div>
-    </div>
-  </section>
-
-  <!-- Content Deep Dive -->
-  <section class="mb-10">
-    <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
-      Content Deep Dive
-    </h2>
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div
-        class="lg:col-span-7 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-      >
-        <app-trending-blogs-table></app-trending-blogs-table>
-      </div>
-
-      <div
-        class="lg:col-span-5 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-      >
-        <app-category-distribution></app-category-distribution>
-      </div>
+      <app-traffic-engagement></app-traffic-engagement>
+      <app-impressions-category></app-impressions-category>
+      <app-trending-blogs-table></app-trending-blogs-table>
+      <app-category-distribution></app-category-distribution>
     </div>
   </section>
 </div>

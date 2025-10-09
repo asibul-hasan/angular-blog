@@ -1,11 +1,12 @@
 import {
   Component,
-  AfterViewInit,
   OnInit,
   ViewChild,
   ElementRef,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -14,15 +15,15 @@ import {
 } from '@angular/forms';
 import { BlogApiService } from '../../../shared/services/blog/blog.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AiEditor } from 'aieditor';
 import { CharCountInputComponent } from '../../../shared/components/template/char-count-input.component';
 import { CategoryService } from '../../../shared/services/category/category.service';
-// ✅ Angular Material imports
+import { ToastService } from '../../../shared/services/toast.service';
+import { Toast } from 'primeng/toast';
+
+// Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { ToastService } from '../../../shared/services/toast.service';
-import { Toast } from 'primeng/toast';
 
 @Component({
   standalone: true,
@@ -41,9 +42,10 @@ import { Toast } from 'primeng/toast';
 })
 export class BlogCreateComponent implements OnInit {
   blogForm: FormGroup;
-  editor!: AiEditor;
-  blogId: string | undefined;
+  editor: any;
+  blogId?: string;
   categories: any[] = [];
+  isBrowser = false;
 
   @ViewChild('editorContainer', { static: true }) editorContainer!: ElementRef;
 
@@ -53,12 +55,15 @@ export class BlogCreateComponent implements OnInit {
     private categoryApiService: CategoryService,
     private router: Router,
     private route: ActivatedRoute,
-    private toast: ToastService
+    private toast: ToastService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
     this.blogForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(150)]],
-      description: [''], // API expects description separately
-      blog_content: ['', Validators.required], // match backend
+      description: [''],
+      blog_content: ['', Validators.required],
       slug: [
         '',
         [
@@ -67,10 +72,10 @@ export class BlogCreateComponent implements OnInit {
         ],
       ],
       meta_description: ['', [Validators.maxLength(160)]],
-      category: [[], Validators.required], // multi-select array
-      tags: [[]], // multiple tags
+      category: [[], Validators.required],
+      tags: [''], // as comma-separated string
       isPublished: [true],
-      author: ['Asibul Hasan'], // could be set from auth service later
+      author: ['Asibul Hasan'],
       updatedAt: [new Date()],
     });
 
@@ -80,21 +85,28 @@ export class BlogCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Load categories always
+    // Load categories (SSR-safe)
     this.categoryApiService.getCategories().subscribe((res) => {
       this.categories = res.body || [];
     });
-    this.onLoad();
-    // Load blog details if editing
+
+    if (this.isBrowser) {
+      this.initializeEditor();
+    }
   }
 
-  onLoad(): void {
-    // If editing an existing blog
+  private async initializeEditor() {
+    const { AiEditor } = await import('aieditor');
+
+    const content =
+      this.blogId && this.blogForm.controls['blog_content'].value
+        ? this.blogForm.controls['blog_content'].value
+        : '';
+
     if (this.blogId) {
       this.blogApiService.getBlogById(this.blogId).subscribe((data) => {
         const blog = data.body[0];
 
-        // Patch the form
         this.blogForm.patchValue({
           title: blog.title,
           description: blog.description,
@@ -102,17 +114,16 @@ export class BlogCreateComponent implements OnInit {
           meta_description: blog.meta_description,
           slug: blog.slug,
           category: blog.category || [],
-          tags: blog.tags || [],
+          tags: (blog.tags || []).join(', '),
           isPublished: blog.isPublished,
           author: blog.author,
           updatedAt: blog.updatedAt,
         });
 
-        // **Re-initialize the editor with the content**
         this.editor = new AiEditor({
           element: '#editor',
-          content: blog.blog_content, // pre-fill existing content
-          onChange: (editor) => {
+          content: blog.blog_content,
+          onChange: (editor: any) => {
             this.blogForm.controls['blog_content'].setValue(editor.getHtml());
           },
         });
@@ -120,8 +131,8 @@ export class BlogCreateComponent implements OnInit {
     } else {
       this.editor = new AiEditor({
         element: '#editor',
-        content: this.blogForm.controls['blog_content'].value || '', // initial content
-        onChange: (editor) => {
+        content: content,
+        onChange: (editor: any) => {
           this.blogForm.controls['blog_content'].setValue(editor.getHtml());
         },
       });
@@ -130,10 +141,17 @@ export class BlogCreateComponent implements OnInit {
 
   createBlog() {
     if (this.blogForm.valid) {
-      const payload = this.blogForm.value;
+      const formValue = this.blogForm.value;
+
+      const payload = {
+        ...formValue,
+        tags: formValue.tags
+          ? formValue.tags.split(',').map((t: string) => t.trim())
+          : [],
+      };
 
       this.blogApiService.createBlog(payload).subscribe({
-        next: (res) => {
+        next: () => {
           this.router.navigate(['/dashboard/blogs']);
           this.toast.success('Blog created successfully');
         },
@@ -145,14 +163,4 @@ export class BlogCreateComponent implements OnInit {
       this.blogForm.markAllAsTouched();
     }
   }
-
-  // createBlog() {
-  //   if (this.blogForm.valid) {
-  //     this.blogApiService.createBlog(this.blogForm.value).subscribe(() => {
-  //       this.router.navigate(['/dashboard/blogs']);
-  //     });
-  //   } else {
-  //     this.blogForm.markAllAsTouched();
-  //   }
-  // }
 }

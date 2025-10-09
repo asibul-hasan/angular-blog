@@ -89,30 +89,14 @@ async function getDynamicBlogRoutes() {
         return `/blog/${cleanSlug}`;
       });
 
-    // Check for duplicates or invalids
-    const duplicates = blogRoutes.filter(
-      (route, idx, arr) => arr.indexOf(route) !== idx
-    );
-    if (duplicates.length > 0) {
-      console.warn("⚠️ Duplicate blog routes detected:", duplicates);
-    }
-
-    const invalid = publishedBlogs.filter(
-      (blog) => !blog.slug || blog.slug.trim() === ""
-    );
-    if (invalid.length > 0) {
-      console.warn(
-        "⚠️ Blogs with invalid/missing slugs:",
-        invalid.map((b) => b.id || b._id || b.title || JSON.stringify(b))
-      );
-    }
+    const uniqueBlogRoutes = [...new Set(blogRoutes)];
 
     // Log some sample slugs for verification
-    if (blogRoutes.length > 0) {
-      console.log(`📝 Sample blog slugs:`, blogRoutes.slice(0, 5));
+    if (uniqueBlogRoutes.length > 0) {
+      console.log(`📝 Sample blog slugs:`, uniqueBlogRoutes.slice(0, 5));
     }
 
-    return blogRoutes;
+    return uniqueBlogRoutes;
   } catch (error) {
     console.error("❌ Error fetching blogs:", error.message);
     return [];

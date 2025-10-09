@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { BlogApiService } from '../../services/blog/blog.service';
 
 @Component({
@@ -119,7 +119,7 @@ export class KpiCardComponent implements OnInit {
   totalTextOnlyPostsPercentage: number = 0;
   publishedPercentageCurVsPrevMonth: number = 0;
 
-  constructor(private apiService: BlogApiService) {}
+  constructor(private apiService: BlogApiService, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit(): void {
     this.onload();
@@ -141,27 +141,29 @@ export class KpiCardComponent implements OnInit {
       let totalTextOnlyPostsPercentage =
         (totalTextOnlyPosts / totalBlogPosts) * 100;
 
-      // Animate all counts
-      this.animateCount(totalBlogPosts, 'totalBlogPosts', 1000);
-      this.animateCount(totalPublishedBlogs, 'totalPublishedBlogs', 1000);
-      this.animateCount(totalDrafts, 'totalDrafts', 1000);
-      this.animateCount(totalWithImages, 'totalWithImages', 1000);
-      this.animateCount(totalTextOnlyPosts, 'totalTextOnlyPosts', 1000);
-      this.animateCount(
-        totalWithImagesPercentage,
-        'totalWithImagesPercentage',
-        1000
-      );
-      this.animateCount(
-        totalTextOnlyPostsPercentage,
-        'totalTextOnlyPostsPercentage',
-        1000
-      );
-      this.animateCount(
-        this.publishedPercentageCurVsPrevMonth,
-        'publishedPercentageCurVsPrevMonth',
-        1000
-      );
+      if (isPlatformBrowser(this.platformId)) {
+        // Animate all counts
+        this.animateCount(totalBlogPosts, 'totalBlogPosts', 1000);
+        this.animateCount(totalPublishedBlogs, 'totalPublishedBlogs', 1000);
+        this.animateCount(totalDrafts, 'totalDrafts', 1000);
+        this.animateCount(totalWithImages, 'totalWithImages', 1000);
+        this.animateCount(totalTextOnlyPosts, 'totalTextOnlyPosts', 1000);
+        this.animateCount(
+          totalWithImagesPercentage,
+          'totalWithImagesPercentage',
+          1000
+        );
+        this.animateCount(
+          totalTextOnlyPostsPercentage,
+          'totalTextOnlyPostsPercentage',
+          1000
+        );
+        this.animateCount(
+          this.publishedPercentageCurVsPrevMonth,
+          'publishedPercentageCurVsPrevMonth',
+          1000
+        );
+      }
     });
   }
 
