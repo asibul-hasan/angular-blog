@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, inject } from '@angular/core';
 
 export interface CategoryMetric {
   name: string;
@@ -31,6 +33,7 @@ export interface CategoryLegendItem {
       >
         <canvas
           baseChart
+          *ngIf="isBrowser"
           [data]="doughnutChartData"
           [type]="'doughnut'"
           [options]="doughnutChartOptions"
@@ -68,6 +71,8 @@ export interface CategoryLegendItem {
   `,
 })
 export class CategoryDistributionComponent {
+  private platformId = inject(PLATFORM_ID);
+  isBrowser = isPlatformBrowser(this.platformId);
   // Dummy Data Model
   // 1. Data Source (as defined in the previous response)
   categoryLegend: CategoryLegendItem[] = [

@@ -1,28 +1,46 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  Inject,
+  PLATFORM_ID,
+  OnInit,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LoaderComponent } from '../../../shared/components/template/loader.component';
+import { isPlatformBrowser } from '@angular/common';
+// import { LoaderComponent } from '../../../shared/components/template/loader.component';
 import { LoaderService } from '../../../shared/services/loader/loader.service';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [RouterModule, CommonModule, LoaderComponent],
+  imports: [RouterModule, CommonModule],
 })
-export class SidebarComponent {
-  isSidebarExpanded = false; // Default is minimized
+export class SidebarComponent implements OnInit {
+  isSidebarExpanded = false;
   isUserMenuOpen = false;
-  isLoading$;
+  // isLoading$;
 
-  constructor(private loaderService: LoaderService) {
-    this.isLoading$ = this.loaderService.isLoading$;
+  isBrowser = false;
+
+  constructor(
+    private loaderService: LoaderService,
+    private cd: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // Ensure the observable has an initial value
+    // this.isLoading$ = this.loaderService.isLoading$.pipe(startWith(false));
+  }
+
+  ngOnInit() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   toggleSidebar() {
     this.isSidebarExpanded = !this.isSidebarExpanded;
-    // Close user menu when toggling sidebar
     this.isUserMenuOpen = false;
   }
 

@@ -1,23 +1,25 @@
+import { PreloadAllModules, withPreloading } from '@angular/router';
 import {
   ApplicationConfig,
   provideZoneChangeDetection,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import {
-  provideRouter,
-  withEnabledBlockingInitialNavigation,
-  withInMemoryScrolling,
-} from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withFetch,
+} from '@angular/common/http';
 import { httpLoaderInterceptor } from './http-loader-interceptor';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
 import { provideAnimations } from '@angular/platform-browser/animations';
-
-// Import Chart.js components
 import { Chart, registerables } from 'chart.js';
 import { MessageService } from 'primeng/api';
+import {
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
 
 // Register all Chart.js components
 Chart.register(...registerables);
@@ -25,15 +27,23 @@ Chart.register(...registerables);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideBrowserGlobalErrorListeners(),
+    // provideBrowserGlobalErrorListeners(), // Commented out for SSR compatibility
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(withInterceptors([httpLoaderInterceptor])),
+
+    // ✅ HttpClient with fetch + interceptors for SSR
+    provideHttpClient(
+      withFetch(), // <--- add this
+      withInterceptors([httpLoaderInterceptor])
+    ),
+
     provideRouter(
       routes,
-      withEnabledBlockingInitialNavigation(),
-      withInMemoryScrolling()
+      withInMemoryScrolling(),
+      withPreloading(PreloadAllModules)
     ),
+
     NgxChartsModule,
     MessageService,
+    provideClientHydration(withEventReplay()),
   ],
 };

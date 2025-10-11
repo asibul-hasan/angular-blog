@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { TrendingBlogsTableComponent } from '../../../shared/components/template/trending-blogs-table.component';
 import { KpiCardComponent } from '../../../shared/components/template/kpi-card.component';
 import { CategoryDistributionComponent } from '../../../shared/components/template/category-distribution.component';
@@ -18,4 +24,9 @@ import { ImpressionsCategoryComponent } from '../../../shared/components/templat
   templateUrl: `./dashboard.component.html`,
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+    }
+  }
+}
