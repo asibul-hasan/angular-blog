@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Asibul07/angular-blog/compare/v1.2.0...v1.3.0) (2025-10-11)
+
+
+### Features
+
+* added ssr ([fe83ef4](https://github.com/Asibul07/angular-blog/commit/fe83ef4021e49417e6f5fa454d911450d413fda8))
+
 # [1.2.0](https://github.com/Asibul07/angular-blog/compare/v1.1.0...v1.2.0) (2025-10-06)
 
 
