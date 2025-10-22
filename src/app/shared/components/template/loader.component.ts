@@ -1,59 +1,3 @@
-// import { Component, inject } from '@angular/core';
-// import { AsyncPipe, NgIf } from '@angular/common';
-// import { LoaderService } from '../../services/loader/loader.service';
-
-// @Component({
-//   selector: 'app-loader',
-//   standalone: true,
-//   imports: [NgIf, AsyncPipe],
-//   template: `
-//     <div *ngIf="loader.isLoading$ | async" class="loader-overlay">
-//       <div class="loader"></div>
-//     </div>
-//   `,
-//   styles: `
-//     .loader-overlay {
-//   position: absolute; /* stays within the relative parent */
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   background-color: rgba(255, 255, 255, 0.4); /* optional backdrop */
-//   backdrop-filter: blur(5px);
-
-//   z-index: 50; /* make sure it's above the content, but below header/sidebar */
-// }
-
-// .loader {
-//   width: 50px;
-//   height: 50px;
-//   border: 5px solid #007bff;
-//   border-bottom-color: transparent;
-//   border-radius: 50%;
-//   box-sizing: border-box;
-//   animation: rotation 1s linear infinite;
-// }
-
-// @keyframes rotation {
-//   0% {
-//     transform: rotate(0deg);
-//   }
-//   100% {
-//     transform: rotate(360deg);
-//   }
-// }
-
-//   `,
-// })
-// export class LoaderComponent {
-//   public loader = inject(LoaderService);
-// }
-
 import { Component, inject } from '@angular/core';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { LoaderService } from '../../services/loader/loader.service';
@@ -119,7 +63,7 @@ import { LoaderService } from '../../services/loader/loader.service';
   styles: [
     `
       .loader-overlay {
-        position: absolute; /* stays within the relative parent */
+        position: fixed; /* stays within the relative parent */
         top: 0;
         left: 0;
         right: 0;

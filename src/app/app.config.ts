@@ -11,7 +11,7 @@ import {
   withInterceptors,
   withFetch,
 } from '@angular/common/http';
-import { httpLoaderInterceptor } from './http-loader-interceptor';
+import { httpLoaderInterceptor } from './core/interceptors/http-loader.interceptor';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { Chart, registerables } from 'chart.js';

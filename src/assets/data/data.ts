@@ -28,28 +28,28 @@ export class DataService {
   private initializeChooseUsData(): any[] {
     return [
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-bullseye',
         title: this.langService.lang.bestStrategy,
         description:
           this.langService.lang
             .unlockSuccessWithEaseWhetherYoureStartingOutOrLookingToGrowWeveGotYouCoveredWithOurExpertGuidanceAndPersonalizedSolutionsReachingYourGoalsHasNeverBeenSimpler,
       },
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-people-group',
         title: this.langService.lang.teamWork,
         description:
           this.langService.lang
             .unlockSuccessWithEaseWhetherYoureStartingOutOrLookingToGrowWeveGotYouCovered,
       },
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-business-time',
         title: this.langService.lang.saveYourTime,
         description:
           this.langService.lang
             .weKnowYourTimeIsPreciousWithUsYouCanBreatheEasyOurSimpleYetEffectiveSolutionsAndSmoothProcessesLetYouConcentrateOnWhatTrulyCountsWhileWeHandleTheRest,
       },
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-hand-holding-dollar',
         title: this.langService.lang.affordablePriceForYou,
         description:
           this.langService.lang
@@ -61,21 +61,21 @@ export class DataService {
   private initializeAboutUsData(): any[] {
     return [
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-bolt',
         title: this.langService.lang.boostYourWebsiteForBetterResults,
         description:
           this.langService.lang
             .ourStrategiesOptimizeYourWebsitesPerformanceAndDesignToAttractMoreVisitorsAndConvertThemIntoCustomers,
       },
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-hand-fist',
         title: this.langService.lang.buildAStrongerBrand,
         description:
           this.langService.lang
             .weHelpYouCraftACompellingBrandIdentityThatResonatesWithYourTargetAudienceAndSetsYouApartFromTheCompetition,
       },
       {
-        icon: '',
+        icon: 'fa-duotone fa-solid fa-people-arrows',
         title: this.langService.lang.elevateYourSocialMediaPresence,
         description:
           this.langService.lang

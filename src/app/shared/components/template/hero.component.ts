@@ -1,6 +1,11 @@
-// hero-section.component.ts
-import { Component, HostListener, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  HostListener,
+  ElementRef,
+  PLATFORM_ID,
+  Inject,
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { LanguageService } from '../../services/language/lang.service';
 import {
   trigger,
@@ -41,44 +46,31 @@ import {
 
       .hex-float {
         animation: float 8s ease-in-out infinite;
+        will-change: transform;
       }
 
       .hex-glow {
         animation: pulse-glow 4s ease-in-out infinite;
+        will-change: opacity, filter;
+      }
+
+      @media (max-width: 768px) {
+        .hex-float {
+          animation-duration: 12s;
+        }
+        .hex-glow {
+          animation-duration: 6s;
+        }
+        svg {
+          opacity: 0.3;
+        }
       }
     `,
   ],
   template: `
-    <section
-      class="relative bg-[#000000] min-h-screen"
-      (mousemove)="onMouseMove($event)"
-    >
+    <section class="section-hero relative" (mousemove)="onMouseMove($event)">
       <!-- Hexagon Background -->
       <div class="absolute inset-0 pointer-events-none">
-        <!-- Primary mouse gradient with smooth transition -->
-        <div
-          class="absolute inset-0 transition-all duration-500 ease-out"
-          [style.background]="
-            'radial-gradient(circle 600px at ' +
-            mouseX +
-            '% ' +
-            mouseY +
-            '%, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.1) 40%, transparent 70%)'
-          "
-        ></div>
-
-        <!-- Secondary mouse gradient for depth -->
-        <div
-          class="absolute inset-0 transition-all duration-700 ease-out"
-          [style.background]="
-            'radial-gradient(circle 400px at ' +
-            (100 - mouseX) +
-            '% ' +
-            (100 - mouseY) +
-            '%, rgba(96, 165, 250, 0.15), transparent 60%)'
-          "
-        ></div>
-
         <!-- SVG Hexagon Pattern - Main Grid -->
         <svg
           class="w-full h-full opacity-50"
@@ -206,17 +198,6 @@ import {
           [style.right.%]="40 + (mouseX - 50) * 0.06"
           style="clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);"
         ></div>
-
-        <!-- Gradient overlays for depth -->
-        <div
-          class="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#0b192c] via-[#0b192c]/60 to-transparent"
-        ></div>
-        <div
-          class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#0b192c]/30"
-        ></div>
-        <div
-          class="absolute inset-0 bg-gradient-to-t from-[#0b192c]/40 to-transparent"
-        ></div>
       </div>
 
       <!-- Content -->
@@ -224,7 +205,7 @@ import {
         class="relative z-10 grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 justify-center items-center"
       >
         <div
-          class="mr-auto place-self-center lg:col-span-7 mt-[100px]"
+          class="mr-auto place-self-center lg:col-span-7 mt-[60px] lg:mt-[100px] md:pt-20"
           [@staggerText]
         >
           <h2 class="section-sub-title">
@@ -240,10 +221,10 @@ import {
               langService.lang.whereVisionMeetsExpertiseCommaInfoAidTechDelivers
             }}
           </p>
-          <div class="flex">
+          <div class="flex flex-col lg:flex-row">
             <a
               href="#"
-              class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+              class="inline-flex items-center justify-center px-5 py-3 mb-4 lg:mb-0 mr-0 lg:mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 w-full lg:w-auto"
             >
               {{ langService.lang.getStarted }}
               <svg
@@ -261,17 +242,29 @@ import {
             </a>
             <a
               href="#"
-              class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 w-full lg:w-auto"
             >
               {{ langService.lang.applyNow }}
             </a>
           </div>
         </div>
-        <div class="lg:mt-0 lg:col-span-5 lg:flex" [@fadeIn]>
-          <img
+        <div class="lg:mt-0 lg:col-span-5 lg:flex md:pt-20" [@fadeIn]>
+          <!-- <img
             src="https://res.cloudinary.com/dfcir8epp/image/upload/v1755598681/infoaidtech-hero-img_jfmruv.png"
             alt="mockup"
-          />
+            class="w-full h-auto object-contain"
+          /> -->
+
+          <img
+  src="https://res.cloudinary.com/dfcir8epp/image/upload/v1755598681/infoaidtech-hero-img_jfmruv.webp"
+  width="1200"
+  height="800"
+  priority
+  fetchpriority="high"
+  alt="mockup: infoaidtech hero image"
+  class="w-full h-auto object-contain"
+/>
+
         </div>
       </div>
     </section>
@@ -305,11 +298,27 @@ import {
 export class HeroComponent {
   mouseX: number = 50;
   mouseY: number = 50;
+  isMobile: boolean = false;
+  gradientSizePrimary: string = '600';
+  gradientSizeSecondary: string = '400';
 
-  constructor(public langService: LanguageService) {}
+  constructor(
+    public langService: LanguageService,
+    private el: ElementRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isMobile = isPlatformBrowser(!this.platformId);
+    this.gradientSizePrimary = this.isMobile ? '400' : '600';
+    this.gradientSizeSecondary = this.isMobile ? '300' : '400';
+    if (this.isMobile) {
+      this.mouseX = 50;
+      this.mouseY = 50;
+    }
+  }
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
+    if (this.isMobile) return;
     const target = event.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     this.mouseX = ((event.clientX - rect.left) / rect.width) * 100;

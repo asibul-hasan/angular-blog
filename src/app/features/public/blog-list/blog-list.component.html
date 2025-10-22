@@ -1,0 +1,245 @@
+<app-upper-section [title]="'Blog'"></app-upper-section>
+
+<section class="py-20 md:py-32 bg-black text-white relative overflow-hidden">
+  <!-- Animated background gradient orbs -->
+  <div
+    class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/30 rounded-full blur-[120px] animate-pulse"
+  ></div>
+  <div
+    class="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] animate-pulse"
+    style="animation-delay: 1s"
+  ></div>
+  <div
+    class="absolute top-2/3 left-1/3 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-pulse"
+    style="animation-delay: 2s"
+  ></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Header -->
+    <div class="mb-20 text-center max-w-4xl mx-auto">
+      <div
+        class="inline-block mb-6 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
+      >
+        <span
+          class="text-sm font-semibold tracking-widest uppercase bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent"
+        >
+          Insights & Updates
+        </span>
+      </div>
+      <!-- <h2
+        class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-none"
+      >
+        Our Blog
+      </h2> -->
+      <p class="text-2xl md:text-3xl font-light text-gray-300 tracking-wide">
+        Discover the latest in
+        <span class="text-primary font-semibold italic">tech & innovation</span>
+      </p>
+    </div>
+
+    <!-- Featured Blog Post -->
+    <div *ngIf="featuredBlog()" class="mb-16 group relative">
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-primary to-purple-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
+      ></div>
+      <div
+        class="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden hover:border-primary/50 transition-all duration-500 cursor-pointer"
+        (click)="navigateToBlog(featuredBlog())"
+      >
+        <div class="grid lg:grid-cols-2 gap-0">
+          <!-- Featured Image -->
+          <div class="relative h-64 lg:h-full overflow-hidden">
+            <img
+              [src]="
+                featuredBlog()?.image ||
+                'https://res.cloudinary.com/dfcir8epp/image/upload/v1755703537/FFFFFF_hi6y3z.svg'
+              "
+              [alt]="featuredBlog()?.title"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+            ></div>
+            <div
+              class="absolute top-4 left-4 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-xs font-bold uppercase tracking-wider shadow-xl"
+            >
+              Featured
+            </div>
+          </div>
+
+          <!-- Featured Content -->
+          <div class="p-8 md:p-12 flex flex-col justify-center">
+            <div class="flex items-center gap-3 mb-4">
+              <span
+                class="px-3 py-1 bg-primary/20 border border-primary/30 rounded-full text-xs font-semibold text-primary uppercase tracking-wider"
+              >
+                {{ getCategoryName(featuredBlog()?.categoryId) }}
+              </span>
+              <span class="text-gray-400 text-sm">•</span>
+              <span class="text-gray-400 text-sm">
+                {{ featuredBlog()?.readTime || 5 }} min read
+              </span>
+            </div>
+            <h3
+              class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-primary transition-colors duration-300"
+            >
+              {{ featuredBlog()?.title }}
+            </h3>
+            <p class="text-lg text-gray-300 leading-relaxed mb-6 line-clamp-3">
+              {{ featuredBlog()?.short_desc || featuredBlog()?.description }}
+            </p>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-gradient-to-br from-primary to-blue-500 rounded-full"
+                ></div>
+                <div>
+                  <p class="text-sm font-bold text-white">
+                    {{ featuredBlog()?.author || "Infoaidtech Team" }}
+                  </p>
+                  <p class="text-xs text-gray-400">
+                    {{
+                      formatDate(
+                        featuredBlog()?.publishedAt || featuredBlog()?.createdAt
+                      )
+                    }}
+                  </p>
+                </div>
+              </div>
+              <button
+                class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-semibold text-sm transition-all duration-300"
+              >
+                Read More →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="mb-12 flex flex-wrap gap-3 justify-center">
+      <!-- "All Posts" button -->
+      <button
+        (click)="selectCategory(null)"
+        [ngClass]="
+          selectedCategory() === null
+            ? 'bg-gradient-to-r from-primary to-blue-500 text-white shadow-lg shadow-primary/30'
+            : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white'
+        "
+        class="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
+      >
+        All Posts
+        <span class="ml-2 text-xs opacity-70">({{ allBlogs().length }})</span>
+      </button>
+
+      <!-- Dynamic categories -->
+      <button
+        *ngFor="let category of categories()"
+        (click)="selectCategory(category._id)"
+        [ngClass]="
+          selectedCategory() === category._id
+            ? 'bg-gradient-to-r from-primary to-blue-500 text-white shadow-lg shadow-primary/30'
+            : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white'
+        "
+        class="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
+      >
+        {{ category.name }}
+        <span class="ml-2 text-xs opacity-70">
+          ({{ countBlogsByCategory(category._id) }})
+        </span>
+      </button>
+    </div>
+
+    <!-- Results info -->
+    <div class="mb-8 text-center">
+      <p class="text-gray-400 text-sm">
+        <span *ngIf="selectedCategory() === null">
+          Showing all {{ blogs().length }} articles
+        </span>
+        <span *ngIf="selectedCategory() !== null">
+          Showing {{ blogs().length }} articles in
+          <span class="text-primary font-semibold">
+            {{ getCategoryName(selectedCategory()!) }}
+          </span>
+        </span>
+      </p>
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <app-blog-card
+        *ngFor="let blog of blogs(); trackBy: trackByBlogId"
+        [blog]="blog"
+      ></app-blog-card>
+
+      <!-- Empty state -->
+      <div
+        *ngIf="blogs().length === 0 && !isLoading()"
+        class="col-span-full text-center py-20"
+      >
+        <div
+          class="inline-flex flex-col items-center gap-4 px-6 py-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl"
+        >
+          <div class="text-6xl opacity-50">📝</div>
+          <p class="text-gray-300 font-medium text-lg">
+            No articles found in this category
+          </p>
+          <button
+            (click)="selectCategory(null)"
+            class="mt-2 px-6 py-2 bg-primary/20 hover:bg-primary/30 border border-primary/30 rounded-lg text-primary text-sm font-semibold transition-all duration-300"
+          >
+            View All Posts
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="isLoading()" class="col-span-full text-center py-20">
+        <div
+          class="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
+        >
+          <div
+            class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"
+          ></div>
+          <p class="text-gray-300 font-medium">Loading blogs...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load More Button (optional - only show if there are blogs) -->
+    <div *ngIf="blogs().length > 0" class="mt-16 text-center">
+      <button
+        class="px-10 py-5 bg-gradient-to-r from-primary to-blue-500 rounded-xl font-bold text-lg text-white shadow-2xl shadow-primary/50 hover:scale-105 transition-transform duration-300"
+        (click)="loadMoreBlogs()"
+      >
+        Load More Posts
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

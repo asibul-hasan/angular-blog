@@ -3,8 +3,8 @@ import { LanguageService } from '../../services/language/lang.service';
 import { Subscription } from 'rxjs'; // Import Subscription to manage subscriptions
 
 @Component({
-  selector: 'app-language-switcher',
-  template: `
+    selector: 'app-language-switcher',
+    template: `
     <div class="relative inline-block text-left">
       <select
         #langSelect
@@ -64,30 +64,30 @@ import { Subscription } from 'rxjs'; // Import Subscription to manage subscripti
       </div>
     </div>
   `,
-  styles: [], // Tailwind handles styling, so no need for custom CSS here
+    styles: [], // Tailwind handles styling, so no need for custom CSS here
 })
 export class LanguageSwitcher implements OnInit, OnDestroy {
-  selectedLang: string = 'en';
-  private langSubscription: Subscription | undefined; // To unsubscribe and prevent memory leaks
+    selectedLang: string = 'en';
+    private langSubscription: Subscription | undefined; // To unsubscribe and prevent memory leaks
 
-  constructor(private langService: LanguageService) {}
+    constructor(private langService: LanguageService) { }
 
-  ngOnInit(): void {
-    // Subscribe to language changes to update the selected language in the dropdown
-    this.langSubscription = this.langService.currentLang$.subscribe((lang) => {
-      this.selectedLang = lang;
-    });
-  }
-
-  ngOnDestroy(): void {
-    // Unsubscribe when the component is destroyed to prevent memory leaks
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
+    ngOnInit(): void {
+        // Subscribe to language changes to update the selected language in the dropdown
+        this.langSubscription = this.langService.currentLang$.subscribe((lang) => {
+            this.selectedLang = lang;
+        });
     }
-  }
 
-  switchLang(lang: string): void {
-    // Call the service to change the application's language
-    this.langService.changeLanguage(lang);
-  }
+    ngOnDestroy(): void {
+        // Unsubscribe when the component is destroyed to prevent memory leaks
+        if (this.langSubscription) {
+            this.langSubscription.unsubscribe();
+        }
+    }
+
+    switchLang(lang: string): void {
+        // Call the service to change the application's language
+        this.langService.changeLanguage(lang);
+    }
 }

@@ -1,0 +1,144 @@
+<section class="login flex items-center justify-center section-card px-4">
+  <div
+    class="w-full max-w-md bg-neutral-900/70 backdrop-blur-lg rounded-2xl shadow-2xl border border-neutral-800 p-8"
+  >
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <h2 class="text-3xl font-bold tracking-tight mb-1">Welcome Back</h2>
+      <p class="text-neutral-400 text-sm">Sign in to your account</p>
+    </div>
+
+    <!-- Error Message -->
+    <div
+      *ngIf="errorMessage"
+      class="flex items-center justify-between text-sm bg-red-600/20 border border-red-600 text-red-400 rounded-lg px-4 py-2 mb-4"
+      role="alert"
+    >
+      <span class="flex items-center gap-2">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        {{ errorMessage }}
+      </span>
+      <button
+        type="button"
+        (click)="errorMessage = ''"
+        aria-label="Close"
+        class="text-red-500 hover:text-red-300"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <!-- Email -->
+      <div>
+        <label
+          for="email"
+          class="block text-sm font-medium mb-1 text-neutral-300"
+          >Email address</label
+        >
+        <div class="relative">
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            class="w-full rounded-lg bg-neutral-800 text-white px-4 py-2 pr-10 border border-neutral-700 focus:ring-2 focus:ring-indigo-500 outline-none"
+            [class.border-red-500]="submitted && f['email'].errors"
+          />
+          <i
+            class="bi bi-envelope absolute right-3 top-2.5 text-neutral-500"
+          ></i>
+        </div>
+        <div
+          *ngIf="submitted && f['email'].errors"
+          class="text-red-400 text-xs mt-1"
+        >
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">
+            Please enter a valid email
+          </div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium mb-1 text-neutral-300"
+          >Password</label
+        >
+        <div class="relative">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="w-full rounded-lg bg-neutral-800 text-white px-4 py-2 pr-10 border border-neutral-700 focus:ring-2 focus:ring-indigo-500 outline-none"
+            [class.border-red-500]="submitted && f['password'].errors"
+          />
+          <!-- 👁 Eye Toggle Icon -->
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="absolute right-3 top-2.5 text-neutral-500 hover:text-neutral-300"
+            aria-label="Toggle password visibility"
+          >
+            <i
+              [ngClass]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+              class="text-lg"
+            ></i>
+          </button>
+        </div>
+        <div
+          *ngIf="submitted && f['password'].errors"
+          class="text-red-400 text-xs mt-1"
+        >
+          <div *ngIf="f['password'].errors['required']">
+            Password is required
+          </div>
+          <div *ngIf="f['password'].errors['minlength']">
+            Password must be at least 6 characters
+          </div>
+        </div>
+      </div>
+
+      <!-- Remember + Forgot -->
+      <div class="flex items-center justify-between text-sm">
+        <label class="inline-flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            formControlName="rememberMe"
+            class="w-4 h-4 text-indigo-600 bg-neutral-800 border-neutral-700 rounded focus:ring-indigo-500"
+          />
+          <span>Remember me</span>
+        </label>
+        <a href="/forgot-password" class="text-indigo-400 hover:text-indigo-300"
+          >Forgot password?</a
+        >
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 transition-colors py-2 rounded-lg font-semibold disabled:opacity-60 flex justify-center items-center gap-2"
+        [disabled]="loading"
+      >
+        <span
+          *ngIf="loading"
+          class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+        ></span>
+        <span>{{ loading ? "Signing in..." : "Sign In" }}</span>
+      </button>
+
+      <!-- Footer -->
+      <p class="text-center text-neutral-400 text-sm mt-2">
+        Don’t have an account?
+        <a routerLink="/register" class="text-indigo-400 hover:text-indigo-300"
+          >Sign up</a
+        >
+      </p>
+    </form>
+  </div>
+</section>

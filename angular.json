@@ -17,13 +17,19 @@
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/assets",
+              "src/assets/robots.txt",
+              "src/favicon.ico"
+            ],
             "styles": ["src/styles.css"],
+            "scripts": [],
             "server": "src/main.server.ts",
             "prerender": false,
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "allowedCommonJsDependencies": ["lodash"]
           },
           "configurations": {
             "production": {
@@ -44,13 +50,17 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "outputHashing": "none"
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 5000
+          },
           "configurations": {
             "production": {
               "buildTarget": "infoAidTech:build:production"
@@ -62,7 +72,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "infoAidTech:build"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -73,20 +86,6 @@
             "styles": ["src/styles.css"],
             "scripts": []
           }
-        },
-        "serve-ssr": {
-          "builder": "@angular-devkit/build-angular:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "infoAidTech:build:development",
-              "serverTarget": "infoAidTech:build:development"
-            },
-            "production": {
-              "browserTarget": "infoAidTech:build:production",
-              "serverTarget": "infoAidTech:build:production"
-            }
-          },
-          "defaultConfiguration": "development"
         }
       }
     }

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 interface TechCard {
   name: string;
-  icon: string; // path to svg in assets
-  color: string; // rgb values
+  icon: string;
+  color: string;
   bgGradient: string;
 }
 
@@ -32,12 +32,9 @@ interface TechCard {
                 <img
                   [src]="tech.icon"
                   [alt]="tech.name + ' logo'"
-                  class="w-15 h-15"
+                  class="w-12 h-12"
                 />
               </div>
-              <!-- <h3 class="text-white font-semibold text-sm text-center">
-                {{ tech.name }}
-              </h3> -->
             </div>
           </div>
         </div>
@@ -77,20 +74,39 @@ interface TechCard {
 
       .carousel-card {
         position: absolute;
-        border: 2px solid rgba(var(--color-card));
+        border: 1px solid rgba(var(--color-card), 0.3);
         border-radius: 12px;
         inset: 0;
         transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
           translateZ(var(--translateZ));
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(255, 255, 255, 0.05) inset;
         transition: transform 0.28s, box-shadow 0.28s;
+        overflow: hidden;
+      }
+
+      .carousel-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.15),
+          transparent
+        );
+        z-index: 10;
       }
 
       .carousel-card:hover {
         transform: scale(1.06)
           rotateY(calc((360deg / var(--quantity)) * var(--index)))
           translateZ(var(--translateZ));
-        box-shadow: 0 14px 40px rgba(var(--color-card), 0.65);
+        box-shadow: 0 14px 40px rgba(var(--color-card), 0.65),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
       }
 
       .card-content {
@@ -99,12 +115,29 @@ interface TechCard {
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
+        border-radius: 10px;
+        position: relative;
+      }
+
+      .card-content::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.05) 0%,
+          transparent 50%
+        );
+        pointer-events: none;
       }
 
       .icon-wrapper img {
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        height: 48px;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
       }
     `,
   ],
@@ -116,84 +149,84 @@ export class TechCarouselComponent {
       icon: '../../../../assets/icons/react.svg',
       color: '97, 218, 251',
       bgGradient:
-        'radial-gradient(circle, rgba(97, 218, 251, 0.2) 0%, rgba(97, 218, 251, 0.6) 80%, rgba(97, 218, 251, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(97, 218, 251, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(97, 218, 251, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Vue.js',
       icon: '../../../../assets/icons/vue-dot-js.svg',
       color: '65, 184, 131',
       bgGradient:
-        'radial-gradient(circle, rgba(65, 184, 131, 0.2) 0%, rgba(65, 184, 131, 0.6) 80%, rgba(65, 184, 131, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(65, 184, 131, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(65, 184, 131, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Angular',
       icon: '../../../../assets/icons/angular.svg',
       color: '221, 0, 49',
       bgGradient:
-        'radial-gradient(circle, rgba(221, 0, 49, 0.2) 0%, rgba(221, 0, 49, 0.6) 80%, rgba(221, 0, 49, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(221, 0, 49, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(221, 0, 49, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Django',
       icon: '../../../../assets/icons/django.svg',
       color: '9, 46, 32',
       bgGradient:
-        'radial-gradient(circle, rgba(9, 46, 32, 0.3) 0%, rgba(9, 46, 32, 0.7) 80%, rgba(9, 46, 32, 0.95) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(12, 74, 110, 0.2) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(9, 46, 32, 0.15) 0%, transparent 50%)',
     },
     {
       name: 'React Native',
       icon: '../../../../assets/icons/react-native.svg',
       color: '97, 218, 251',
       bgGradient:
-        'radial-gradient(circle, rgba(97, 218, 251, 0.2) 0%, rgba(97, 218, 251, 0.6) 80%, rgba(97, 218, 251, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(97, 218, 251, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(136, 146, 255, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Next.js',
       icon: '../../../../assets/icons/nextjs.svg',
       color: '255, 255, 255',
       bgGradient:
-        'radial-gradient(circle, rgba(33, 117, 155, 0.2) 0%, rgba(33, 117, 155, 0.6) 80%, rgba(33, 117, 155, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(100, 100, 100, 0.12) 0%, transparent 50%)',
     },
     {
       name: 'FastAPI',
       icon: '../../../../assets/icons/fastapi.svg',
       color: '0, 150, 136',
       bgGradient:
-        'radial-gradient(circle, rgba(0, 150, 136, 0.2) 0%, rgba(0, 150, 136, 0.6) 80%, rgba(0, 150, 136, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(0, 150, 136, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(5, 205, 153, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'jQuery',
       icon: '../../../../assets/icons/jquery.svg',
       color: '0, 101, 166',
       bgGradient:
-        'radial-gradient(circle, rgba(0, 101, 166, 0.2) 0%, rgba(0, 101, 166, 0.6) 80%, rgba(0, 101, 166, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(0, 101, 166, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(19, 147, 217, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Node.js',
       icon: '../../../../assets/icons/nodejs.svg',
       color: '104, 160, 99',
       bgGradient:
-        'radial-gradient(circle, rgba(104, 160, 99, 0.2) 0%, rgba(104, 160, 99, 0.6) 80%, rgba(104, 160, 99, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(104, 160, 99, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(104, 160, 99, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Ruby On Rails',
       icon: '../../../../assets/icons/rubyonrails.svg',
       color: '204, 0, 0',
       bgGradient:
-        'radial-gradient(circle, rgba(204, 0, 0, 0.2) 0%, rgba(204, 0, 0, 0.6) 80%, rgba(204, 0, 0, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(204, 0, 0, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(255, 77, 77, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'WordPress',
       icon: '../../../../assets/icons/wordpress.svg',
       color: '33, 117, 155',
       bgGradient:
-        'radial-gradient(circle, rgba(33, 117, 155, 0.2) 0%, rgba(33, 117, 155, 0.6) 80%, rgba(33, 117, 155, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(33, 117, 155, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(33, 117, 155, 0.1) 0%, transparent 50%)',
     },
     {
       name: 'Shopify',
       icon: '../../../../assets/icons/shopify.svg',
       color: '150, 184, 62',
       bgGradient:
-        'radial-gradient(circle, rgba(150, 184, 62, 0.2) 0%, rgba(150, 184, 62, 0.6) 80%, rgba(150, 184, 62, 0.9) 100%)',
+        'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(150, 184, 62, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(150, 184, 62, 0.1) 0%, transparent 50%)',
     },
   ];
 }

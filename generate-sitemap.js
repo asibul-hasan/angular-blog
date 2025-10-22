@@ -64,7 +64,7 @@ async function getDynamicBlogRoutes() {
 
     const data = await httpGet(BLOG_LIST_URL);
 
-    // Handle the API response structure (based on diagnostic results)
+    // Handle the API response structure
     let blogs = [];
     if (data.body && Array.isArray(data.body)) {
       blogs = data.body;
@@ -83,15 +83,14 @@ async function getDynamicBlogRoutes() {
 
     // Sanitize slugs and map to routes
     const blogRoutes = publishedBlogs
-      .filter((blog) => blog.slug && blog.slug.trim()) // remove null/empty slugs
+      .filter((blog) => blog.slug && blog.slug.trim())
       .map((blog) => {
-        const cleanSlug = blog.slug.trim().replace(/\/+$/, ""); // remove trailing slashes
+        const cleanSlug = blog.slug.trim().replace(/\/+$/, "");
         return `/blog/${cleanSlug}`;
       });
 
     const uniqueBlogRoutes = [...new Set(blogRoutes)];
 
-    // Log some sample slugs for verification
     if (uniqueBlogRoutes.length > 0) {
       console.log(`📝 Sample blog slugs:`, uniqueBlogRoutes.slice(0, 5));
     }
@@ -139,6 +138,19 @@ function getStaticRoutes() {
     }
   }
 
+  // Add essential routes manually if not found
+  const essentialRoutes = [
+    "/",
+    "/login",
+    "/register",
+    "/dashboard",
+    "/about",
+    "/contact",
+    "/services",
+  ];
+
+  essentialRoutes.forEach((route) => staticRoutes.add(route));
+
   return [...staticRoutes];
 }
 
@@ -149,6 +161,7 @@ function getRoutePriority(route) {
   if (route === "/") return "1.0";
   if (route.startsWith("/blog/")) return "0.8";
   if (["/about", "/contact", "/services"].includes(route)) return "0.9";
+  if (["/login", "/register"].includes(route)) return "0.6";
   return "0.7";
 }
 
@@ -159,7 +172,21 @@ function getChangeFreq(route) {
   if (route === "/") return "weekly";
   if (route.startsWith("/blog/")) return "monthly";
   if (["/about", "/contact", "/services"].includes(route)) return "monthly";
+  if (["/login", "/register", "/dashboard"].includes(route)) return "yearly";
   return "yearly";
+}
+
+/**
+ * Generate robots.txt content
+ */
+function generateRobotsTxt() {
+  return `User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /api/
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`;
 }
 
 /**
@@ -198,30 +225,56 @@ ${allRoutes
   .join("\n")}
 </urlset>`;
 
+  // Generate robots.txt
+  const robotsTxt = generateRobotsTxt();
+
   // Ensure the output directory exists
-  const sitemapPath = path.join(__dirname, "dist", "browser", "sitemap.xml");
+  const sitemapPath = path.join(
+    __dirname,
+    "dist",
+    "infoAidTech",
+    "browser",
+    "sitemap.xml"
+  );
+  const robotsPath = path.join(
+    __dirname,
+    "dist",
+    "infoAidTech",
+    "browser",
+    "robots.txt"
+  );
   const outputDir = path.dirname(sitemapPath);
 
   try {
     fs.mkdirSync(outputDir, { recursive: true });
-    fs.writeFileSync(sitemapPath, sitemapXml, "utf8");
 
+    // Write sitemap
+    fs.writeFileSync(sitemapPath, sitemapXml, "utf8");
     console.log("✅ Sitemap successfully generated at:", sitemapPath);
     console.log(
-      `📄 File size: ${(fs.statSync(sitemapPath).size / 1024).toFixed(2)} KB`
+      `📄 Sitemap file size: ${(fs.statSync(sitemapPath).size / 1024).toFixed(
+        2
+      )} KB`
     );
+
+    // Write robots.txt
+    fs.writeFileSync(robotsPath, robotsTxt, "utf8");
+    console.log("✅ Robots.txt successfully generated at:", robotsPath);
 
     // Also save a copy to the src/assets folder for development
     const devSitemapPath = path.join(__dirname, "src", "assets", "sitemap.xml");
+    const devRobotsPath = path.join(__dirname, "src", "assets", "robots.txt");
+
     try {
       fs.mkdirSync(path.dirname(devSitemapPath), { recursive: true });
       fs.writeFileSync(devSitemapPath, sitemapXml, "utf8");
-      console.log("📄 Development copy saved to:", devSitemapPath);
+      fs.writeFileSync(devRobotsPath, robotsTxt, "utf8");
+      console.log("📄 Development copies saved to src/assets/");
     } catch (devError) {
-      console.warn("⚠️ Could not save development copy:", devError.message);
+      console.warn("⚠️ Could not save development copies:", devError.message);
     }
   } catch (error) {
-    console.error("❌ Error saving sitemap:", error.message);
+    console.error("❌ Error saving files:", error.message);
     process.exit(1);
   }
 }
@@ -242,6 +295,14 @@ function validateSitemap(sitemapPath) {
     } else {
       console.log(`✅ Sitemap validation passed: ${urlCount} URLs found`);
     }
+
+    // Check for valid XML structure
+    if (
+      !content.includes('<?xml version="1.0"') ||
+      !content.includes("<urlset")
+    ) {
+      console.warn("⚠️ Sitemap may have invalid XML structure");
+    }
   } catch (error) {
     console.error("❌ Sitemap validation failed:", error.message);
   }
@@ -253,7 +314,13 @@ async function main() {
     await generateSitemap();
 
     // Validate the generated sitemap
-    const sitemapPath = path.join(__dirname, "dist", "browser", "sitemap.xml");
+    const sitemapPath = path.join(
+      __dirname,
+      "dist",
+      "infoAidTech",
+      "browser",
+      "sitemap.xml"
+    );
     if (fs.existsSync(sitemapPath)) {
       validateSitemap(sitemapPath);
     }

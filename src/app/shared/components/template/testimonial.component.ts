@@ -7,13 +7,15 @@ import { SectionTitleCard } from './title-section-card.component';
   standalone: true,
   imports: [CommonModule, SectionTitleCard],
   template: `
-    <section class="testimonial-home-section">
+    <section class="section-testimonial relative overflow-hidden">
+
       <!-- <div class="relative z-10"> -->
 
-      <div class="relative z-10 max-w-screen-xl mx-auto px-6 py-20 ">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  py-16 lg:py-20 relative z-10"
+>
         <!-- <div class="grid grid-cols-1 grid-rows-2 gap-2"> -->
         <!-- 1st cell -->
-        <div class="p-4 rounded">
+        <div class="p-4 rounded max-w-4xl">
           <app-section-title-card
             [title]="'Testimonials'"
             [titleDesc]="'What Client Says About Info aidTech'"

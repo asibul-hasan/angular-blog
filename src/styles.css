@@ -1,60 +1,122 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "quill/dist/quill.snow.css";
+
+/* ============================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   ============================================ */
 
 :root {
-  --color-accent: #f76179; /* Bright Orange */
-  --color-bg-main: #0b192c; /* Very Deep Blue (Main Background) */
-  --color-bg-secondary: #1e3e62; /* Dark Slate Blue (Secondary/Card Background) */
-  --color-text-light: #ffffff; /* White (Primary Text) */
-}
-/* In your global stylesheet (e.g., styles.css) */
+  /* Primary Brand Colors */
+  --color-primary: #f76179;
+  --color-accent: #f76179;
 
+  /* Modern Neutral Palette - Deep Space Theme */
+  --color-bg-richblack: #0a0a0f; /* Rich black - hero sections */
+  --color-bg-deepnavy: #111827; /* Deep navy - alternating sections */
+  --color-bg-slate: #1e293b; /* Slate - card backgrounds */
+  --color-bg-lightgray: #f8fafc; /* Light gray - light sections */
+  --color-bg-warmwhite: #fefefe; /* Warm white - clean sections */
+
+  /* Accent Gradients */
+  --gradient-primary: linear-gradient(
+    135deg,
+    rgba(247, 97, 121, 0.1) 0%,
+    rgba(124, 58, 237, 0.05) 100%
+  );
+  --gradient-subtle: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 100%
+  );
+  --gradient-overlay: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.2)
+  );
+
+  /* Text Colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-tertiary: rgba(255, 255, 255, 0.5);
+  --color-text-dark: #0f172a;
+  --color-text-gray: #64748b;
+
+  /* Border & Divider Colors */
+  --color-border-light: rgba(255, 255, 255, 0.1);
+  --color-border-dark: rgba(15, 23, 42, 0.1);
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+   BASE & RESET STYLES
+   ============================================ */
 html {
   scroll-behavior: smooth;
-  transition: scroll-behavior 0.5s ease-in-out;
+  /* height: 100%; */
 }
+
 html,
 body {
   height: 100%;
-  scroll-behavior: smooth;
-}
-body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  font-size: 1rem; /* 16px base */
+  padding: 0;
 }
 
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-richblack);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: inherit;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
   font-weight: 700;
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  line-height: 1.2;
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 2.5rem); /* Responsive: min 32px, max 40px */
+  font-size: clamp(2rem, 5vw, 2.5rem);
   line-height: 1.1;
 }
 
 h2 {
-  font-size: clamp(1.5rem, 4vw, 2rem); /* min 24px, max 32px */
+  font-size: clamp(1.5rem, 4vw, 2rem);
   line-height: 1.2;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 3vw, 1.5rem); /* min 20px, max 24px */
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   line-height: 1.3;
 }
 
 h4 {
-  font-size: clamp(1.125rem, 2.5vw, 1.25rem); /* min 18px, max 20px */
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
   line-height: 1.4;
 }
 
@@ -72,119 +134,397 @@ h6 {
 
 p {
   margin-top: 0;
-  margin-bottom: 1.5rem;
-  /* max-width: 65ch; Optimal line length for readability */
-  line-height: 1.6; /* Matches body line-height */
+  margin-bottom: var(--spacing-md);
+  line-height: 1.6;
 }
 
+/* ============================================
+   LIST STYLES
+   ============================================ */
 ul {
-  list-style-type: disc; /* Default disc for unordered lists */
+  list-style-type: disc;
+  padding-left: var(--spacing-md);
 }
 
 ol {
-  list-style-type: decimal; /* Default decimal for ordered lists */
+  list-style-type: decimal;
+  padding-left: var(--spacing-md);
 }
 
 li {
-  margin-bottom: 0.5rem; /* Spacing between list items for better readability */
-  line-height: 1.6; /* Matches body line-height */
-  list-style-type: none;
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.6;
 }
 
-/* For nested lists */
 ul ul,
 ul ol,
 ol ul,
 ol ol {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding-left: 1.5rem; /* Consistent indentation */
+  margin-top: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  padding-left: var(--spacing-md);
 }
 
-.section-sub-title {
-  color: var(--color-accent);
-  font-family: "Source Serif Pro";
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  line-height: 22px;
-  letter-spacing: 3px;
-  margin: 0px 0px 10px 0px;
+/* ============================================
+   SECTION UTILITIES - MODERN 2025 STYLES
+   ============================================ */
+
+/* Hero Section - Rich Black with Dynamic Gradients */
+.section-hero {
+  min-height: 100vh;
+  width: 100%;
+  /* background-color: var(--color-bg-richblack); */
+  /* position: relative; */
+  overflow: hidden;
 }
 
-.section-title {
-  font-family: "Inter";
-  font-size: 2.5rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.testimonial-home-section {
+/* Choose Us Section - Deep Navy with Gradient */
+/* .section-choose-us {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--color-bg-deepnavy);
+  background-image: var(--gradient-primary);
   position: relative;
-  background: url("./assets/images/testimonial-bg.jpg") center/cover no-repeat;
+  overflow: hidden;
 }
 
-.testimonial-home-section::before {
+.section-choose-us::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: #000; /* 50% opacity overlay */
-  backdrop-filter: blur(2px);
-}
-
-/* .choose-us-home-section {
-  position: relative;
-  background: linear-gradient(180deg, #000 0%, #ffffff 100%);
-  color: #fff;
-} */
-
-/* Add a subtle gradient overlay for depth */
-/* .choose-us-home-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.05),
-    rgba(0, 0, 0, 0.3)
+  background: radial-gradient(
+    circle at top right,
+    rgba(124, 58, 237, 0.08),
+    transparent 60%
   );
-  z-index: 0;
+  pointer-events: none;
 } */
 
-/* Decorative blurred circles for modern effect */
-.choose-us-home-section::after,
-.home-service-section::after {
+/* About Section - Warm White with Subtle Texture */
+/* .section-about {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-bg-warmwhite);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-about::before {
   content: "";
   position: absolute;
-  /* top: -100px;
-  right: -100px; */
-  width: 300px;
-  height: 300px;
+  inset: 0;
+  background-image: radial-gradient(
+      circle at 20% 30%,
+      rgba(247, 97, 121, 0.04),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(124, 58, 237, 0.03),
+      transparent 40%
+    );
+  pointer-events: none;
+} */
+
+/* Service Section - Slate with Accent Glow */
+/* .section-services {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--color-bg-slate);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-services::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-border-light),
+    transparent
+  );
+}
+
+.section-services::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(
     circle,
-    rgba(255, 105, 180, 0.25),
+    rgba(247, 97, 121, 0.12),
     transparent 70%
   );
   filter: blur(80px);
-  z-index: 0;
+  pointer-events: none;
+} */
+
+/* Technology Section - Light Gray with Modern Feel */
+/* .section-technology {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    var(--color-bg-lightgray) 0%,
+    #ffffff 100%
+  );
+  position: relative;
+  overflow: hidden;
 }
 
-.home-service-section,
-.choose-us-home-section {
-  background-color: #000;
-}
-
-/* Optional: Add a subtle textured overlay for depth, similar to the other sections' ::before */
-.home-service-section::before,
-.choose-us-home-section::before {
+.section-technology::before {
   content: "";
   position: absolute;
   inset: 0;
-  /* A very light, transparent gradient for subtle texture */
+  background-image: radial-gradient(
+      circle at 30% 20%,
+      rgba(99, 102, 241, 0.05),
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(236, 72, 153, 0.04),
+      transparent 50%
+    );
+  pointer-events: none;
+} */
+
+/* Testimonial Section - Deep Navy with Overlay */
+/* .section-testimonial {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--color-bg-deepnavy);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-testimonial::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: radial-gradient(
-    circle at top left,
-    rgba(255, 255, 255, 0.03),
-    transparent 50%
-  );
-  z-index: 0;
+      circle at top left,
+      rgba(124, 58, 237, 0.1),
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(247, 97, 121, 0.08),
+      transparent 50%
+    );
+  pointer-events: none;
+} */
+
+/* Legacy Support - Generic Section Card */
+.section-card {
+  min-height: 100vh;
+  width: 100%;
+  padding: var(--spacing-xl) var(--spacing-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-card--dark {
+  background-color: var(--color-bg-deepnavy);
+  color: var(--color-text-primary);
+}
+
+.section-card--white {
+  background-color: var(--color-bg-warmwhite);
+  color: var(--color-text-dark);
+}
+
+/* Ensure content is above decorative elements */
+/* .section-hero > *, */
+.section-choose-us > *,
+.section-about > *,
+.section-services > *,
+.section-technology > *,
+.section-testimonial > *,
+.section-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Titles */
+.section-sub-title {
+  color: var(--color-accent);
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
+  margin: 0 0 var(--spacing-sm) 0;
+  display: inline-block;
+}
+
+.section-title {
+  font-family: "Inter", sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.2;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-family: inherit;
+  line-height: 1.5;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 14px 0 rgba(247, 97, 121, 0.39);
+}
+
+.btn-primary:hover {
+  background-color: #e5506a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(247, 97, 121, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px 0 rgba(247, 97, 121, 0.39);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  transform: translateY(-2px);
+}
+
+.btn-outline--white {
+  color: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+}
+
+.btn-outline--white:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-richblack);
+}
+
+.btn-large {
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+}
+
+.btn-small {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ============================================
+   LEGACY SECTION STYLES (Deprecated)
+   ============================================ */
+/* .section-testimonial {
+  min-height: 100vh;
+  background-color: var(--color-bg-deepnavy);
+  position: relative;
+}
+
+.section-services {
+  min-height: 100vh;
+  background-color: var(--color-bg-slate);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-choose-us {
+  min-height: 100vh;
+  background-color: var(--color-bg-deepnavy);
+  position: relative;
+  overflow: hidden;
+} */
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.bg-dark {
+  background-color: var(--color-bg-richblack);
+}
+
+.bg-white {
+  background-color: var(--color-bg-warmwhite);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .section-card,
+  .section-hero,
+  .section-choose-us,
+  .section-about,
+  .section-services,
+  .section-technology,
+  .section-testimonial {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    min-height: auto;
+  }
+
+  .btn {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .btn-large {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+body.loader-active {
+  overflow: hidden;
 }
