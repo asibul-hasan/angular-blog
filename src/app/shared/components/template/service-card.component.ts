@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
       <div class="relative z-10 space-y-4">
         <!-- Icon with gradient background -->
         <div
-          class="inline-flex p-3 rounded-xl bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 
+          class="inline-flex p-3 rounded-xl bg-linear-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 
                     border border-[var(--color-accent)]/20 group-hover/card:scale-110 transition-transform duration-500"
         >
 <i [class]="list.icon" class="text-4xl"></i>
@@ -40,7 +40,7 @@ import { Router } from '@angular/router';
 
       <!-- Decorative element -->
       <div
-        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent 
+        class="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-[var(--color-accent)]/10 to-transparent 
                   rounded-full blur-3xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-700"
       ></div>
     </div>

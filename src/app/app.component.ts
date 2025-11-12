@@ -1,22 +1,15 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoaderService } from './shared/services/loader/loader.service';
+import { LoaderComponent } from './shared/components/template/loader.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LoaderComponent, ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   protected readonly title = signal('infoAidTech');
-  private loader = inject(LoaderService);
-
-  ngOnInit(): void {
-    this.loader.show();
-
-    setTimeout(() => {
-      this.loader.hide();
-    }, 2500);
-  }
 }

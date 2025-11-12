@@ -1,0 +1,281 @@
+<!-- Modern 3D Job Create -->
+<div class="w-full space-y-6">
+  <!-- Hero Header -->
+  <div
+    class="relative overflow-hidden rounded-3xl bg-linear-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 backdrop-blur-xl border border-white/10 p-8"
+  >
+    <h1
+      class="text-4xl font-bold bg-linear-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent mb-2"
+    >
+      {{ jobId ? "Edit Job Posting" : "Create New Job Posting" }}
+    </h1>
+    <p class="text-gray-400">Post opportunities and grow your team</p>
+  </div>
+
+  <form [formGroup]="jobForm" (ngSubmit)="saveJob()" class="space-y-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Form Section -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Job Title -->
+        <div
+          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6"
+        >
+          <label
+            class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3"
+          >
+            Job Title
+          </label>
+          <input
+            type="text"
+            formControlName="title"
+            placeholder="e.g., Senior Full Stack Developer"
+            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-xl font-semibold placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+          />
+        </div>
+
+        <!-- Job Slug -->
+        <div
+          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6"
+        >
+          <label
+            class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3"
+          >
+            URL Slug
+          </label>
+          <input
+            type="text"
+            formControlName="slug"
+            placeholder="e.g., senior-full-stack-developer"
+            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+          />
+          <p class="mt-2 text-sm text-gray-500">
+            This will be used in the job URL. Automatically generated from
+            title.
+          </p>
+        </div>
+
+        <!-- Job Description -->
+        <div
+          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6"
+        >
+          <label
+            class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3"
+          >
+            Job Description
+          </label>
+          <textarea
+            formControlName="description"
+            rows="6"
+            placeholder="Describe the role, responsibilities, and requirements..."
+            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Additional Descriptions -->
+        <div
+          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 space-y-4"
+        >
+          <h3 class="text-lg font-semibold text-white mb-4">
+            Additional Requirements
+          </h3>
+          <div>
+            <input
+              type="text"
+              formControlName="des1"
+              placeholder="Requirement 1"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              formControlName="des2"
+              placeholder="Requirement 2"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              formControlName="des3"
+              placeholder="Requirement 3"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Sidebar -->
+      <div class="lg:col-span-1 space-y-6">
+        <div
+          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 sticky top-4 space-y-5"
+        >
+          <h2
+            class="text-xl font-bold text-white mb-6 pb-3 border-b border-white/10"
+          >
+            Job Details
+          </h2>
+
+          <!-- Department -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Department
+            </label>
+            <input
+              type="text"
+              formControlName="job"
+              placeholder="e.g., Engineering"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+
+          <!-- Location -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Location
+            </label>
+            <input
+              type="text"
+              formControlName="location"
+              placeholder="e.g., New York, NY"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+
+          <!-- Employment Type -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Employment Type
+            </label>
+            <select
+              formControlName="employmentStatus"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            >
+              <option *ngFor="let type of employmentTypes" [value]="type.value">
+                {{ type.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Workplace -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Workplace
+            </label>
+            <select
+              formControlName="workplace"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            >
+              <option *ngFor="let type of workplaceTypes" [value]="type.value">
+                {{ type.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Vacancy -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Number of Vacancies
+            </label>
+            <input
+              type="number"
+              formControlName="vacancy"
+              min="1"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+
+          <!-- Salary -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Salary Range
+            </label>
+            <input
+              type="text"
+              formControlName="salary"
+              placeholder="e.g., $80,000 - $120,000"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+
+          <!-- Published Status -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Published Status
+            </label>
+            <div class="flex items-center">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  formControlName="isPublished"
+                  class="sr-only"
+                />
+                <div
+                  class="w-14 h-7 flex items-center bg-gray-600 rounded-full p-1 duration-300 ease-in-out"
+                  [class.bg-emerald-500]="jobForm.get('isPublished')?.value"
+                >
+                  <div
+                    class="bg-white w-5 h-5 rounded-full shadow-md transform duration-300 ease-in-out"
+                    [class.translate-x-7]="jobForm.get('isPublished')?.value"
+                  ></div>
+                </div>
+                <span class="ml-3 text-white font-medium">
+                  {{
+                    jobForm.get("isPublished")?.value ? "Published" : "Draft"
+                  }}
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Expiry Date -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
+            >
+              Expiry Date
+            </label>
+            <input
+              type="date"
+              formControlName="expired"
+              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center justify-between pt-6">
+      <button
+        type="button"
+        routerLink="/dashboard/jobs"
+        class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-400 hover:text-white font-semibold transition-all duration-300 hover:scale-105"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="jobForm.invalid"
+        class="group relative px-8 py-3 bg-linear-to-r from-emerald-500 to-teal-500 rounded-xl font-bold text-white text-lg shadow-lg shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+      >
+        {{ jobId ? "Update Job" : "Post Job" }}
+      </button>
+    </div>
+  </form>
+</div>

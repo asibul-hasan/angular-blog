@@ -8,6 +8,7 @@ import { DOCUMENT } from '@angular/common';
 export class LoaderService {
   public isLoading$ = new BehaviorSubject<boolean>(false);
   private renderer: Renderer2;
+  private loadingCount = 0; // Track multiple simultaneous requests
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -17,12 +18,19 @@ export class LoaderService {
   }
 
   show() {
-    this.isLoading$.next(true);
-    this.renderer.addClass(this.document.body, 'loader-active');
+    this.loadingCount++;
+    if (this.loadingCount === 1) {
+      this.isLoading$.next(true);
+      this.renderer.addClass(this.document.body, 'loader-active');
+    }
   }
 
   hide() {
-    this.isLoading$.next(false);
-    this.renderer.removeClass(this.document.body, 'loader-active');
+    this.loadingCount--;
+    if (this.loadingCount <= 0) {
+      this.loadingCount = 0; // Prevent negative values
+      this.isLoading$.next(false);
+      this.renderer.removeClass(this.document.body, 'loader-active');
+    }
   }
 }

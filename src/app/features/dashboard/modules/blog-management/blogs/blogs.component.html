@@ -1,0 +1,443 @@
+<!-- Modern Blog Management - Card Layout -->
+<div class="w-full space-y-6">
+  <!-- Hero Header with Stats -->
+  <div
+    class="relative overflow-hidden rounded-2xl bg-linear-to-br from-purple-500/10 via-pink-500/10 to-blue-500/10 backdrop-blur-xl border border-white/10 p-6"
+  >
+    <div
+      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+    >
+      <div>
+        <h1
+          class="text-3xl font-bold bg-linear-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-2"
+        >
+          Blog Management
+        </h1>
+        <p class="text-gray-400 text-sm">
+          Create, edit, and manage your blog posts
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+          <span class="text-xs text-gray-400">Total Posts</span>
+          <div class="text-2xl font-bold text-white">{{ blogs.length }}</div>
+        </div>
+        <button
+          routerLink="/dashboard/blog/create"
+          class="group px-5 py-2.5 bg-linear-to-r from-purple-500 to-pink-500 rounded-lg font-semibold text-white shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          Create New
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-16">
+    <div
+      class="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"
+    ></div>
+    <p class="mt-4 text-gray-400 text-sm">Loading blogs...</p>
+  </div>
+
+  <!-- Error State -->
+  <div
+    *ngIf="error"
+    class="relative overflow-hidden rounded-2xl bg-red-500/10 backdrop-blur-xl border border-red-500/30 p-6"
+  >
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="p-3 bg-red-500/20 rounded-xl">
+          <svg
+            class="w-6 h-6 text-red-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-red-400">Error Loading Blogs</h3>
+          <p class="text-red-300/80 text-sm">{{ error }}</p>
+        </div>
+      </div>
+      <button
+        (click)="loadBlogs()"
+        class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-xl text-red-400 font-medium transition-all duration-300"
+      >
+        Retry
+      </button>
+    </div>
+  </div>
+
+  <!-- Blogs Grid (Card Layout) -->
+  <div
+    *ngIf="!loading && !error"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+  >
+    <!-- Blog Card -->
+    <div
+      *ngFor="let blog of blogs"
+      class="group relative overflow-hidden rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-purple-500/30 transition-all duration-300 hover:scale-[1.02]"
+    >
+      <!-- Cover Image -->
+      <div
+        class="relative h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/20 overflow-hidden"
+      >
+        <img
+          *ngIf="blog.image"
+          [src]="blog.image"
+          [alt]="blog.title"
+          class="w-full h-full object-cover"
+        />
+        <div
+          *ngIf="!blog.image"
+          class="w-full h-full flex items-center justify-center"
+        >
+          <svg
+            class="w-16 h-16 text-purple-400/50"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+
+        <!-- Upload Image Button (Overlay) -->
+        <label
+          [for]="'file-' + blog._id"
+          class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+        >
+          <div class="text-center">
+            <svg
+              class="w-10 h-10 text-white mx-auto mb-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+              />
+            </svg>
+            <span class="text-white text-sm font-medium"
+              >{{ blog.image ? "Change" : "Upload" }} Image</span
+            >
+          </div>
+          <input
+            [id]="'file-' + blog._id"
+            type="file"
+            class="hidden"
+            accept="image/*"
+            (change)="onFileSelected($event, blog)"
+          />
+        </label>
+
+        <!-- Publish Status Badge -->
+        <div class="absolute top-3 right-3">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              [checked]="blog.isPublished"
+              (change)="togglePublishStatus(blog)"
+              class="sr-only peer"
+            />
+            <div
+              class="w-11 h-6 bg-gray-700/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-green-500 peer-checked:to-emerald-500"
+            ></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="p-5 space-y-3">
+        <!-- Title (Editable) -->
+        <div>
+          <div
+            *ngIf="!isEditing(blog._id, 'title')"
+            class="flex items-start gap-2"
+          >
+            <h3
+              class="flex-1 text-lg font-semibold text-white line-clamp-2 group-hover:text-purple-400 transition-colors"
+            >
+              {{ blog.title || "Untitled" }}
+            </h3>
+            <button
+              (click)="startEditing(blog._id, 'title', blog.title)"
+              class="p-1.5 hover:bg-purple-500/20 rounded transition-all"
+              title="Edit title"
+            >
+              <svg
+                class="w-4 h-4 text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            *ngIf="isEditing(blog._id, 'title')"
+            class="flex items-start gap-2"
+          >
+            <input
+              type="text"
+              [(ngModel)]="editingBlog[blog._id]['title']"
+              class="flex-1 px-3 py-2 bg-white/10 border border-purple-500/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+            />
+            <button
+              (click)="saveField(blog, 'title')"
+              class="p-2 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </button>
+            <button
+              (click)="cancelEdit(blog._id, 'title')"
+              class="p-2 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Meta Info -->
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          {{ blog.createdAt | date : "MMM d, y" }}
+        </div>
+
+        <!-- Slug (Editable) -->
+        <div>
+          <div
+            *ngIf="!isEditing(blog._id, 'slug')"
+            class="flex items-center gap-2 bg-white/5 px-2 py-1 rounded group/slug"
+          >
+            <span class="flex-1 text-xs text-gray-600 font-mono"
+              >/{{ blog.slug || "no-slug" }}</span
+            >
+            <button
+              (click)="startEditing(blog._id, 'slug', blog.slug)"
+              class="opacity-0 group-hover/slug:opacity-100 p-1 hover:bg-blue-500/20 rounded transition-all"
+              title="Edit slug"
+            >
+              <svg
+                class="w-3 h-3 text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            *ngIf="isEditing(blog._id, 'slug')"
+            class="flex items-center gap-2 bg-white/5 px-2 py-1 rounded"
+          >
+            <span class="text-xs text-gray-500">/</span>
+            <input
+              type="text"
+              [(ngModel)]="editingBlog[blog._id]['slug']"
+              class="flex-1 px-2 py-1 bg-white/10 border border-blue-500/50 rounded text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              placeholder="my-blog-slug"
+            />
+            <button
+              (click)="saveField(blog, 'slug')"
+              class="p-1 bg-green-500/20 border border-green-500/50 rounded text-green-400 transition-all"
+              title="Save"
+            >
+              <svg
+                class="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </button>
+            <button
+              (click)="cancelEdit(blog._id, 'slug')"
+              class="p-1 bg-red-500/20 border border-red-500/50 rounded text-red-400 transition-all"
+              title="Cancel"
+            >
+              <svg
+                class="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+          <a
+            [routerLink]="['/blog', blog.slug]"
+            class="flex-1 px-3 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 rounded-lg text-blue-400 text-sm font-medium text-center transition-all hover:scale-105"
+          >
+            View
+          </a>
+          <button
+            (click)="editBlog(blog._id)"
+            class="flex-1 px-3 py-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/50 rounded-lg text-purple-400 text-sm font-medium transition-all hover:scale-105"
+          >
+            Edit
+          </button>
+          <button
+            (click)="deleteBlog(blog._id)"
+            class="p-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-lg text-red-400 transition-all hover:scale-105"
+            title="Delete"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!loading && !error && blogs.length === 0"
+    class="flex flex-col items-center justify-center py-20"
+  >
+    <div
+      class="w-20 h-20 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-4"
+    >
+      <svg
+        class="w-10 h-10 text-purple-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        />
+      </svg>
+    </div>
+    <h3 class="text-xl font-semibold text-gray-400 mb-2">No blogs found</h3>
+    <p class="text-gray-500 mb-6">
+      Get started by creating your first blog post
+    </p>
+    <a
+      routerLink="/dashboard/blog/create"
+      class="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-purple-500 to-pink-500 rounded-xl font-semibold text-white shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 4v16m8-8H4"
+        />
+      </svg>
+      Create First Blog
+    </a>
+  </div>
+</div>

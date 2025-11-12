@@ -1,0 +1,44 @@
+
+> info-aid-tech@0.0.0 build
+> ng build --configuration production && npm run map
+
+[33m❯[39m Building...
+[1m[31mError: Can't resolve '@primeng/resources/primeng.css' in 'D:\app\blog\angular-blog\src'
+    at finishWithoutResolve (D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\Resolver.js:565:18)
+    at D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\Resolver.js:657:14
+    at D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\Resolver.js:718:5
+    at eval (eval at create (D:\app\blog\angular-blog\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\Resolver.js:718:5
+    at eval (eval at create (D:\app\blog\angular-blog\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:89:43
+    at D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\Resolver.js:718:5
+    at eval (eval at create (D:\app\blog\angular-blog\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at D:\app\blog\angular-blog\node_modules\enhanced-resolve\lib\Resolver.js:718:5 {
+  details: "resolve '@primeng/resources/primeng.css' in 'D:\\app\\blog\\angular-blog\\src'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: D:\\app\\blog\\angular-blog\\package.json (relative path: ./src)\n' +
+    '    resolve as module\n' +
+    "      D:\\app\\blog\\angular-blog\\src\\node_modules doesn't exist or is not a directory\n" +
+    '      looking for modules in D:\\app\\blog\\angular-blog\\node_modules\n' +
+    "        D:\\app\\blog\\angular-blog\\node_modules\\@primeng\\resources doesn't exist\n" +
+    "      D:\\app\\blog\\node_modules doesn't exist or is not a directory\n" +
+    "      D:\\app\\node_modules doesn't exist or is not a directory\n" +
+    "      D:\\node_modules doesn't exist or is not a directory"
+}[39m[22m
+[32m✔[39m Building...
+[35mPrerendered 0 static routes.[39m
+Application bundle generation failed. [21.669 seconds] - 2025-11-10T13:21:00.601Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mCan't resolve '@primeng/resources/primeng.css' in 'D:\app\blog\angular-blog\src'[0m [1m[35m[plugin angular-css][0m
+
+    src/styles.css:1:0:
+[37m      1 │ [32m[37m/* You can add global styles to this file, and also import other st...
+        ╵ [32m^[0m
+
+  The plugin "angular-css" was triggered by this import
+
+    angular:styles/global:styles:1:8:
+[37m      1 │ @import [32m'src/styles.css'[37m;
+        ╵         [32m~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

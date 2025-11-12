@@ -1,34 +1,43 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BlogsComponent } from './blogs/blogs.component';
 import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
-import { BlogCreateComponent } from './blog-create/blog-create.component';
-// import { BlogEditComponent } from './blog-editor/blog-editor.component';
 import { DashboardComponent } from './dashboard-component/dashboard.component';
-import { CategoriesComponent } from './categories/categories.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminGuard } from '../../core/guards/admin.guard';
 
-const routes: Routes = [
+export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
     component: DashboardLayoutComponent,
     children: [
       { path: '', component: DashboardComponent, pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'blogs', component: BlogsComponent },
-      { path: 'blog/create', component: BlogCreateComponent },
-      // { path: 'blog/edit/:id', component: BlogEditComponent },
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'profile', component: UserProfileComponent },
-
-      // Wildcard route for 404 handling
-      { path: '**', redirectTo: 'dashboard' },
+      {
+        path: 'blog-management',
+        loadChildren: () => import('./modules/blog-management/blog-management.routes').then(m => m.BLOG_MANAGEMENT_ROUTES)
+      },
+      {
+        path: 'job-management',
+        loadChildren: () => import('./modules/job-management/job-management.routes').then(m => m.JOB_MANAGEMENT_ROUTES)
+      },
+      {
+        path: 'user-management',
+        loadChildren: () => import('./modules/user-management/user-management.routes').then(m => m.USER_MANAGEMENT_ROUTES)
+      },
+      {
+        path: 'settings',
+        loadChildren: () => import('./modules/settings/settings.routes').then(m => m.SETTINGS_ROUTES)
+      },
+      // Wildcard route for 404 handling - should show a proper 404 page instead of redirecting
+      {
+        path: '**',
+        loadComponent: () =>
+          import('../../shared/components/404/404.component').then(m => m.NotFoundComponent)
+      },
     ],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(DASHBOARD_ROUTES)],
   exports: [RouterModule],
 })
 export class DashboardRoutingModule { }

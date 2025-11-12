@@ -10,7 +10,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
     <div>
       <label
         for="{{ controlName }}"
-        class="block text-sm font-semibold text-gray-700"
+        class="block text-sm font-semibold  text-gray-300"
       >
         {{ label }}
       </label>
@@ -20,7 +20,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
         [formControl]="control"
         [attr.maxlength]="maxLength"
         [placeholder]="placeholder"
-        class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 text-sm transition duration-150"
+        class="mt-1 block w-full border-gray-300 rounded-lg bg-gray-800 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 text-sm transition duration-150"
       />
       <div class="flex justify-between items-center mt-1">
         <p *ngIf="helpText" class="text-xs text-gray-500">{{ helpText }}</p>

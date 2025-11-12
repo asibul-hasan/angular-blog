@@ -6,6 +6,7 @@ import { SeoService } from '../../../shared/services/seo/seo.service';
 import { LanguageService } from '../../../shared/services/language/lang.service';
 import { isPlatformBrowser } from '@angular/common';
 import { TechCarouselComponent } from '../../../shared/components/template/tech-carousel.component';
+import { TechIconCarouselComponent } from '../../../shared/components/template/tech-icon-carousel.component';
 import { TechnologySectionComponent } from '../../../shared/components/template/technology-section.component';
 import { ServiceSectionComponent } from '../../../shared/components/template/service-section.component';
 import { TestimonialComponent } from '../../../shared/components/template/testimonial.component';
@@ -14,6 +15,7 @@ import { TestimonialComponent } from '../../../shared/components/template/testim
   selector: 'app-home',
   imports: [
     HeroComponent,
+    TechIconCarouselComponent,
     ChooseUs,
     AboutSection,
     TechnologySectionComponent,

@@ -1,0 +1,131 @@
+<div class="company-management-container">
+  <div class="header-section">
+    <h1 class="page-title">Company Management</h1>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="fa-solid fa-plus"></i> Create Company
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-container">
+      <i class="fa-solid fa-search search-icon"></i>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search companies by name, industry, or email..."
+        [value]="searchTerm"
+        (input)="searchTerm = $event.target.value; searchCompanies()"
+      />
+      <button
+        class="btn btn-clear"
+        *ngIf="searchTerm"
+        (click)="searchTerm = ''; searchCompanies()"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="content-container" *ngIf="!isLoading; else loadingTemplate">
+    <!-- No Companies State -->
+    <div *ngIf="filteredCompanies.length === 0" class="no-company-state">
+      <div class="illustration">
+        <i class="fa-solid fa-building fa-3x"></i>
+      </div>
+      <h2>No Companies Found</h2>
+      <p *ngIf="searchTerm; else noCompanies">
+        No companies match your search criteria. Try adjusting your search.
+      </p>
+      <ng-template #noCompanies>
+        <p>
+          You haven't created any company profiles yet. Get started by creating
+          one now.
+        </p>
+      </ng-template>
+      <button class="btn btn-primary" (click)="openCreateModal()">
+        <i class="fa-solid fa-plus"></i> Create Company
+      </button>
+    </div>
+
+    <!-- Companies List -->
+    <div *ngIf="filteredCompanies.length > 0" class="companies-list">
+      <div class="company-card" *ngFor="let company of filteredCompanies">
+        <div class="company-header">
+          <div class="company-info">
+            <h3>{{ company.name }}</h3>
+            <p class="company-industry" *ngIf="company.industry">
+              {{ company.industry }}
+            </p>
+          </div>
+          <div
+            class="company-status status-{{ company.status?.toLowerCase() }}"
+          >
+            {{ company.status }}
+          </div>
+        </div>
+
+        <div class="company-details">
+          <div class="detail-row">
+            <span class="label">Legal Name:</span>
+            <span class="value">{{ company.legalName || "N/A" }}</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="label">Contact:</span>
+            <span class="value">{{ company.contact?.email || "N/A" }}</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="label">Type:</span>
+            <span class="value">{{ company.type }}</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="label">Founded:</span>
+            <span class="value">
+              {{
+                company.foundedDate
+                  ? (company.foundedDate | date : "mediumDate")
+                  : "N/A"
+              }}
+            </span>
+          </div>
+        </div>
+
+        <div class="company-actions">
+          <button
+            class="btn btn-sm btn-outline"
+            (click)="openViewModal(company)"
+          >
+            <i class="fa-solid fa-eye"></i> View
+          </button>
+          <button
+            class="btn btn-sm btn-primary"
+            (click)="openEditModal(company)"
+          >
+            <i class="fa-solid fa-pen-to-square"></i> Edit
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            (click)="deleteCompany(company)"
+          >
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Template -->
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <p>Loading companies...</p>
+    </div>
+  </ng-template>
+</div>

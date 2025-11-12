@@ -23,10 +23,10 @@ export interface SeoData {
   providedIn: 'root',
 })
 export class SeoService {
-  private siteName = 'infoAidTech';
+  private siteName = 'InfoAidTech';
   private siteUrl = 'https://infoaidtech.net';
-  private twitterHandle = '@mytwitter';
-  private defaultImage = `${this.siteUrl}/assets/default-og.jpg`;
+  private twitterHandle = '@InfoAidTech';
+  private defaultImage = `${this.siteUrl}/assets/default-og.png`;
 
   constructor(
     private title: Title,

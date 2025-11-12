@@ -1,0 +1,331 @@
+<div class="modal-container bg-dark">
+  <div class="modal-header">
+    <h2 class="modal-title">
+      <span *ngIf="data.mode === 'create'">Create Company</span>
+      <span *ngIf="data.mode === 'edit'">Edit Company</span>
+      <span *ngIf="data.mode === 'view'">View Company</span>
+    </h2>
+    <button class="close-button" (click)="closeModal()" type="button">
+      <i class="fa-solid fa-times"></i>
+    </button>
+  </div>
+
+  <div class="modal-content">
+    <form
+      [formGroup]="companyForm"
+      (ngSubmit)="onSubmit()"
+      class="company-form"
+    >
+      <!-- Company Info Section -->
+      <div class="form-section">
+        <h3>Company Information</h3>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Company Name *</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              [readonly]="isViewMode"
+              required
+            />
+            <mat-error *ngIf="isFieldInvalid('name')">
+              Company name is required and must be at least 2 characters.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Legal Name</mat-label>
+            <input
+              matInput
+              formControlName="legalName"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Company Type</mat-label>
+            <mat-select formControlName="type" [disabled]="isViewMode">
+              <mat-option *ngFor="let type of companyTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Industry</mat-label>
+            <input
+              matInput
+              formControlName="industry"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Founded Date</mat-label>
+            <input
+              matInput
+              type="date"
+              formControlName="foundedDate"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Logo URL</mat-label>
+            <input matInput formControlName="logoUrl" [readonly]="isViewMode" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" [disabled]="isViewMode">
+              <mat-option *ngFor="let status of statuses" [value]="status">
+                {{ status }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Address Section -->
+      <div class="form-section">
+        <h3>Address Information</h3>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Address Line 1</mat-label>
+            <input
+              matInput
+              formControlName="address.addressLine1"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Address Line 2</mat-label>
+            <input
+              matInput
+              formControlName="address.addressLine2"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>City</mat-label>
+            <input
+              matInput
+              formControlName="address.city"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>State</mat-label>
+            <input
+              matInput
+              formControlName="address.state"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Country</mat-label>
+            <input
+              matInput
+              formControlName="address.country"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Postal Code</mat-label>
+            <input
+              matInput
+              formControlName="address.postalCode"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Timezone</mat-label>
+            <input
+              matInput
+              formControlName="address.timezone"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="form-section">
+        <h3>Contact Information</h3>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="contact.email"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Phone</mat-label>
+            <input
+              matInput
+              formControlName="contact.phone"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Website</mat-label>
+            <input
+              matInput
+              formControlName="contact.website"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>LinkedIn</mat-label>
+            <input
+              matInput
+              formControlName="contact.linkedin"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Twitter</mat-label>
+            <input
+              matInput
+              formControlName="contact.twitter"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Financial Section -->
+      <div class="form-section">
+        <h3>Financial Information</h3>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Registration Number</mat-label>
+            <input
+              matInput
+              formControlName="registrationNumber"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Tax ID</mat-label>
+            <input matInput formControlName="taxId" [readonly]="isViewMode" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Currency</mat-label>
+            <mat-select formControlName="currency" [disabled]="isViewMode">
+              <mat-option
+                *ngFor="let currency of currencies"
+                [value]="currency"
+              >
+                {{ currency }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Fiscal Year Start</mat-label>
+            <input
+              matInput
+              type="date"
+              formControlName="fiscalYearStart"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Fiscal Year End</mat-label>
+            <input
+              matInput
+              type="date"
+              formControlName="fiscalYearEnd"
+              [readonly]="isViewMode"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Metadata Section -->
+      <div class="form-section">
+        <h3>Metadata</h3>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Tags (comma separated)</mat-label>
+            <input
+              matInput
+              formControlName="meta.tags"
+              [readonly]="isViewMode"
+              placeholder="tag1, tag2, tag3"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea
+              matInput
+              formControlName="meta.notes"
+              [readonly]="isViewMode"
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-actions">
+    <button
+      class="btn btn-secondary"
+      (click)="onCancel()"
+      [disabled]="isLoading"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-primary"
+      *ngIf="!isViewMode"
+      (click)="onSubmit()"
+      [disabled]="companyForm.invalid || isLoading"
+    >
+      <span *ngIf="isLoading" class="spinner"></span>
+      <span *ngIf="data.mode === 'create'">Create</span>
+      <span *ngIf="data.mode === 'edit'">Update</span>
+    </button>
+  </div>
+</div>

@@ -109,7 +109,7 @@ export class AboutSection implements OnInit, OnDestroy {
   private dataSubscription: Subscription | undefined;
   customClass: string = `
     relative rounded-2xl p-6 
-bg-gradient-to-br from-[#111] to-[#1a1a1a]
+bg-linear-to-br from-[#111] to-[#1a1a1a]
     border-l-4 border-[var(--color-accent)]
     shadow-md hover:shadow-xl
     transition-all duration-300

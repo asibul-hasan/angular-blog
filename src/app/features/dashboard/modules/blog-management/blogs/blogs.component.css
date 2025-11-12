@@ -1,0 +1,13 @@
+/* Modern 3D Effects for Blogs Component */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.group:hover {
+  transform: translateZ(10px);
+}

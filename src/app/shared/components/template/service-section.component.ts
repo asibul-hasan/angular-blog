@@ -15,7 +15,7 @@ import { CarouselCardComponent } from './cards/carousel-card.component';
 
       <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          class="absolute top-1/4 left-10 w-72 h-72 bg-[var(--color-accent)]/10 rounded-full blur-3xl animate-float"
+          class="absolute top-1/4 left-10 w-72 h-72 bg-(--color-accent)/10 rounded-full blur-3xl animate-float"
         ></div>
         <div
           class="absolute bottom-1/4 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float-delayed"
@@ -30,7 +30,7 @@ import { CarouselCardComponent } from './cards/carousel-card.component';
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10"
               >
                 <span
-                  class="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse"
+                  class="w-2 h-2 rounded-full bg-(--color-accent) animate-pulse"
                 ></span>
                 <span class="text-sm font-medium text-white/70 tracking-wide"
                   >{{ langService.lang.whatWeOffer }}</span
@@ -59,10 +59,10 @@ import { CarouselCardComponent } from './cards/carousel-card.component';
             </div>
         <div class=" sticky top-20">
           <!-- <div
-            class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[var(--color-bg-richblack)] to-transparent z-10 pointer-events-none lg:block hidden"
+            class="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-(--color-bg-richblack) to-transparent z-10 pointer-events-none lg:block hidden"
           ></div>
           <div
-            class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[var(--color-bg-richblack)] to-transparent z-10 pointer-events-none lg:block hidden"
+            class="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-(--color-bg-richblack) to-transparent z-10 pointer-events-none lg:block hidden"
           ></div> -->
           <app-carousel-card [items]="services$ | async"></app-carousel-card>
         </div>

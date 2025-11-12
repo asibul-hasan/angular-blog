@@ -1,69 +1,47 @@
-# Copilot Instructions for InfoAidTech (Angular Blog)
+## Quick orientation for AI coding agents
 
-## Project Overview
+This repo is an Angular 20 application with Angular Universal (SSR) enabled and a standalone-components style (bootstrapApplication). Focus on these files to understand behavior quickly:
 
-- **Framework:** Angular 20 (standalone components, SSR enabled)
-- **Main entry:** `src/main.ts` (browser), `src/main.server.ts` (SSR)
-- **App config:** `src/app/app.config.ts` (browser), `src/app/app.config.server.ts` (SSR)
-- **Routing:**
-  - Public routes: `src/app/features/public/public-routing-module.ts`
-  - Auth routes: `src/app/features/auth/`
-  - Dashboard routes: `src/app/features/dashboard/dashboard-routing.module.ts`
-  - Wildcard/404: `src/app/shared/components/404.component.ts`
-- **Guards:** AuthGuard in `src/app/core/guards/auth.guard.ts` (checks login and role)
-- **Interceptors:** HTTP loader in `src/app/core/interceptors/http-loader.interceptor.ts` (shows/hides loader)
-- **Services:**
-  - Auth: `src/app/shared/services/auth/auth.service.ts`
-  - Loader: `src/app/shared/services/loader/loader.service.ts`
-  - Others: `src/app/shared/services/`
+- `package.json` — scripts and Node/Angular versions. Key scripts: `start` (dev ng serve), `build` (production build + sitemap), `build:ssr` (build for SSR), `serve:ssr` (serve built SSR bundle), `dev:ssr` (dev SSR). Node >= 18 required.
+- `angular.json` — output path is `dist/infoAidTech` and SSR entry is `src/server.ts`. Dev server defaults to port 4000.
+- `src/main.ts` — client bootstrap (uses `appConfig`).
+- `src/main.server.ts` and `src/server.ts` — server bootstrap and Express handler used for SSR.
+- `src/app/app.config.ts` and `src/app/app.config.server.ts` — application providers differ for client vs server (HTTP hydration, interceptors, animations, etc.).
+- `src/app/app.routes.ts` — central route table (lazy-loaded modules and standalone components). Use this to add routes.
+- `src/app/core/interceptors` and `src/app/shared/services` — common cross-cutting concerns (auth, http loader, storage, utility functions).
 
-## Build & Run
+High-level architecture notes
 
-- **Dev server:** `npm start` or `ng serve` (default port 5000, see `angular.json`)
-- **SSR dev:** `npm run dev:ssr` (Angular Universal)
-- **Production build:** `npm run build` or `ng build`
-- **SSR serve:** `npm run serve:ssr` (serves SSR build from `dist/infoAidTech/server/server.mjs`)
-- **Unit tests:** `npm test` or `ng test` (Karma)
-- **Sitemap:** `npm run map` (runs `generate-sitemap.js`)
+- Standalone component approach: app is bootstrapped with `bootstrapApplication(AppComponent, appConfig)`. DI providers and router are provided in `appConfig` rather than an `NgModule` class.
+- SSR: `src/server.ts` serves static files from the built browser bundle and uses `renderApplication` with the `main.server` bootstrap. When editing SSR behavior, check `src/server.ts` for how index files are located (`index.html` vs `index.csr.html`).
+- Data flow: HTTP clients are provided using `provideHttpClient(withFetch(), withInterceptors([...]))` and rely on interceptors in `src/app/core/interceptors`. Many services are signal-based (see `src/app/core/services/blog-store.service.ts`) — prefer updating signals with `.set()` / `.update()`.
+- Storage and environment: `StorageService` (SSR-safe) provides a no-op fallback server-side — avoid assuming `localStorage` exists without the service.
 
-## Key Patterns & Conventions
+Project-specific conventions
 
-- **Standalone Angular components** (no NgModules for most features)
-- **Lazy loading** for feature modules/components via route definitions
-- **Role-based access**: Use `canActivate` with `AuthGuard` and route `data.roles` for protected routes
-- **Loader pattern:** HTTP requests trigger loader via interceptor
-- **User state:** Managed via `AuthService` (localStorage for token/user)
-- **404 handling:** Wildcard route loads `NotFoundComponent`
-- **Environment config:** API URLs and other env vars in `src/environments/`
-- **Styling:** Global styles in `src/styles.css`, custom theme in `src/custom-theme.scss`, Tailwind/PostCSS supported
+- Signals & inject(): code uses `inject()` and `signal()` (standalone/functional DI), not constructor-heavy classes in many places. See `BlogStoreService` for a canonical pattern.
+- Routing: use lazy-loading for modules (`loadChildren`) and `loadComponent` for standalone pages. Update `src/app/app.routes.ts` for new routes.
+- HTTP cache/hydration: client hydration and transfer cache is enabled (`provideClientHydration` in `app.config`) — be careful when changing HTTP request semantics (avoid caching POSTs).
+- Sitemap generation: after `ng build` the `npm run map` script runs `generate-sitemap.js`. Keep that in CI if you change routes or slug patterns.
 
-## External Integrations
+Developer workflows & commands (practical)
 
-- **Charting:** Chart.js (`NgxChartsModule`), see `app.config.ts`
-- **PrimeNG:** UI components, see `package.json` dependencies
-- **Express:** SSR server in `src/server.ts`
-- **Semantic Release:** Automated changelog/release (see `package.json` devDependencies)
+- Start dev server: `npm run start` (Angular dev server). Default port 4200 in README; angular.json serve configuration uses port 4000 for `ng serve` in this repo — prefer checking the serve command or use the `--port` flag.
+- SSR dev: `npm run dev:ssr` (starts dev SSR configuration).
+- Build for production (client): `npm run build` then `npm run map` runs sitemap generation.
+- Build + serve SSR: `npm run build:ssr` then `npm run serve:ssr`.
+- Tests: `npm test` (Karma + Jasmine) — unit tests live next to components (`*.spec.ts`).
 
-## Examples
+Where to add changes (examples)
 
-- **Add a new dashboard page:**
-  1. Create component in `src/app/features/dashboard/`
-  2. Add route in `dashboard-routing.module.ts`
-- **Protect a route:**
-  1. Add `canActivate: [AuthGuard]` and `data: { roles: ['admin'] }` to route
-- **Add a service:**
-  1. Place in `src/app/shared/services/`
-  2. Provide in `app.config.ts` if needed
+- Add a new public page: create a standalone component under `src/app/features/public/...`, then add a route in `src/app/app.routes.ts` using `loadComponent` or bundle into an existing lazy module via `loadChildren`.
+- Add an HTTP service: add to `src/app/shared/services/<feature>/*` and register use via `provideHttpClient` (interceptors already configured in `app.config`). For SSR-safe storage use `StorageService`.
+- Modify SSR behavior: update `src/server.ts` (how index is chosen & how renderApplication is called) and `src/main.server.ts`/`app.config.server.ts` for server providers.
 
-## Tips for AI Agents
+Quick tips for PRs
 
-- Always use standalone components unless legacy code requires NgModule
-- Prefer lazy loading for new features
-- Reference `app.config.ts` for global providers and SSR compatibility
-- For SSR, check both `main.server.ts` and `server.ts` for entry and rendering logic
-- Use environment files for API endpoints
-- Follow existing folder structure for features, shared, and core logic
+- Preserve SSR-safe patterns: use `isPlatformBrowser` checks or `StorageService` for storage access.
+- When changing API calls, update interceptors in `src/app/core/interceptors` and verify transfer cache/hydration behavior.
+- Run `npm run map` after route changes to keep sitemap in sync.
 
----
-
-_Last updated: 2025-10-15_
+If anything here is unclear or you want more detail on a specific area (SSR lifecycle, router lazy-loading, or signal-based stores), tell me which area and I will expand or add examples from the exact files.

@@ -21,8 +21,6 @@ export class BlogStoreService {
      * Load blogs from API (sorted by date descending)
      */
     loadBlogs(): void {
-        if (this._blogs().length > 0) return; // avoid duplicate calls
-
         this.blogApi.getBlogs().subscribe({
             next: (res) => {
                 if (res.body && Array.isArray(res.body)) {
@@ -47,12 +45,16 @@ export class BlogStoreService {
     }
 
     /**
+     * Force refresh blogs (use after create/update/delete)
+     */
+    refreshBlogs(): void {
+        this.loadBlogs();
+    }
+
+    /**
      * Load categories for blog filtering
      */
     loadCategories(): void {
-        // Avoid refetch if already cached
-        if (this._categories().length > 0) return;
-
         this.CategoryApi.getCategories().subscribe({
             next: (res) => {
                 if (res && Array.isArray(res.body)) {
@@ -68,11 +70,16 @@ export class BlogStoreService {
     }
 
     /**
+     * Force refresh categories (use after create/update/delete)
+     */
+    refreshCategories(): void {
+        this.loadCategories();
+    }
+
+    /**
      * Optional: Refresh both blogs and categories
      */
     refreshAll(): void {
-        this._blogs.set([]);
-        this._categories.set([]);
         this.loadBlogs();
         this.loadCategories();
     }

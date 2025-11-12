@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { TrendingBlogsTableComponent } from '../../../shared/components/template/trending-blogs-table.component';
-import { KpiCardComponent } from '../../../shared/components/template/kpi-card.component';
+import { KpiCardComponent as KpiDashboardComponent } from '../../../shared/components/template/kpi-card.component';
 import { CategoryDistributionComponent } from '../../../shared/components/template/category-distribution.component';
 import { TrafficEngagementComponent } from '../../../shared/components/template/traffic-engagement.component';
 import { ImpressionsCategoryComponent } from '../../../shared/components/template/impressions-category.component';
@@ -16,7 +16,7 @@ import { ImpressionsCategoryComponent } from '../../../shared/components/templat
   standalone: true,
   imports: [
     TrendingBlogsTableComponent,
-    KpiCardComponent,
+    KpiDashboardComponent,
     CategoryDistributionComponent,
     TrafficEngagementComponent,
     ImpressionsCategoryComponent,

@@ -2,3 +2,175 @@
   display: block;
   height: 100vh;
 }
+
+/* Modern 3D Sidebar Styles */
+
+/* Top Navigation Bar */
+nav {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 12, 41, 0.95) 0%,
+    rgba(48, 43, 99, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar Container */
+aside {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 12, 41, 0.95) 0%,
+    rgba(36, 36, 62, 0.95) 100%
+  );
+  backdrop-filter: blur(15px);
+  border-right: 1px solid rgba(102, 126, 234, 0.2);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation Links */
+ul li a,
+ul li div {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+ul li a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+ul li a:hover::before {
+  left: 100%;
+}
+
+ul li a:hover,
+ul li div:hover {
+  background: rgba(102, 126, 234, 0.2) !important;
+  /* Removed transform to prevent layout shifting */
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+ul li a.bg-gray-700 {
+  background: linear-gradient(
+    90deg,
+    rgba(102, 126, 234, 0.3),
+    rgba(118, 75, 162, 0.3)
+  ) !important;
+  border-left: 3px solid #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* SVG Icons */
+ul li a svg,
+ul li div svg {
+  filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+  transition: transform 0.3s ease;
+}
+
+ul li a:hover svg,
+ul li div:hover svg {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Toggle Button */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(102, 126, 234, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+button:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+/* User Menu */
+.rounded.shadow {
+  background: linear-gradient(
+    135deg,
+    rgba(31, 41, 55, 0.95) 0%,
+    rgba(17, 24, 39, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Profile Image Glow */
+img.rounded-full {
+  border: 2px solid rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+  transition: all 0.3s ease;
+}
+
+img.rounded-full:hover {
+  box-shadow: 0 0 25px rgba(102, 126, 234, 0.8);
+  transform: scale(1.05);
+}
+
+/* Main Content Wrapper */
+.p-6.rounded-xl {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Custom Scrollbar (Thin) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.3);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(102, 126, 234, 0.6),
+    rgba(118, 75, 162, 0.6)
+  );
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(102, 126, 234, 0.9),
+    rgba(118, 75, 162, 0.9)
+  );
+}
+
+/* Firefox Scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 126, 234, 0.6) rgba(31, 41, 55, 0.3);
+}

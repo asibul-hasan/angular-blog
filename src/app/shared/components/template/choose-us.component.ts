@@ -25,7 +25,7 @@ import { map } from 'rxjs/operators';
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10"
               >
                 <span
-                  class="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse"
+                  class="w-2 h-2 rounded-full bg-(--color-accent) animate-pulse"
                 ></span>
                 <span class="text-sm font-medium text-white/70 tracking-wide"
                   >Why Choose Us</span
@@ -92,14 +92,14 @@ export class ChooseUs implements OnInit, OnDestroy {
   private dataSubscription: Subscription | undefined;
   customClass: string = `
     relative h-full p-8 rounded-2xl 
-    bg-gradient-to-br from-white/5 to-white/[0.02] 
+    bg-linear-to-br from-white/5 to-white/[0.02] 
     backdrop-blur-sm border border-white/10
     hover:border-[]/50 hover:bg-white/[0.08]
     transition-all duration-500 ease-out
     hover:transform hover:scale-[1.02] hover:-translate-y-1
     hover:shadow-[0_20px_60px_-15px_rgba(247,97,121,0.3)]
     overflow-hidden
-    before:absolute before:inset-0 before:bg-gradient-to-br 
+    before:absolute before:inset-0 before:bg-linear-to-br 
     before:from-[]/0 before:to-[]/0
     hover:before:from-[]/5 hover:before:to-transparent
     before:transition-all before:duration-500

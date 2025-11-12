@@ -1,0 +1,254 @@
+<!-- Career Detail Page -->
+<div class="min-h-screen">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex items-center justify-center min-h-screen">
+    <div
+      class="w-16 h-16 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"
+    ></div>
+  </div>
+
+  <!-- Job Detail -->
+  <div *ngIf="!loading && job">
+    <!-- Hero Section -->
+    <section
+      class="relative h-[50vh] bg-cover bg-center pt-[100px] flex items-center"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2070&q=80');
+      "
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-gray-900/90 to-gray-900"
+      ></div>
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl">
+          <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+            {{ job.title }}
+          </h1>
+          <div class="flex flex-wrap gap-6 text-gray-300">
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                />
+              </svg>
+              {{ job.workplace }}
+            </span>
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              {{ job.location }}
+            </span>
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              {{ job.job }}
+            </span>
+            <span
+              *ngIf="job.expired"
+              [class.text-red-400]="isJobExpired()"
+              [class.text-emerald-400]="!isJobExpired()"
+              class="flex items-center gap-2"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Expires: {{ job.expired | date }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Job Details Section -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <div
+            class="bg-gray-800/30 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 space-y-8"
+          >
+            <!-- Job Description -->
+            <div>
+              <h2 class="text-3xl font-bold text-red-500 mb-6">
+                Job description
+              </h2>
+              <div class="prose prose-invert max-w-none">
+                <h3 class="text-xl font-semibold text-white mb-4">
+                  Who We Are
+                </h3>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                  {{ job.description }}
+                </p>
+
+                <h3 class="text-xl font-semibold text-white mb-4">
+                  What You'll Do
+                </h3>
+                <ul class="space-y-3 text-gray-300">
+                  <li *ngIf="job.des1" class="flex items-start gap-3">
+                    <svg
+                      class="w-5 h-5 text-emerald-400 mt-1 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    <span>{{ job.des1 }}</span>
+                  </li>
+                  <li *ngIf="job.des2" class="flex items-start gap-3">
+                    <svg
+                      class="w-5 h-5 text-emerald-400 mt-1 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    <span>{{ job.des2 }}</span>
+                  </li>
+                  <li *ngIf="job.des3" class="flex items-start gap-3">
+                    <svg
+                      class="w-5 h-5 text-emerald-400 mt-1 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    <span>{{ job.des3 }}</span>
+                  </li>
+                </ul>
+
+                <div
+                  class="mt-8 p-6 bg-gray-900/50 rounded-xl border border-gray-700"
+                >
+                  <h4 class="text-lg font-semibold text-white mb-3">
+                    Job Details
+                  </h4>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <p class="text-sm text-gray-500">Employment Type</p>
+                      <p class="text-white font-medium capitalize">
+                        {{ job.employmentStatus }}
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Salary Range</p>
+                      <p class="text-white font-medium">{{ job.salary }}</p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Vacancies</p>
+                      <p class="text-white font-medium">
+                        {{ job.vacancy }} position(s)
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Department</p>
+                      <p class="text-white font-medium">{{ job.job }}</p>
+                    </div>
+                    <div *ngIf="job.expired">
+                      <p class="text-sm text-gray-500">Expiry Date</p>
+                      <p
+                        [class.text-red-400]="isJobExpired()"
+                        [class.text-emerald-400]="!isJobExpired()"
+                        class="font-medium"
+                      >
+                        {{ job.expired | date }}
+                        <span *ngIf="isJobExpired()" class="text-red-400"
+                          >(Expired)</span
+                        >
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">Status</p>
+                      <p
+                        [class.text-emerald-400]="job.isPublished"
+                        [class.text-gray-400]="!job.isPublished"
+                        class="font-medium"
+                      >
+                        {{ job.isPublished ? "Published" : "Not Published" }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Apply Button -->
+            <div class="flex justify-center pt-8">
+              <button
+                *ngIf="canApply(); else cannotApply"
+                (click)="applyForJob()"
+                class="px-12 py-4 bg-linear-to-r from-emerald-500 to-teal-500 rounded-xl font-bold text-white text-lg shadow-lg hover:shadow-emerald-500/50 transition-all hover:scale-105"
+              >
+                Apply for this position
+              </button>
+              <ng-template #cannotApply>
+                <button
+                  disabled
+                  class="px-12 py-4 bg-gray-700 rounded-xl font-bold text-gray-400 text-lg cursor-not-allowed"
+                >
+                  {{ isJobExpired() ? "Application Expired" : "Not Available" }}
+                </button>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

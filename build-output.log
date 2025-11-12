@@ -1,0 +1,133 @@
+[33m❯[39m Building...
+
+  polyfills-5CFQRCPP.js  33.8kb
+
+Done in 621ms
+
+  polyfills.server.mjs  259.0kb
+
+Done in 168ms
+● [DEBUG] Lookbehind assertions in regular expressions are not available in the configured target environment ("chrome107.0", "edge107.0", "firefox104.0", "ios16.0", "node24.0.0", "safari16.0" + 5 overrides) [unsupported-regexp]
+
+    node_modules/@angular/ssr/fesm2022/ssr.mjs:874:31:
+      874 │ const URL_PARAMETER_REGEXP = /(?<!\\):([^/]+)/g;
+          ╵                                ~~~
+
+  This regular expression literal has been converted to a "new RegExp()" constructor to avoid generating code with a syntax error. However, you will need to include a polyfill for "RegExp" for your code to have the correct behavior at run-time.
+
+● [DEBUG] Unicode property escapes in regular expressions are not available in the configured target environment ("chrome107.0", "edge107.0", "firefox104.0", "ios16.0", "node24.0.0", "safari16.0" + 5 overrides) [unsupported-regexp]
+
+    node_modules/primeng/fesm2022/primeng-utils.mjs:120:43:
+      120 │       str = str.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
+          ╵                                            ~~~~~~~~~~~~~
+
+  This regular expression literal has been converted to a "new RegExp()" constructor to avoid generating code with a syntax error. However, you will need to include a polyfill for "RegExp" for your code to have the correct behavior at run-time.
+
+● [DEBUG] Unicode property escapes in regular expressions are not available in the configured target environment ("chrome107.0", "edge107.0", "firefox104.0", "ios16.0", "safari16.0" + 5 overrides) [unsupported-regexp]
+
+    node_modules/primeng/fesm2022/primeng-utils.mjs:120:43:
+      120 │       str = str.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
+          ╵                                            ~~~~~~~~~~~~~
+
+  This regular expression literal has been converted to a "new RegExp()" constructor to avoid generating code with a syntax error. However, you will need to include a polyfill for "RegExp" for your code to have the correct behavior at run-time.
+
+● [DEBUG] Lookbehind assertions in regular expressions are not available in the configured target environment ("chrome107.0", "edge107.0", "firefox104.0", "ios16.0", "node24.0.0", "safari16.0" + 5 overrides) [unsupported-regexp]
+
+    node_modules/@angular/ssr/third_party/beasties/index.js:10508:48:
+      10508 │ ...doClassesAndElementsPattern = /(?<!\\)::?[a-z-]+(?:\(.+\))?/gi;
+            ╵                                    ~~~
+
+  This regular expression literal has been converted to a "new RegExp()" constructor to avoid generating code with a syntax error. However, you will need to include a polyfill for "RegExp" for your code to have the correct behavior at run-time.
+
+● [DEBUG] Lookbehind assertions in regular expressions are not available in the configured target environment ("chrome107.0", "edge107.0", "firefox104.0", "ios16.0", "node24.0.0", "safari16.0" + 5 overrides) [unsupported-regexp]
+
+    node_modules/@angular/ssr/third_party/beasties/index.js:10803:51:
+      10803 │ ...nst beastiesComment = rule.text.match(/^(?<!! )beasties:(.*)/);
+            ╵                                             ~~~
+
+  This regular expression literal has been converted to a "new RegExp()" constructor to avoid generating code with a syntax error. However, you will need to include a polyfill for "RegExp" for your code to have the correct behavior at run-time.
+
+● [DEBUG] This call to "require" will not be bundled because the argument is not a string literal [unsupported-require-call]
+
+    node_modules/express/lib/view.js:72:13:
+      72 │     var fn = require(mod).__express;
+         ╵              ~~~~~~~
+
+
+  chunk-M64TPEZS.js  346.4kb
+  chunk-UTBOK62X.js  228.9kb
+  chunk-XDCMA7U4.js  200.0kb
+  chunk-LOPKXBFS.js  136.5kb
+  main-L5232FST.js   117.9kb
+  ...and 11 more output files...
+
+Done in 38588ms
+
+  server.mjs            1.3mb
+  chunk-L4ZGZCGW.mjs  348.6kb
+  chunk-2S5ELTGY.mjs  346.5kb
+  chunk-I6CDSUQ3.mjs  238.3kb
+  main.server.mjs     203.6kb
+  ...and 14 more output files...
+
+Done in 38752ms
+[32m✔[39m Building...
+[35mBrowser bundles[39m      
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m                   [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-UTBOK62X.js[39m    [2m | [22m[2m-[22m                       [2m | [22m[36m234.35 kB[39m[2m | [22m               [36m67.78 kB[39m
+[32mchunk-XDCMA7U4.js[39m    [2m | [22m[2m-[22m                       [2m | [22m[36m204.77 kB[39m[2m | [22m               [36m61.22 kB[39m
+[32mstyles-KXHXCBXF.css[39m  [2m | [22m[2mstyles[22m                  [2m | [22m[36m160.42 kB[39m[2m | [22m               [36m16.05 kB[39m
+[32mmain-L5232FST.js[39m     [2m | [22m[2mmain[22m                    [2m | [22m[36m120.72 kB[39m[2m | [22m               [36m32.92 kB[39m
+[32mchunk-Y52EGPSL.js[39m    [2m | [22m[2m-[22m                       [2m | [22m[36m116.14 kB[39m[2m | [22m               [36m29.76 kB[39m
+[32mpolyfills-5CFQRCPP.js[39m[2m | [22m[2mpolyfills[22m               [2m | [22m [36m34.59 kB[39m[2m | [22m               [36m11.33 kB[39m
+[32mchunk-C4W4SGOK.js[39m    [2m | [22m[2m-[22m                       [2m | [22m  [36m7.11 kB[39m[2m | [22m                [36m2.29 kB[39m
+[32mchunk-3R6Q2LFW.js[39m    [2m | [22m[2m-[22m                       [2m | [22m  [36m4.20 kB[39m[2m | [22m                [36m1.09 kB[39m
+[32mchunk-6OPVMW5F.js[39m    [2m | [22m[2m-[22m                       [2m | [22m  [36m1.92 kB[39m[2m | [22m              [36m653 bytes[39m
+[32mchunk-4CLCTAJ7.js[39m    [2m | [22m[2m-[22m                       [2m | [22m[36m830 bytes[39m[2m | [22m              [36m830 bytes[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m           [2m | [22m[1m885.03 kB[22m[2m | [22m              [1m223.93 kB[22m
+
+[1mLazy chunk files[22m     [2m | [22m[1mNames[22m                   [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-M64TPEZS.js[39m    [2m | [22m[2mdashboard-routing-module[22m[2m | [22m[36m354.74 kB[39m[2m | [22m               [36m75.15 kB[39m
+[32mchunk-LOPKXBFS.js[39m    [2m | [22m[2mpublic-routing-module[22m   [2m | [22m[36m139.76 kB[39m[2m | [22m               [36m29.61 kB[39m
+[32mchunk-OU6AXV3V.js[39m    [2m | [22m[2m-[22m                       [2m | [22m [36m40.20 kB[39m[2m | [22m                [36m8.28 kB[39m
+[32mchunk-FRFKJPOM.js[39m    [2m | [22m[2mregister-component[22m      [2m | [22m [36m10.00 kB[39m[2m | [22m                [36m2.65 kB[39m
+[32mchunk-6Q5UIPSY.js[39m    [2m | [22m[2mlogin-component[22m         [2m | [22m  [36m6.54 kB[39m[2m | [22m                [36m2.16 kB[39m
+[32mchunk-3FGWGT4B.js[39m    [2m | [22m[2m-[22m                       [2m | [22m  [36m1.72 kB[39m[2m | [22m              [36m529 bytes[39m
+[32mchunk-V4NNQDH4.js[39m    [2m | [22m[2m404-component[22m           [2m | [22m  [36m1.28 kB[39m[2m | [22m              [36m595 bytes[39m
+[32mchunk-5A4WNVOM.js[39m    [2m | [22m[2mauto[22m                    [2m | [22m  [36m1.20 kB[39m[2m | [22m              [36m507 bytes[39m
+
+
+[35mServer bundles[39m       
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m                   [2m | [22m [1mRaw size[22m
+[32mserver.mjs[39m           [2m | [22m[2mserver[22m                  [2m | [22m  [36m1.33 MB[39m[2m | [22m                       
+[32mchunk-L4ZGZCGW.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m[36m356.98 kB[39m[2m | [22m                       
+[32mpolyfills.server.mjs[39m [2m | [22m[2mpolyfills.server[22m        [2m | [22m[36m265.23 kB[39m[2m | [22m                       
+[32mchunk-I6CDSUQ3.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m[36m243.98 kB[39m[2m | [22m                       
+[32mmain.server.mjs[39m      [2m | [22m[2mmain.server[22m             [2m | [22m[36m208.52 kB[39m[2m | [22m                       
+[32mchunk-VHWVH4LC.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m[36m204.81 kB[39m[2m | [22m                       
+[32mchunk-M7P4NQCZ.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m[36m116.56 kB[39m[2m | [22m                       
+[32mchunk-GNZFAPE3.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m  [36m7.14 kB[39m[2m | [22m                       
+[32mchunk-U3IL2KTG.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m  [36m4.23 kB[39m[2m | [22m                       
+[32mchunk-S6KH3LOX.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m  [36m2.77 kB[39m[2m | [22m                       
+[32mchunk-WX7RAJBC.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m  [36m1.96 kB[39m[2m | [22m                       
+
+[1mLazy chunk files[22m     [2m | [22m[1mNames[22m                   [2m | [22m [1mRaw size[22m
+[32mchunk-2S5ELTGY.mjs[39m   [2m | [22m[2mdashboard-routing-module[22m[2m | [22m[36m354.78 kB[39m[2m | [22m                       
+[32mchunk-X2YI6QET.mjs[39m   [2m | [22m[2mpublic-routing-module[22m   [2m | [22m[36m139.80 kB[39m[2m | [22m                       
+[32mchunk-J4P4MYLY.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m [36m40.24 kB[39m[2m | [22m                       
+[32mchunk-U7FCQRFK.mjs[39m   [2m | [22m[2mxhr2[22m                    [2m | [22m [36m12.08 kB[39m[2m | [22m                       
+[32mchunk-PF3OAH3C.mjs[39m   [2m | [22m[2mregister-component[22m      [2m | [22m [36m10.04 kB[39m[2m | [22m                       
+[32mchunk-6FLVL6TG.mjs[39m   [2m | [22m[2mlogin-component[22m         [2m | [22m  [36m6.58 kB[39m[2m | [22m                       
+[32mchunk-X6N7EIKD.mjs[39m   [2m | [22m[2m-[22m                       [2m | [22m  [36m1.75 kB[39m[2m | [22m                       
+[32mchunk-TMT5ODZI.mjs[39m   [2m | [22m[2m404-component[22m           [2m | [22m  [36m1.31 kB[39m[2m | [22m                       
+[32mchunk-R3FTBOUJ.mjs[39m   [2m | [22m[2mauto[22m                    [2m | [22m  [36m1.24 kB[39m[2m | [22m                       
+
+[35mPrerendered 0 static routes.[39m
+Application bundle generation complete. [43.180 seconds] - 2025-11-05T16:21:33.006Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1msrc/app/features/dashboard/dashboard-component/dashboard.component.css exceeded maximum budget. Budget 4.00 kB was not met by 650 bytes with a total of 4.65 kB.[0m
+
+[39m[22m
+Output location: D:\app\blog\angular-blog\dist\infoAidTech
+

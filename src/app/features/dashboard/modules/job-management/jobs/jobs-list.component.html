@@ -1,0 +1,428 @@
+<!-- Modern 3D Jobs Management -->
+<div class="w-full space-y-6">
+  <!-- Hero Header -->
+  <div
+    class="relative overflow-hidden rounded-3xl bg-linear-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 backdrop-blur-xl border border-white/10 p-8"
+  >
+    <div class="flex justify-between items-center">
+      <div>
+        <h1
+          class="text-4xl font-bold bg-linear-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent mb-2"
+        >
+          Job Management
+        </h1>
+        <p class="text-gray-400">Manage and organize your job postings</p>
+      </div>
+      <button
+        routerLink="/dashboard/job/create"
+        class="group relative px-6 py-3 bg-linear-to-r from-emerald-500 to-teal-500 rounded-xl font-semibold text-white shadow-lg shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300 hover:scale-105 overflow-hidden"
+      >
+        <span class="relative z-10 flex items-center gap-2">
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          Post New Job
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
+    <div class="relative">
+      <div
+        class="w-16 h-16 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"
+      ></div>
+    </div>
+    <p class="mt-6 text-gray-400 animate-pulse">Loading job postings...</p>
+  </div>
+
+  <!-- Error State -->
+  <div
+    *ngIf="error"
+    class="relative overflow-hidden rounded-2xl bg-red-500/10 backdrop-blur-xl border border-red-500/30 p-6"
+  >
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="p-3 bg-red-500/20 rounded-xl">
+          <svg
+            class="w-6 h-6 text-red-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-red-400">Error Loading Jobs</h3>
+          <p class="text-red-300/80 text-sm">{{ error }}</p>
+        </div>
+      </div>
+      <button
+        (click)="loadJobs()"
+        class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-xl text-red-400 font-medium transition-all duration-300"
+      >
+        Retry
+      </button>
+    </div>
+  </div>
+
+  <!-- Jobs Table -->
+  <div
+    *ngIf="!loading && !error"
+    class="relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl"
+  >
+    <!-- Table Header -->
+    <div class="px-8 py-6 border-b border-white/10">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+          <div
+            class="p-2 bg-linear-to-br from-emerald-500 to-teal-500 rounded-xl"
+          >
+            <svg
+              class="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          All Job Postings
+        </h2>
+        <span
+          class="px-4 py-2 bg-emerald-500/20 border border-emerald-500/50 rounded-full text-emerald-400 font-semibold text-sm"
+        >
+          {{ jobs.length }} Jobs
+        </span>
+      </div>
+    </div>
+
+    <!-- Table Content -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead>
+          <tr class="bg-white/5">
+            <th
+              class="px-8 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider"
+            >
+              Job Details
+            </th>
+            <th
+              class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider"
+            >
+              Employment
+            </th>
+            <th
+              class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider"
+            >
+              Status
+            </th>
+            <th
+              class="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider"
+            >
+              Expiry
+            </th>
+            <th
+              class="px-6 py-4 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          <tr
+            *ngFor="let job of jobs"
+            class="group hover:bg-white/5 transition-all duration-300"
+          >
+            <!-- Job Details -->
+            <td class="px-8 py-6">
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-linear-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0"
+                >
+                  <svg
+                    class="w-6 h-6 text-emerald-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div class="flex-1 space-y-2">
+                  <!-- Title -->
+                  <div>
+                    <div
+                      *ngIf="!isEditing(job._id, 'title')"
+                      class="flex items-center gap-2 group/edit"
+                    >
+                      <h3
+                        class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors"
+                      >
+                        {{ job.title || "Untitled" }}
+                      </h3>
+                      <button
+                        (click)="startEditing(job._id, 'title', job.title)"
+                        class="opacity-0 group-hover/edit:opacity-100 p-1 hover:bg-emerald-500/20 rounded transition-all"
+                        title="Edit title"
+                      >
+                        <svg
+                          class="w-4 h-4 text-emerald-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      *ngIf="isEditing(job._id, 'title')"
+                      class="flex items-center gap-2"
+                    >
+                      <input
+                        type="text"
+                        [(ngModel)]="editingJob[job._id]['title']"
+                        class="flex-1 px-3 py-1 bg-white/10 border border-emerald-500/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                        placeholder="Enter title"
+                      />
+                      <button
+                        (click)="saveField(job, 'title')"
+                        class="p-1.5 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 rounded-lg text-green-400 transition-all"
+                        title="Save"
+                      >
+                        <svg
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        (click)="cancelEdit(job._id, 'title')"
+                        class="p-1.5 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-lg text-red-400 transition-all"
+                        title="Cancel"
+                      >
+                        <svg
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-500">
+                    <span class="inline-flex items-center gap-1">
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      {{ job.location }}
+                    </span>
+                    <span class="mx-2">•</span>
+                    <span>{{ job.job }}</span>
+                  </p>
+                  <p class="text-xs text-gray-600">Salary: {{ job.salary }}</p>
+                </div>
+              </div>
+            </td>
+
+            <!-- Employment Details -->
+            <td class="px-6 py-6">
+              <div class="space-y-1">
+                <span
+                  class="inline-block px-3 py-1 bg-emerald-500/20 border border-emerald-500/50 rounded-full text-emerald-400 text-xs font-medium"
+                >
+                  {{ job.employmentStatus }}
+                </span>
+                <p class="text-xs text-gray-500">{{ job.workplace }}</p>
+              </div>
+            </td>
+
+            <!-- Status -->
+            <td class="px-6 py-6">
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                  <span
+                    [class.bg-emerald-500/20]="job.isPublished"
+                    [class.border-emerald-500/50]="job.isPublished"
+                    [class.text-emerald-400]="job.isPublished"
+                    [class.bg-gray-500/20]="!job.isPublished"
+                    [class.border-gray-500/50]="!job.isPublished"
+                    [class.text-gray-400]="!job.isPublished"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border"
+                  >
+                    {{ job.isPublished ? 'Published' : 'Draft' }}
+                  </span>
+                </div>
+                <button
+                  (click)="togglePublishStatus(job)"
+                  class="text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                >
+                  {{ job.isPublished ? 'Unpublish' : 'Publish' }}
+                </button>
+              </div>
+            </td>
+
+            <!-- Expiry -->
+            <td class="px-6 py-6">
+              <div class="flex flex-col gap-2">
+                <span
+                  [class.text-red-400]="isExpired(job.expired)"
+                  [class.text-emerald-400]="!isExpired(job.expired)"
+                  class="font-medium"
+                >
+                  {{ job.expired ? formatDate(job.expired) : 'Not set' }}
+                </span>
+                <button
+                  (click)="extendExpiryDate(job)"
+                  class="text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                >
+                  Extend
+                </button>
+              </div>
+            </td>
+
+            <!-- Actions -->
+            <td class="px-6 py-6 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button
+                  (click)="viewApplications(job._id)"
+                  class="px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 rounded-xl text-blue-400 font-medium text-sm transition-all duration-300 hover:scale-105"
+                >
+                  Applications
+                </button>
+                <button
+                  (click)="editJob(job._id)"
+                  class="px-4 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/50 rounded-xl text-emerald-400 font-medium text-sm transition-all duration-300 hover:scale-105"
+                >
+                  Edit
+                </button>
+                <button
+                  (click)="deleteJob(job._id)"
+                  class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-xl text-red-400 font-medium text-sm transition-all duration-300 hover:scale-105"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Empty State -->
+          <tr *ngIf="jobs.length === 0">
+            <td colspan="5" class="px-8 py-20 text-center">
+              <div class="flex flex-col items-center gap-4">
+                <div
+                  class="w-20 h-20 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-10 h-10 text-emerald-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-400 mb-2">
+                    No job postings found
+                  </h3>
+                  <p class="text-gray-500 mb-4">
+                    Get started by creating your first job posting
+                  </p>
+                  <a
+                    routerLink="/dashboard/job/create"
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-emerald-500 to-teal-500 rounded-xl font-semibold text-white shadow-lg hover:shadow-emerald-500/50 transition-all duration-300 hover:scale-105"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    Post First Job
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

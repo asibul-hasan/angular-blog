@@ -1,0 +1,33 @@
+/* Ensure blog content images and wide elements don't overflow */
+::ng-deep .prose img,
+::ng-deep .prose video,
+::ng-deep .prose iframe {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+::ng-deep .prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+::ng-deep .prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+::ng-deep .prose * {
+  max-width: 100%;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* Only break long URLs and code */
+::ng-deep .prose a,
+::ng-deep .prose code {
+  word-break: break-word;
+}

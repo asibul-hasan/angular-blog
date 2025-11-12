@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { BlogApiService } from '../../services/blog/blog.service';
 
 @Component({
@@ -24,19 +24,19 @@ import { BlogApiService } from '../../services/blog/blog.service';
           class="object-cover w-full h-full transition-transform duration-700 ease-in-out group-hover:scale-110"
         />
         <div
-          class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-70 transition-opacity"
+          class="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-70 transition-opacity"
         ></div>
       </div>
 
       <!-- Content -->
-      <div class="p-5 flex flex-col flex-grow text-gray-300">
+      <div class="p-5 flex flex-col grow text-gray-300">
         <h2
           class="text-xl font-semibold mb-2 text-white line-clamp-2 group-hover:text-pink-400 transition-colors"
         >
           {{ title() }}
         </h2>
 
-        <p class="text-gray-400 text-sm flex-grow line-clamp-3" [innerHTML]="description()"></p>
+        <p class="text-gray-400 text-sm grow line-clamp-3">{{ description() }}</p>
 
         <button
           type="button"
@@ -57,6 +57,7 @@ export class BlogCardComponent {
 
   constructor(private readonly api: BlogApiService,
     private readonly router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   readonly blog = input.required<any>();
@@ -67,14 +68,38 @@ export class BlogCardComponent {
   );
 
   readonly title = computed(() => this.blog()?.title ?? 'Untitled');
-  readonly description = computed(() => this.blog()?.short_desc ?? 'No description available');
+  readonly description = computed(() => {
+    const desc = this.blog()?.short_desc ?? 'No description available';
+    // Strip HTML tags and decode HTML entities to prevent hydration mismatch
+    if (typeof desc === 'string') {
+      // For SSR safety, use regex to strip tags and decode common entities
+      let text = desc.replace(/<[^>]*>/g, ''); // Remove HTML tags
+
+      // Decode common HTML entities
+      text = text
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'")
+        .replace(/&apos;/g, "'");
+
+      return text.trim();
+    }
+    return desc;
+  });
   readonly slug = computed(() => this.blog()?.slug ?? null);
 
   onLinkClick(): void {
     const slug = this.slug();
     if (slug) {
+      // Scroll to top IMMEDIATELY before navigation
+      if (isPlatformBrowser(this.platformId)) {
+        window.scrollTo(0, 0);
+      }
       this.router.navigate([`/blog/${slug}`], {
-        state: { blog: this.blog()?._id },
+        state: { blog: this.blog() },
       });
     } else {
       console.error('Blog slug is missing');

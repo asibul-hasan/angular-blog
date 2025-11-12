@@ -5,14 +5,13 @@ import {
   Inject,
   PLATFORM_ID,
   OnInit,
+  HostListener,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
-// import { LoaderComponent } from '../../../shared/components/template/loader.component';
-import { LoaderService } from '../../../shared/services/loader/loader.service';
-import { startWith } from 'rxjs/operators';
 import { AuthService, User } from '../../../shared/services/auth/auth.service';
 import { Observable } from 'rxjs';
+import { MENU_ITEMS, MenuItem } from './menu.config';
 
 @Component({
   selector: 'app-sidebar',
@@ -27,20 +26,21 @@ export class SidebarComponent implements OnInit {
 
   isSidebarExpanded = false;
   isUserMenuOpen = false;
-  // isLoading$;
+
+  // Module expansion tracking
+  expandedModules: { [key: string]: boolean } = {};
+
+  // Menu items
+  menuItems = MENU_ITEMS;
 
   isBrowser = false;
 
   constructor(
-    private loaderService: LoaderService,
     private cd: ChangeDetectorRef,
     private authService: AuthService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    // Ensure the observable has an initial value
-    // this.isLoading$ = this.loaderService.isLoading$.pipe(startWith(false));
-  }
+  ) { }
 
   ngOnInit() {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -48,7 +48,30 @@ export class SidebarComponent implements OnInit {
     this.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });
+
+    // Initialize all modules as collapsed
+    this.menuItems.forEach(item => {
+      if (item.children) {
+        this.expandedModules[item.id] = false;
+      }
+    });
   }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isBrowser) return;
+
+    const target = event.target as HTMLElement;
+    const userMenuButton = target.closest('.user-menu-toggle');
+    const userMenuDropdown = target.closest('.user-menu-dropdown');
+
+    // Close menu if clicking outside both the button and dropdown
+    if (!userMenuButton && !userMenuDropdown && this.isUserMenuOpen) {
+      this.isUserMenuOpen = false;
+      this.cd.detectChanges();
+    }
+  }
+
   logout(): void {
     if (confirm('Are you sure you want to logout?')) {
       this.authService.logout();
@@ -76,5 +99,19 @@ export class SidebarComponent implements OnInit {
 
   toggleUserMenu() {
     this.isUserMenuOpen = !this.isUserMenuOpen;
+    this.cd.detectChanges();
+  }
+
+  // Toggle module expansion
+  toggleModule(moduleId: string) {
+    this.expandedModules[moduleId] = !this.expandedModules[moduleId];
+  }
+
+  // Check if a module should be shown (admin-only modules hidden for non-admins)
+  shouldShowItem(item: MenuItem): boolean {
+    if (item.requiresAdmin && !this.isAdmin) {
+      return false;
+    }
+    return true;
   }
 }

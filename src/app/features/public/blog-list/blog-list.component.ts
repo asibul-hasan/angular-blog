@@ -1,11 +1,10 @@
-import { Component, Inject, OnInit, PLATFORM_ID, computed, signal } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID, computed, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { BlogCardComponent } from '../../../shared/components/template/blog-card.component';
 import { BlogStoreService } from '../../../core/services/blog-store.service';
 import { UpperSectionComponent } from '../../../shared/components/template/cards/page-upper-section.component';
 import { Router } from '@angular/router';
 import { SeoService } from '../../../shared/services/seo/seo.service';
-import { LoaderService } from '../../../shared/services/loader/loader.service';
 
 @Component({
   selector: 'app-blog-list',
@@ -14,9 +13,13 @@ import { LoaderService } from '../../../shared/services/loader/loader.service';
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.css'],
 })
-export class BlogList implements OnInit {
+export class BlogList implements OnInit, OnDestroy {
   // Selected category signal
   readonly selectedCategory = signal<number | null>(null);
+
+  // Slider state
+  readonly currentSlide = signal<number>(0);
+  private autoSlideInterval?: any;
 
   // Store references
   readonly allBlogs = computed(() => this.blogStore.blogs());
@@ -35,10 +38,17 @@ export class BlogList implements OnInit {
     return allBlogs.filter((blog: any) => blog.categoryId === category || blog.category?.id === category);
   });
 
-  // Featured blog (first blog or first in selected category)
-  readonly featuredBlog = computed(() => {
+  // Featured blogs (top 5 for slider)
+  readonly featuredBlogs = computed(() => {
     const filteredBlogs = this.blogs();
-    return filteredBlogs.length > 0 ? filteredBlogs[0] : null;
+    return filteredBlogs.slice(0, 5); // Top 5 blogs
+  });
+
+  // Current featured blog for slider
+  readonly currentFeaturedBlog = computed(() => {
+    const featured = this.featuredBlogs();
+    const index = this.currentSlide();
+    return featured[index] || null;
   });
 
   // Check if blogs are loading
@@ -47,8 +57,7 @@ export class BlogList implements OnInit {
   readonly buttonText = 'Read More';
 
   constructor(private readonly blogStore: BlogStoreService,
-    private router: Router, private seo: SeoService, @Inject(PLATFORM_ID) private platformId: Object,
-    private loader: LoaderService
+    private router: Router, private seo: SeoService, @Inject(PLATFORM_ID) private platformId: Object
   ) {
 
     let origin = '';
@@ -75,6 +84,48 @@ export class BlogList implements OnInit {
     // Load data on component initialization
     this.blogStore.loadBlogs();
     this.blogStore.loadCategories();
+
+    // Start auto-slide
+    this.startAutoSlide();
+  }
+
+  ngOnDestroy() {
+    this.stopAutoSlide();
+  }
+
+  startAutoSlide() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.autoSlideInterval = setInterval(() => {
+        this.nextSlide();
+      }, 5000); // Change slide every 5 seconds
+    }
+  }
+
+  stopAutoSlide() {
+    if (this.autoSlideInterval) {
+      clearInterval(this.autoSlideInterval);
+    }
+  }
+
+  nextSlide() {
+    const totalSlides = this.featuredBlogs().length;
+    if (totalSlides > 0) {
+      this.currentSlide.set((this.currentSlide() + 1) % totalSlides);
+    }
+  }
+
+  previousSlide() {
+    const totalSlides = this.featuredBlogs().length;
+    if (totalSlides > 0) {
+      this.currentSlide.set((this.currentSlide() - 1 + totalSlides) % totalSlides);
+    }
+  }
+
+  goToSlide(index: number) {
+    this.currentSlide.set(index);
+    // Restart auto-slide timer
+    this.stopAutoSlide();
+    this.startAutoSlide();
   }
 
   selectCategory(id: number | null) {
@@ -113,9 +164,11 @@ export class BlogList implements OnInit {
 
   // Navigate to blog detail
   navigateToBlog(blog: any) {
-    // You can implement navigation logic here
-    // For example: this.router.navigate(['/blog', blog.slug]);
-    console.log('Navigate to blog:', blog);
+    // Scroll to top IMMEDIATELY before navigation
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+    }
+    this.router.navigate(['/blog', blog.slug]);
   }
 
   // Track by function for better performance

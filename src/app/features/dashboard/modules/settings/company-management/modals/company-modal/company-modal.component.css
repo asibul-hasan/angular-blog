@@ -1,0 +1,243 @@
+.modal-container {
+  padding: 0;
+  min-width: 300px;
+  width: 100%;
+  background-color: #1e1e2d;
+  color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #2a2a3c;
+  border-bottom: 1px solid #3a3a4c;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #a0a0b0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal-content {
+  padding: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.company-form {
+  width: 100%;
+}
+
+.form-section {
+  margin-bottom: 30px;
+  background-color: #252536;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.form-section h3 {
+  margin: 0 0 20px 0;
+  color: #ffffff;
+  border-bottom: 1px solid #3a3a4c;
+  padding-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.full-width {
+  flex: 1 1 100%;
+}
+
+.half-width {
+  flex: 1 1 calc(50% - 8px);
+}
+
+/* Material Form Field Overrides for Dark Theme */
+mat-form-field {
+  width: 100%;
+}
+
+mat-form-field .mat-form-field-label {
+  color: #a0a0b0;
+}
+
+mat-form-field .mat-input-element {
+  color: #e0e0e0;
+}
+
+mat-form-field .mat-form-field-underline {
+  background-color: #3a3a4c;
+}
+
+mat-form-field.mat-focused .mat-form-field-label {
+  color: #4d90fe;
+}
+
+mat-form-field.mat-focused .mat-form-field-underline .mat-form-field-ripple {
+  background-color: #4d90fe;
+}
+
+mat-form-field .mat-select-value {
+  color: #e0e0e0;
+}
+
+mat-form-field .mat-select-arrow {
+  color: #a0a0b0;
+}
+
+/* Select Panel for Dark Theme */
+.mat-select-panel {
+  background: #2a2a3c;
+  color: #e0e0e0;
+}
+
+.mat-select-panel mat-option {
+  color: #e0e0e0;
+}
+
+.mat-select-panel mat-option:hover,
+.mat-select-panel mat-option.mat-active {
+  background: #3a3a4c;
+}
+
+/* Textarea */
+textarea.mat-input-element {
+  background-color: #2a2a3c;
+  border: 1px solid #3a3a4c;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px;
+  background-color: #2a2a3c;
+  border-top: 1px solid #3a3a4c;
+}
+
+/* Custom Button Styles */
+.btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #4d90fe;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #3a7de0;
+}
+
+.btn-secondary {
+  background-color: #3a3a4c;
+  color: #e0e0e0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #4a4a5c;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scrollbar styling for dark theme */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #1e1e2d;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #3a3a4c;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #4a4a5c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-header {
+    padding: 15px;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+
+  .form-section {
+    padding: 15px;
+  }
+
+  .half-width {
+    flex: 1 1 100%;
+  }
+
+  .modal-actions {
+    padding: 15px;
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+}

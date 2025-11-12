@@ -6,6 +6,7 @@ import { SocialLinksService } from '../../services/social-links/social-links.ser
 import { SeoService } from '../../services/seo/seo.service';
 import { LanguageService } from '../../services/language/lang.service';
 import { SocialIcon } from '../template/social-icon-card.component';
+import path from 'path';
 
 @Component({
   selector: 'app-footer',
@@ -31,13 +32,13 @@ export class Footer implements OnInit {
     public langService: LanguageService
   ) {
     this.socialLinks = this.socialLinksService.getSocialLinks();
-    this.navItems = [
-      { path: '/', label: this.langService.lang.home },
-      { path: '#', label: this.langService.lang.about },
-      { path: '/blog', label: this.langService.lang.blog },
-      { path: '#', label: this.langService.lang.services },
-      { path: '#', label: this.langService.lang.contact },
-    ];
+    // this.navItems = [
+    //   { path: '/', label: this.langService.lang.home },
+    //   { path: '#', label: this.langService.lang.about },
+    //   { path: '/blog', label: this.langService.lang.blog },
+    //   { path: '#', label: this.langService.lang.services },
+    //   { path: '#', label: this.langService.lang.contact },
+    // ];
 
     this.footerMenuList = [
       {
@@ -48,6 +49,9 @@ export class Footer implements OnInit {
           { path: '/blog', label: 'Blog' },
           { path: '/services', label: 'Service' },
           { path: '/contact', label: 'Contact' },
+          { path: '/careers', label: 'Career' },
+          { path: '/internships', label: 'Internship' }
+
         ],
       },
       {
@@ -67,5 +71,5 @@ export class Footer implements OnInit {
     ];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

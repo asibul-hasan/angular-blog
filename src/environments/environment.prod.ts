@@ -4,8 +4,10 @@ export const environment = {
   // blogsApiBaseUrl: 'http://localhost:3000/api/blog',
   blogsApiBaseUrl: 'https://infoaidtech.vercel.app/api/blog',
   //   SITE_URL: 'http://localhost:5000/',
-  apiUrl: 'https://infoaidtech.vercel.app/api/blog',
+  apiUrl: 'https://infoaidtech.vercel.app/api',
   SITE_URL: 'https://infoaidtech.net',
 
+  // Hugging Face API Token (Used on backend to avoid CORS issues)
+  huggingFaceToken: '', // Leave empty, use backend endpoint instead
 };
 

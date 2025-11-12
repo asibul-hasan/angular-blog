@@ -3,14 +3,14 @@
 <section class="py-20 md:py-32 bg-black text-white relative overflow-hidden">
   <!-- Animated background gradient orbs -->
   <div
-    class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/30 rounded-full blur-[120px] animate-pulse"
+    class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#f76179]/30 rounded-full blur-[120px] animate-pulse"
   ></div>
   <div
     class="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] animate-pulse"
     style="animation-delay: 1s"
   ></div>
   <div
-    class="absolute top-2/3 left-1/3 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] animate-pulse"
+    class="absolute top-2/3 left-1/3 w-[400px] h-[400px] bg-[#1e3e62]/20 rounded-full blur-[100px] animate-pulse"
     style="animation-delay: 2s"
   ></div>
 
@@ -21,86 +21,107 @@
         class="inline-block mb-6 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
       >
         <span
-          class="text-sm font-semibold tracking-widest uppercase bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent"
+          class="text-sm font-semibold tracking-widest uppercase bg-linear-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent"
         >
           Insights & Updates
         </span>
       </div>
       <!-- <h2
-        class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-none"
+        class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-6 bg-linear-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-none"
       >
         Our Blog
       </h2> -->
       <p class="text-2xl md:text-3xl font-light text-gray-300 tracking-wide">
         Discover the latest in
-        <span class="text-primary font-semibold italic">tech & innovation</span>
+        <span class="text-[#f76179] font-semibold italic">tech & innovation</span>
       </p>
     </div>
 
-    <!-- Featured Blog Post -->
-    <div *ngIf="featuredBlog()" class="mb-16 group relative">
+    <!-- Featured Blog Slider (Top 5) -->
+    <div *ngIf="currentFeaturedBlog()" class="mb-16 group relative">
       <div
-        class="absolute inset-0 bg-gradient-to-br from-primary to-purple-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
+        class="absolute inset-0 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
       ></div>
       <div
-        class="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden hover:border-primary/50 transition-all duration-500 cursor-pointer"
-        (click)="navigateToBlog(featuredBlog())"
+        class="relative bg-linear-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden hover:border-[#f76179]/50 transition-all duration-500"
       >
         <div class="grid lg:grid-cols-2 gap-0">
           <!-- Featured Image -->
-          <div class="relative h-64 lg:h-full overflow-hidden">
+          <div class="relative h-64 lg:h-full overflow-hidden cursor-pointer" (click)="navigateToBlog(currentFeaturedBlog())">
             <img
               [src]="
-                featuredBlog()?.image ||
+                currentFeaturedBlog()?.image ||
                 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755703537/FFFFFF_hi6y3z.svg'
               "
-              [alt]="featuredBlog()?.title"
+              [alt]="currentFeaturedBlog()?.title"
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
             <div
-              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+              class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"
             ></div>
             <div
-              class="absolute top-4 left-4 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-xs font-bold uppercase tracking-wider shadow-xl"
+              class="absolute top-4 left-4 px-4 py-2 bg-linear-to-r from-amber-500 to-orange-500 rounded-full text-xs font-bold uppercase tracking-wider shadow-xl"
             >
               Featured
             </div>
+            
+            <!-- Navigation Arrows -->
+            <button
+              *ngIf="featuredBlogs().length > 1"
+              (click)="previousSlide(); $event.stopPropagation()"
+              class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+              aria-label="Previous slide"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <button
+              *ngIf="featuredBlogs().length > 1"
+              (click)="nextSlide(); $event.stopPropagation()"
+              class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+              aria-label="Next slide"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
           </div>
 
           <!-- Featured Content -->
           <div class="p-8 md:p-12 flex flex-col justify-center">
             <div class="flex items-center gap-3 mb-4">
               <span
-                class="px-3 py-1 bg-primary/20 border border-primary/30 rounded-full text-xs font-semibold text-primary uppercase tracking-wider"
+                class="px-3 py-1 bg-[#f76179]/20 border border-[#f76179]/30 rounded-full text-xs font-semibold text-[#f76179] uppercase tracking-wider"
               >
-                {{ getCategoryName(featuredBlog()?.categoryId) }}
+                {{ getCategoryName(currentFeaturedBlog()?.categoryId) }}
               </span>
               <span class="text-gray-400 text-sm">•</span>
               <span class="text-gray-400 text-sm">
-                {{ featuredBlog()?.readTime || 5 }} min read
+                {{ currentFeaturedBlog()?.readTime || 5 }} min read
               </span>
             </div>
             <h3
-              class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-primary transition-colors duration-300"
+              class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-[#f76179] transition-colors duration-300"
             >
-              {{ featuredBlog()?.title }}
+              {{ currentFeaturedBlog()?.title }}
             </h3>
             <p class="text-lg text-gray-300 leading-relaxed mb-6 line-clamp-3">
-              {{ featuredBlog()?.short_desc || featuredBlog()?.description }}
+              {{ currentFeaturedBlog()?.short_desc || currentFeaturedBlog()?.description }}
             </p>
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div
-                  class="w-10 h-10 bg-gradient-to-br from-primary to-blue-500 rounded-full"
+                  class="w-10 h-10 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-full"
                 ></div>
                 <div>
                   <p class="text-sm font-bold text-white">
-                    {{ featuredBlog()?.author || "Infoaidtech Team" }}
+                    {{ currentFeaturedBlog()?.author || "Infoaidtech Team" }}
                   </p>
                   <p class="text-xs text-gray-400">
                     {{
                       formatDate(
-                        featuredBlog()?.publishedAt || featuredBlog()?.createdAt
+                        currentFeaturedBlog()?.publishedAt || currentFeaturedBlog()?.createdAt
                       )
                     }}
                   </p>
@@ -108,9 +129,22 @@
               </div>
               <button
                 class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-semibold text-sm transition-all duration-300"
+                (click)="navigateToBlog(currentFeaturedBlog())"
               >
                 Read More →
               </button>
+            </div>
+            
+            <!-- Slider Indicators -->
+            <div *ngIf="featuredBlogs().length > 1" class="flex gap-2 mt-6 justify-center">
+              <button
+                *ngFor="let blog of featuredBlogs(); let i = index"
+                (click)="goToSlide(i)"
+                [class.bg-[#f76179]]="currentSlide() === i"
+                [class.bg-white/30]="currentSlide() !== i"
+                class="w-2 h-2 rounded-full transition-all duration-300 hover:scale-125"
+                [attr.aria-label]="'Go to slide ' + (i + 1)"
+              ></button>
             </div>
           </div>
         </div>
@@ -124,7 +158,7 @@
         (click)="selectCategory(null)"
         [ngClass]="
           selectedCategory() === null
-            ? 'bg-gradient-to-r from-primary to-blue-500 text-white shadow-lg shadow-primary/30'
+            ? 'bg-linear-to-r from-[#f76179] to-[#1e3e62] text-white shadow-lg shadow-[#f76179]/30'
             : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white'
         "
         class="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
@@ -139,7 +173,7 @@
         (click)="selectCategory(category._id)"
         [ngClass]="
           selectedCategory() === category._id
-            ? 'bg-gradient-to-r from-primary to-blue-500 text-white shadow-lg shadow-primary/30'
+            ? 'bg-linear-to-r from-[#f76179] to-[#1e3e62] text-white shadow-lg shadow-[#f76179]/30'
             : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white'
         "
         class="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
@@ -159,7 +193,7 @@
         </span>
         <span *ngIf="selectedCategory() !== null">
           Showing {{ blogs().length }} articles in
-          <span class="text-primary font-semibold">
+          <span class="text-[#f76179] font-semibold">
             {{ getCategoryName(selectedCategory()!) }}
           </span>
         </span>
@@ -187,7 +221,7 @@
           </p>
           <button
             (click)="selectCategory(null)"
-            class="mt-2 px-6 py-2 bg-primary/20 hover:bg-primary/30 border border-primary/30 rounded-lg text-primary text-sm font-semibold transition-all duration-300"
+            class="mt-2 px-6 py-2 bg-[#f76179]/20 hover:bg-[#f76179]/30 border border-[#f76179]/30 rounded-lg text-[#f76179] text-sm font-semibold transition-all duration-300"
           >
             View All Posts
           </button>
@@ -200,7 +234,7 @@
           class="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
         >
           <div
-            class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"
+            class="w-5 h-5 border-2 border-[#f76179] border-t-transparent rounded-full animate-spin"
           ></div>
           <p class="text-gray-300 font-medium">Loading blogs...</p>
         </div>
@@ -210,7 +244,7 @@
     <!-- Load More Button (optional - only show if there are blogs) -->
     <div *ngIf="blogs().length > 0" class="mt-16 text-center">
       <button
-        class="px-10 py-5 bg-gradient-to-r from-primary to-blue-500 rounded-xl font-bold text-lg text-white shadow-2xl shadow-primary/50 hover:scale-105 transition-transform duration-300"
+        class="px-10 py-5 bg-linear-to-r from-[#f76179] to-[#1e3e62] rounded-xl font-bold text-lg text-white shadow-2xl shadow-[#f76179]/50 hover:scale-105 transition-transform duration-300"
         (click)="loadMoreBlogs()"
       >
         Load More Posts

@@ -24,7 +24,7 @@ import { Subscription } from 'rxjs';
 
       <!-- Subtle gradient background -->
       <!-- <div
-        class="absolute inset-0 bg-gradient-to-br from-indigo-50 via-pink-50 to-white opacity-90 
+        class="absolute inset-0 bg-linear-to-br from-indigo-50 via-pink-50 to-white opacity-90 
                dark:from-slate-900 dark:via-gray-900 dark:to-black transition-colors duration-500"
       ></div> -->
 

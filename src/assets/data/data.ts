@@ -248,11 +248,78 @@ export class DataService {
 
   private initializeOurTechnologyData(): any[] {
     return [
-      // {
-      //   icon: '',
-      //   title: this.langService.lang.,
-      //   description: this.langService.lang.
-      // },
+      {
+        name: 'React',
+        icon: 'assets/icons/react.svg',
+        color: '97, 218, 251',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(97, 218, 251, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(97, 218, 251, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Vue.js',
+        icon: 'assets/icons/vue-dot-js.svg',
+        color: '65, 184, 131',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(65, 184, 131, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(65, 184, 131, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Angular',
+        icon: 'assets/icons/angular.svg',
+        color: '221, 0, 49',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(221, 0, 49, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(221, 0, 49, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Django',
+        icon: 'assets/icons/django.svg',
+        color: '9, 46, 32',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(12, 74, 110, 0.2) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(9, 46, 32, 0.15) 0%, transparent 50%)'
+      },
+      {
+        name: 'React Native',
+        icon: 'assets/icons/react-native.svg',
+        color: '97, 218, 251',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(97, 218, 251, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(136, 146, 255, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Next.js',
+        icon: 'assets/icons/nextjs.svg',
+        color: '255, 255, 255',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(100, 100, 100, 0.12) 0%, transparent 50%)'
+      },
+      {
+        name: 'FastAPI',
+        icon: 'assets/icons/fastapi.svg',
+        color: '0, 150, 136',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(0, 150, 136, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(5, 205, 153, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'jQuery',
+        icon: 'assets/icons/jquery.svg',
+        color: '0, 101, 166',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(0, 101, 166, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(19, 147, 217, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Node.js',
+        icon: 'assets/icons/nodejs.svg',
+        color: '104, 160, 99',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(104, 160, 99, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(104, 160, 99, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Ruby On Rails',
+        icon: 'assets/icons/rubyonrails.svg',
+        color: '204, 0, 0',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(204, 0, 0, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(255, 77, 77, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'WordPress',
+        icon: 'assets/icons/wordpress.svg',
+        color: '33, 117, 155',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(33, 117, 155, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(33, 117, 155, 0.1) 0%, transparent 50%)'
+      },
+      {
+        name: 'Shopify',
+        icon: 'assets/icons/shopify.svg',
+        color: '150, 184, 62',
+        bgGradient: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.95) 50%, rgba(15, 23, 42, 0.9) 100%), radial-gradient(ellipse at top left, rgba(150, 184, 62, 0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(150, 184, 62, 0.1) 0%, transparent 50%)'
+      }
     ];
   }
 

@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
-import { LoaderComponent } from '../../../shared/components/template/loader.component';
-import { LoaderService } from '../../../shared/services/loader/loader.service';
 import { Footer } from '../../../shared/components/footer/footer.component';
+import { ChatbotComponent } from '../../../shared/components/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-public-layout',
@@ -14,19 +13,13 @@ import { Footer } from '../../../shared/components/footer/footer.component';
     RouterModule,
     NavbarComponent,
     Footer,
-    LoaderComponent,
+    ChatbotComponent,
   ],
   template: `
     <app-navbar></app-navbar>
-    <app-loader *ngIf="isLoading$ | async"></app-loader>
     <router-outlet></router-outlet>
     <app-footer></app-footer>
+    <app-chatbot></app-chatbot>
   `
 })
-export class PublicLayout {
-  isLoading$
-  constructor(private loaderService: LoaderService) {
-    this.isLoading$ = this.loaderService.isLoading$;
-
-  }
-}
+export class PublicLayout { }

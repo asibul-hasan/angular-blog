@@ -1,24 +1,101 @@
-<div class="p-6 md:p-10 section-card dashboard">
-  <!-- Header -->
-  <!-- <header class="mb-8 flex justify-between items-center">
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-      Blog Management Overview
+<!-- Modern 3D Dashboard -->
+<div class="dashboard-3d-container">
+  <!-- Hero Section with 3D Title -->
+  <div class="hero-section">
+    <h1 class="title-3d">
+      <span class="text-gradient">Dashboard</span>
+      <span class="title-subtitle">Analytics & Insights</span>
     </h1>
-  </header> -->
+    <div class="floating-particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+  </div>
 
-  <!-- Content Snapshot -->
-  <section class="mb-10">
-    <!-- <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
-      Content Snapshot
-    </h2> -->
-    <div
-      class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
-    >
-      <app-kpi-dashboard></app-kpi-dashboard>
+  <!-- KPI Cards with 3D Effect -->
+  <section class="kpi-section">
+    <app-kpi-dashboard></app-kpi-dashboard>
+  </section>
+
+  <!-- Charts Grid with Glass Effect -->
+  <section class="charts-grid">
+    <!-- Traffic & Engagement -->
+    <div class="glass-card chart-card">
+      <div class="card-header">
+        <h3 class="card-title">Traffic & Engagement</h3>
+        <div class="card-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path d="M3 3v18h18" stroke-width="2" stroke-linecap="round" />
+            <path
+              d="M7 16l4-4 4 4 6-6"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
       <app-traffic-engagement></app-traffic-engagement>
+    </div>
+
+    <!-- Impressions by Category -->
+    <div class="glass-card chart-card">
+      <div class="card-header">
+        <h3 class="card-title">Impressions by Category</h3>
+        <div class="card-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="12" r="10" stroke-width="2" />
+            <path d="M12 2v10l6 6" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
       <app-impressions-category></app-impressions-category>
-      <app-trending-blogs-table></app-trending-blogs-table>
+    </div>
+
+    <!-- Category Distribution -->
+    <div class="glass-card chart-card">
+      <div class="card-header">
+        <h3 class="card-title">Category Distribution</h3>
+        <div class="card-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <rect x="3" y="3" width="7" height="7" stroke-width="2" rx="1" />
+            <rect x="14" y="3" width="7" height="7" stroke-width="2" rx="1" />
+            <rect x="3" y="14" width="7" height="7" stroke-width="2" rx="1" />
+            <rect x="14" y="14" width="7" height="7" stroke-width="2" rx="1" />
+          </svg>
+        </div>
+      </div>
       <app-category-distribution></app-category-distribution>
+    </div>
+  </section>
+
+  <!-- Trending Blogs Table with Glass Effect -->
+  <section class="trending-section">
+    <div class="glass-card table-card">
+      <div class="card-header">
+        <h3 class="card-title">Trending Blog Posts</h3>
+        <div class="badge-3d">Last 7 Days</div>
+      </div>
+      <app-trending-blogs-table></app-trending-blogs-table>
     </div>
   </section>
 </div>

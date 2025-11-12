@@ -10,6 +10,8 @@ import { ContactComponent } from './contact/contact.component';
 import { TermsOfServiceComponent } from './legal/terms-of-service.component';
 import { PrivacyPolicyComponent } from './legal/privacy-policy.component';
 import { DisclaimerComponent } from './legal/disclaimer.component';
+import { CareersComponent } from './careers/careers.component';
+import { CareerDetailComponent } from './career-detail/career-detail.component';
 
 const routes: Routes = [
   {
@@ -20,12 +22,14 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'blog', component: BlogList },
       { path: 'about', component: AboutComponent },
-      { path: 'blog/:id', component: BlogDetailComponent }, // SSR-only
+      { path: 'blog/:id', component: BlogDetailComponent },
       { path: 'service', component: ServiceComponent },
       { path: 'contact', component: ContactComponent },
       { path: 'terms-of-service', component: TermsOfServiceComponent },
       { path: 'privacy-policy', component: PrivacyPolicyComponent },
       { path: 'disclaimer', component: DisclaimerComponent },
+      { path: 'careers', component: CareersComponent },
+      { path: 'careers/:id', component: CareerDetailComponent },
     ],
   },
 ];
