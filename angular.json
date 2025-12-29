@@ -74,6 +74,7 @@
                   "inline": true
                 }
               },
+              "aot": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,

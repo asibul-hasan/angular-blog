@@ -63,6 +63,12 @@ export const MENU_ITEMS: MenuItem[] = [
                 title: 'Applications',
                 iconClass: 'fa-solid fa-file-contract',
                 route: '/dashboard/job-management/job-applications'
+            },
+            {
+                id: 'internship',
+                title: 'Internship',
+                iconClass: 'fa-solid fa-briefcase',
+                route: '/dashboard/internship'
             }
         ]
     },

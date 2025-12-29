@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,19 +18,27 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+  loginForm: FormGroup;
   loading = false;
   submitted = false;
   errorMessage = '';
   returnUrl = '';
   showPassword = false;
+  userType: 'admin' | 'intern' = 'admin'; // Default to admin
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    // Initialize form in constructor
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      rememberMe: [false],
+    });
+  }
 
   ngOnInit(): void {
     // Redirect if already logged in
@@ -38,14 +46,30 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     }
 
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false],
-    });
-
     // Get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  initForm(): void {
+    if (this.userType === 'intern') {
+      this.loginForm = this.formBuilder.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        domain: ['', [Validators.required]], // Domain field for interns
+        rememberMe: [false],
+      });
+    } else {
+      this.loginForm = this.formBuilder.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        rememberMe: [false],
+      });
+    }
+  }
+
+  toggleUserType(): void {
+    this.userType = this.userType === 'admin' ? 'intern' : 'admin';
+    this.initForm();
   }
 
   get f() {
@@ -67,15 +91,22 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     const { email, password } = this.loginForm.value;
 
+    // Call the actual login API
     this.authService.login({ email, password }).subscribe({
       next: (response) => {
-        this.router.navigate([this.returnUrl]);
+        this.loading = false;
+        // Navigate based on user role from auth service
+        if (this.authService.isAdmin) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          // For interns or other roles, navigate to appropriate page
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: (error) => {
-        this.errorMessage =
-          error.error?.message || 'Login failed. Please try again.';
         this.loading = false;
-      },
+        this.errorMessage = error.error?.message || 'Login failed. Please try again.';
+      }
     });
   }
 }

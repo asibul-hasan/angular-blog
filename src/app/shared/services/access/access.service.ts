@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 export interface Module {
   _id?: string;

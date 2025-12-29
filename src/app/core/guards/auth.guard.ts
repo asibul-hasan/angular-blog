@@ -1,92 +1,90 @@
-// src/app/auth/guards/auth.guard.ts
 import { inject, PLATFORM_ID, Inject, Injectable } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import {
-  Router,
-  CanActivateFn,
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+    Router,
+    CanActivateFn,
+    CanActivate,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserContextService } from '../services/user-context.service';
 
 export const AuthGuard: CanActivateFn = (
-  route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
 ): boolean => {
-  const router = inject(Router);
-  const authService = inject(AuthService);
-  const platformId = inject(PLATFORM_ID);
+    const router = inject(Router);
+    const authService = inject(AuthService);
+    const userContextService = inject(UserContextService);
+    const platformId = inject(PLATFORM_ID);
 
-  // Skip guard during SSR
-  if (!isPlatformBrowser(platformId)) {
-    return true;
-  }
-
-  // Check if user has valid token
-  const token = authService.token;
-  const currentUser = authService.currentUserValue;
-
-  if (token && currentUser) {
-    // Check if route requires admin role
-    if (
-      route.data['roles'] &&
-      route.data['roles'].indexOf(currentUser.role) === -1
-    ) {
-      router.navigate(['/']);
-      return false;
+    // Skip guard during SSR
+    if (!isPlatformBrowser(platformId)) {
+        return true;
     }
-    return true;
-  }
 
-  // Not logged in, redirect to login with return url
-  router.navigate(['/login'], {
-    queryParams: { returnUrl: state.url },
-  });
-  return false;
+    // Check if user has valid token and is logged in via UserContextService
+    if (authService.token && userContextService.isLoggedIn()) {
+        const currentUser = userContextService.user();
+        // Check if route requires admin role using current user data
+        if (
+            route.data['roles'] &&
+            route.data['roles'].indexOf(currentUser.userRole) === -1
+        ) {
+            router.navigate(['/']);
+            return false;
+        }
+        return true;
+    }
+
+    // Not logged in, redirect to login with return url
+    router.navigate(['/login'], {
+        queryParams: { returnUrl: state.url },
+    });
+    return false;
 };
 
 // Legacy class-based guard (deprecated but kept for compatibility)
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AuthGuardClass implements CanActivate {
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+    constructor(
+        private router: Router,
+        private authService: AuthService,
+        private userContextService: UserContextService, // Inject UserContextService
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) { }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
-    // Skip guard during SSR
-    if (!isPlatformBrowser(this.platformId)) {
-      return true;
-    }
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): boolean {
+        // Skip guard during SSR
+        if (!isPlatformBrowser(this.platformId)) {
+            return true;
+        }
 
-    // Check if user has valid token
-    const token = this.authService.token;
-    const currentUser = this.authService.currentUserValue;
+        // Check if user has valid token and is logged in via UserContextService
+        if (this.authService.token && this.userContextService.isLoggedIn()) {
+            const currentUser = this.userContextService.user();
+            // Check if route requires admin role using current user data
+            if (
+                route.data['roles'] &&
+                route.data['roles'].indexOf(currentUser.userRole) === -1
+            ) {
+                this.router.navigate(['/']);
+                return false;
+            }
+            return true;
+        }
 
-    if (token && currentUser) {
-      // Check if route requires admin role
-      if (
-        route.data['roles'] &&
-        route.data['roles'].indexOf(currentUser.role) === -1
-      ) {
-        this.router.navigate(['/']);
+        // Not logged in, redirect to login with return url
+        this.router.navigate(['/login'], {
+            queryParams: { returnUrl: state.url },
+        });
         return false;
-      }
-      return true;
     }
-
-    // Not logged in, redirect to login with return url
-    this.router.navigate(['/login'], {
-      queryParams: { returnUrl: state.url },
-    });
-    return false;
-  }
 }

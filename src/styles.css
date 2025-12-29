@@ -477,12 +477,16 @@ body {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif; /* Simplified font stack for better performance */
   font-size: 1rem;
   line-height: 1.6;
   color: var(--color-text-primary);
   background-color: var(--color-bg-richblack);
+  /* Added performance optimizations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ============================================
@@ -929,6 +933,9 @@ ol ol {
 
 body.loader-active {
   overflow: hidden;
+  /* Performance optimization: hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Import CKEditor 5 styles */
@@ -946,6 +953,11 @@ body.loader-active {
   --ck-color-button-on-background: #3a3a3a;
   --ck-color-toolbar-background: #1e1e1e;
   --ck-color-toolbar-border: #3a3a3a;
+}
+
+/* Performance optimization: Critical CSS for above-the-fold content */
+.critical {
+  /* Add any critical styles here that need to load immediately */
 }
 
 /* Dark Modal Styles */

@@ -8,6 +8,11 @@ export const routes: Routes = [
       import('./features/public/public-routing-module').then(
         (m) => m.PublicRoutingModule
       ),
+    data: {
+      preload: true, // Preload public routes for better performance
+      preloadPriority: 'high', // High priority for immediate loading
+      preloadDelay: 1000 // 1 second delay before preloading
+    }
   },
   {
     path: 'login',

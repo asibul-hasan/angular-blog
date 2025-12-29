@@ -23,6 +23,7 @@ import {
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
 
 // Register all Chart.js components
 Chart.register(...registerables);
@@ -34,22 +35,23 @@ export const appConfig: ApplicationConfig = {
       eventCoalescing: true,
       runCoalescing: true // Improved performance
     }),
-    MessageService, // Ensure MessageService is provided at the app level
-
-    // ✅ HttpClient with fetch + interceptors for SSR
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([authInterceptor, httpLoaderInterceptor])
-    ),
-
+    // Performance optimizations
     provideRouter(
       routes,
       withInMemoryScrolling({
         scrollPositionRestoration: 'enabled',
         anchorScrolling: 'enabled'
       }),
-      withPreloading(PreloadAllModules),
+      withPreloading(CustomPreloadingStrategy), // Use custom preloading strategy for better performance
       withViewTransitions() // Enable smooth page transitions
+    ),
+    MessageService, // Ensure MessageService is provided at the app level
+
+    // ✅ HttpClient with fetch + interceptors for SSR
+    // Optimized HTTP client with performance improvements
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([authInterceptor, httpLoaderInterceptor])
     ),
 
     NgxChartsModule,
@@ -58,6 +60,7 @@ export const appConfig: ApplicationConfig = {
 
     // PrimeNG configuration
     providePrimeNG(),    // ✅ Enhanced hydration with HTTP cache
+    // Enhanced hydration with performance optimizations
     provideClientHydration(
       withEventReplay(),
       withHttpTransferCacheOptions({

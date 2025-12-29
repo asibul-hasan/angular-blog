@@ -1,0 +1,518 @@
+<!-- Internship Application Form -->
+<div class="min-h-screen py-16">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+          Apply for Internship
+        </h1>
+        <p class="text-xl text-gray-400">
+          Join our team and gain valuable experience in the tech industry
+        </p>
+      </div>
+
+      <!-- Application Form -->
+      <div
+        class="bg-gray-800/30 backdrop-blur-xl border border-gray-700 rounded-2xl p-8"
+      >
+        <form
+          [formGroup]="internshipForm"
+          (ngSubmit)="onSubmit()"
+          class="space-y-8"
+        >
+          <!-- Personal Information Section -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">
+              Personal Information
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Full Name -->
+              <div class="md:col-span-2">
+                <label class="block text-gray-300 mb-2">
+                  Full Name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="fullName"
+                  placeholder="Your full name which should appear on the certificates"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('fullName')?.invalid &&
+                    internshipForm.get('fullName')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('fullName')?.invalid &&
+                    internshipForm.get('fullName')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Full name is required (minimum 2 characters)
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  formControlName="email"
+                  placeholder="your.email@example.com"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('email')?.invalid &&
+                    internshipForm.get('email')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('email')?.invalid &&
+                    internshipForm.get('email')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Valid email is required
+                </div>
+              </div>
+
+              <!-- Date of Birth -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Date of Birth <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  formControlName="dateOfBirth"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('dateOfBirth')?.invalid &&
+                    internshipForm.get('dateOfBirth')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('dateOfBirth')?.invalid &&
+                    internshipForm.get('dateOfBirth')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Date of birth is required
+                </div>
+              </div>
+
+              <!-- Country -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Country <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="country"
+                  placeholder="Your country"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('country')?.invalid &&
+                    internshipForm.get('country')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('country')?.invalid &&
+                    internshipForm.get('country')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Country is required
+                </div>
+              </div>
+
+              <!-- WhatsApp Number -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  WhatsApp Number <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  formControlName="whatsapp"
+                  placeholder="+1234567890"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('whatsapp')?.invalid &&
+                    internshipForm.get('whatsapp')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('whatsapp')?.invalid &&
+                    internshipForm.get('whatsapp')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  WhatsApp number is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Educational Information Section -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">
+              Educational Information
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- College/University Name -->
+              <div class="md:col-span-2">
+                <label class="block text-gray-300 mb-2">
+                  College/University Name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="college"
+                  placeholder="Your college or university name"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('college')?.invalid &&
+                    internshipForm.get('college')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('college')?.invalid &&
+                    internshipForm.get('college')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  College/University name is required
+                </div>
+              </div>
+
+              <!-- Highest Academic Qualification -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Highest Academic Qualification
+                  <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  formControlName="qualification"
+                  placeholder="B.Tech, M.Sc, etc."
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('qualification')?.invalid &&
+                    internshipForm.get('qualification')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('qualification')?.invalid &&
+                    internshipForm.get('qualification')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Academic qualification is required
+                </div>
+              </div>
+
+              <!-- Current Year of Course -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Current Year of your Course
+                  <span class="text-red-500">*</span>
+                </label>
+                <select
+                  formControlName="currentYear"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('currentYear')?.invalid &&
+                    internshipForm.get('currentYear')?.touched
+                  "
+                >
+                  <option value="">Select your current year</option>
+                  <option
+                    *ngFor="let option of currentYearOptions"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    internshipForm.get('currentYear')?.invalid &&
+                    internshipForm.get('currentYear')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Current year is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Internship Preferences Section -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">
+              Internship Preferences
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Preferred Internship Domain -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Preferred Internship Domain
+                  <span class="text-red-500">*</span>
+                </label>
+                <select
+                  formControlName="preferredDomain"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('preferredDomain')?.invalid &&
+                    internshipForm.get('preferredDomain')?.touched
+                  "
+                >
+                  <option value="">Select your preferred domain</option>
+                  <option
+                    *ngFor="let option of preferredDomainOptions"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    internshipForm.get('preferredDomain')?.invalid &&
+                    internshipForm.get('preferredDomain')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Preferred domain is required
+                </div>
+              </div>
+
+              <!-- Skill Level -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Mark Your Skill of Preferred Domain
+                  <span class="text-red-500">*</span>
+                </label>
+                <select
+                  formControlName="skillLevel"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('skillLevel')?.invalid &&
+                    internshipForm.get('skillLevel')?.touched
+                  "
+                >
+                  <option value="">Select your skill level</option>
+                  <option
+                    *ngFor="let option of skillLevelOptions"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    internshipForm.get('skillLevel')?.invalid &&
+                    internshipForm.get('skillLevel')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Skill level is required
+                </div>
+              </div>
+
+              <!-- LinkedIn Profile -->
+              <div class="md:col-span-2">
+                <label class="block text-gray-300 mb-2">
+                  LinkedIn Profile URL <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="url"
+                  formControlName="linkedinProfile"
+                  placeholder="https://www.linkedin.com/in/your-profile"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('linkedinProfile')?.invalid &&
+                    internshipForm.get('linkedinProfile')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    internshipForm.get('linkedinProfile')?.invalid &&
+                    internshipForm.get('linkedinProfile')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Valid LinkedIn profile URL is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- How Did You Hear About Us -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">
+              How Did You Hear About Us?
+            </h2>
+            <div class="grid grid-cols-1 gap-6">
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Where did you know about Info AidTech?
+                  <span class="text-red-500">*</span>
+                </label>
+                <select
+                  formControlName="source"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                  [class.border-red-500]="
+                    internshipForm.get('source')?.invalid &&
+                    internshipForm.get('source')?.touched
+                  "
+                >
+                  <option value="">Select an option</option>
+                  <option
+                    *ngFor="let option of sourceOptions"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    internshipForm.get('source')?.invalid &&
+                    internshipForm.get('source')?.touched
+                  "
+                  class="text-red-500 text-sm mt-1"
+                >
+                  Please select how you heard about us
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media Presence -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">
+              Social Media Presence
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Follow/Joined our Telegram -->
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Follow/Joined our Telegram
+                </label>
+                <input
+                  type="text"
+                  formControlName="telegram"
+                  placeholder="Telegram username or link"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+              </div>
+
+              <!-- Facebook -->
+              <div>
+                <label class="block text-gray-300 mb-2"> Facebook </label>
+                <input
+                  type="text"
+                  formControlName="facebook"
+                  placeholder="Facebook profile or page"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+              </div>
+
+              <!-- Instagram -->
+              <div>
+                <label class="block text-gray-300 mb-2"> Instagram </label>
+                <input
+                  type="text"
+                  formControlName="instagram"
+                  placeholder="Instagram handle"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- YouTube Membership -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">YouTube Family</h2>
+            <div class="grid grid-cols-1 gap-6">
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Secure your place in our YouTube family by becoming a member
+                  through the link below. Showcase your commitment by sharing a
+                  subscription screenshot here.
+                </label>
+                <div class="mb-4">
+                  <label class="block text-gray-400 mb-2"> Link: </label>
+                  <a
+                    href="#"
+                    target="_blank"
+                    class="text-emerald-400 hover:text-emerald-300 underline"
+                  >
+                    Become a YouTube Member
+                  </a>
+                </div>
+                <label class="block text-gray-300 mb-2">
+                  Subscription Screenshot
+                </label>
+                <div class="flex items-center gap-4">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    (change)="onFileSelected($event, 'youtubeScreenshot')"
+                    class="hidden"
+                    id="youtubeScreenshot"
+                  />
+                  <label
+                    for="youtubeScreenshot"
+                    class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition-colors"
+                  >
+                    Choose File
+                  </label>
+                  <span class="text-gray-400 text-sm">
+                    {{
+                      internshipForm.get("youtubeScreenshot")?.value ||
+                        "No file chosen"
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Queries -->
+          <div>
+            <h2 class="text-2xl font-bold text-red-500 mb-6">Queries</h2>
+            <div class="grid grid-cols-1 gap-6">
+              <div>
+                <label class="block text-gray-300 mb-2">
+                  Do you have any queries?
+                </label>
+                <textarea
+                  formControlName="queries"
+                  rows="4"
+                  placeholder="Share any questions or concerns you have"
+                  class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-8">
+            <button
+              type="submit"
+              [disabled]="internshipForm.invalid"
+              class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-700 disabled:cursor-not-allowed rounded-xl font-bold text-white text-lg transition-all"
+            >
+              Submit Application
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

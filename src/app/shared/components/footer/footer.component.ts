@@ -68,6 +68,15 @@ export class Footer implements OnInit {
           { path: '/disclaimer', label: 'Disclimer' },
         ],
       },
+      {
+        heading: 'Products',
+        lists: [
+          {
+            path: '/image-converter',
+            label: 'Image Converter',
+          },
+        ],
+      },
     ];
   }
 

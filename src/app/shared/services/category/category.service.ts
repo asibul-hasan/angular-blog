@@ -2,6 +2,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -16,7 +17,14 @@ export class CategoryService {
   ) { }
 
   getCategories(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-category-list`);
+    return this.http.get(`${this.apiUrl}/get-category-list`, { observe: 'response' }).pipe(
+      // Handle potential issues with the API response
+      catchError((error: any) => {
+        console.error('Error fetching categories:', error);
+        // Return empty array as fallback
+        return of([]);
+      })
+    );
   }
 
   getCategoryById(id: string): Observable<any> {

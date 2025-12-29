@@ -5,6 +5,7 @@ import {
   PLATFORM_ID,
   ChangeDetectionStrategy,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
@@ -13,6 +14,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { BlogApiService } from '../../../../../shared/services/blog/blog.service';
 import { BlogStoreService } from '../../../../../core/services/blog-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,11 +49,12 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogCreateComponent implements OnInit, AfterViewInit {
+export class BlogCreateComponent implements OnInit, AfterViewInit, OnDestroy {
   blogForm: FormGroup;
   blogId?: string;
-  categories: any[] = [];
+  categories: any = [];
   isBrowser = false;
+  private subscription = new Subscription();
 
   tinymceConfig = {
     plugins: 'lists link image table code help wordcount autoresize',
@@ -111,18 +114,31 @@ export class BlogCreateComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // Use categories from store
+    // Load categories from store and subscribe to updates
     this.blogStore.loadCategories();
-    this.categories = this.blogStore.categories();
+    
+    // Subscribe to category changes from the store
+    this.subscription.add(
+      this.blogStore.categories$.subscribe(categories => {
+        this.categories = categories;
+        console.log('Categories:', this.categories);
+        // If we have a blogId, load the existing blog after categories are loaded
+        if (this.blogId) {
+          this.loadExistingBlog();
+        }
+      })
+    );
 
-    // After categories are loaded, load existing blog if blogId exists
-    if (this.blogId) {
-      this.loadExistingBlog();
-    }
+    // If no blogId, we don't need to load an existing blog
   }
 
   ngAfterViewInit(): void {
-    // TinyMCE is loaded via TINYMCE_SCRIPT_SRC provider
+
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe to prevent memory leaks
+    this.subscription.unsubscribe();
   }
 
 

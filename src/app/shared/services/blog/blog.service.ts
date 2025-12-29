@@ -1,8 +1,9 @@
 import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { catchError } from 'rxjs/operators';
 
 export interface BlogAuthor {
   _id: string;
@@ -49,15 +50,21 @@ export class BlogApiService {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   getBlogs(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-blog-list`);
+    return this.http.get(`${this.apiUrl}/get-blog-list`).pipe(
+      catchError(this.handleError)
+    );
   }
 
   getBlogById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-blog/${id}`);
+    return this.http.get(`${this.apiUrl}/get-blog/${id}`).pipe(
+      catchError(this.handleError)
+    );
   }
 
   getBlogBySlug(slug: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-blog-by-slug/${slug}`);
+    return this.http.get(`${this.apiUrl}/get-blog-by-slug/${slug}`).pipe(
+      catchError(this.handleError)
+    );
   }
 
   // Only run in browser (to avoid SSR errors for mutations)
@@ -96,5 +103,27 @@ export class BlogApiService {
     const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
 
     return this.http.post(url, formData);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+
+      // Specific error messages for common issues
+      if (error.status === 0) {
+        errorMessage = 'Unable to connect to the server. Please check your internet connection and ensure the API server is running.';
+      } else if (error.status === 404) {
+        errorMessage = 'Requested resource not found.';
+      } else if (error.status === 500) {
+        errorMessage = 'Internal server error. Please try again later.';
+      }
+    }
+    console.error(errorMessage);
+    return throwError(() => errorMessage);
   }
 }

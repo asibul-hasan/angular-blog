@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
-import { DashboardComponent } from './dashboard-component/dashboard.component';
 import { AdminGuard } from '../../core/guards/admin.guard';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
-    component: DashboardLayoutComponent,
+    loadComponent: () => import('./dashboard-layout/dashboard-layout.component').then(c => c.DashboardLayoutComponent),
     children: [
-      { path: '', component: DashboardComponent, pathMatch: 'full' },
+      {
+        path: '',
+        loadComponent: () => import('./dashboard-component/dashboard.component').then(c => c.DashboardComponent),
+        pathMatch: 'full'
+      },
       {
         path: 'blog-management',
         loadChildren: () => import('./modules/blog-management/blog-management.routes').then(m => m.BLOG_MANAGEMENT_ROUTES)
@@ -25,6 +27,10 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: 'settings',
         loadChildren: () => import('./modules/settings/settings.routes').then(m => m.SETTINGS_ROUTES)
+      },
+      {
+        path: 'intern-management',
+        loadChildren: () => import('./modules/intern-management/intern-management.routes').then(m => m.INTERN_MANAGEMENT_ROUTES)
       },
       // Wildcard route for 404 handling - should show a proper 404 page instead of redirecting
       {

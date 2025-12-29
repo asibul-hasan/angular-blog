@@ -227,7 +227,7 @@
                     *ngIf="!user.avatar"
                     class="w-12 h-12 rounded-xl bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-lg font-bold text-white shadow-lg"
                   >
-                    {{ user.name.charAt(0).toUpperCase() }}
+                    {{ user.userName.charAt(0).toUpperCase() }}
                   </div>
                   <div
                     class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-gray-900 rounded-full"
@@ -237,7 +237,7 @@
                   <h3
                     class="font-semibold text-white group-hover:text-indigo-400 transition-colors"
                   >
-                    {{ user.name }}
+                    {{ user.userName }}
                   </h3>
                   <p class="text-sm text-gray-500">Member</p>
                 </div>
@@ -255,14 +255,14 @@
                 class="px-3 py-1 rounded-full text-xs font-semibold"
                 [ngClass]="{
                   'bg-indigo-500/20 text-indigo-400 border border-indigo-500/40':
-                    user.role === 'admin',
+                    user.userRole === 'admin',
                   'bg-pink-500/20 text-pink-400 border border-pink-500/40':
-                    user.role === 'editor',
+                    user.userRole === 'editor',
                   'bg-gray-500/20 text-gray-400 border border-gray-500/40':
-                    user.role === 'user'
+                    user.userRole === 'user'
                 }"
               >
-                {{ user.role | uppercase }}
+                {{ user.userRole | uppercase }}
               </span>
             </td>
 
@@ -289,8 +289,8 @@
             <td class="px-6 py-6">
               <div class="flex items-center justify-center">
                 <button
-                  (click)="deleteUser(user._id, user.name)"
-                  [disabled]="user.role === 'admin'"
+                  (click)="deleteUser(user)"
+                  [disabled]="user.userRole === 'admin'"
                   class="p-2 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 rounded-xl text-red-400 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   title="Delete user"
                 >

@@ -25,7 +25,7 @@
         </div>
         <div class="flex-1 min-w-0">
           <h3 class="text-sm font-semibold text-white truncate !mb-0">
-            {{ currentUser?.name || "User" }}
+            {{ userContextService.user().userName || "User" }}
           </h3>
           <p class="text-xs text-gray-400 truncate !mb-0">
             {{ isAdmin ? "Administrator" : "User" }}
@@ -52,10 +52,10 @@
       >
         <div class="px-4 py-3 border-b border-white/10">
           <p class="text-sm font-semibold text-white">
-            {{ currentUser?.name }}
+            {{ userContextService.user().userName }}
           </p>
           <p class="text-xs text-gray-400 truncate">
-            {{ currentUser?.email }}
+            {{ userContextService.user().email }}
           </p>
         </div>
         <ul class="py-2">

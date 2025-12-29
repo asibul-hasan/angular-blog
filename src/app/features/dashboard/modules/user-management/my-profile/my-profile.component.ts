@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, User } from '../../../../../shared/services/auth/auth.service';
+import { AuthService } from '../../../../../core/services/auth.service';
 import { ToastService } from '../../../../../shared/services/toast.service';
+import { UserContextService, UserInfo } from '../../../../../core/services/user-context.service';
 
 @Component({
     selector: 'app-my-profile',
@@ -12,19 +13,20 @@ import { ToastService } from '../../../../../shared/services/toast.service';
     styleUrls: ['./my-profile.component.css'],
 })
 export class MyProfileComponent implements OnInit {
-    currentUser: User | null = null;
+    currentUser: UserInfo | null = null;
     profileForm: FormGroup;
     passwordForm: FormGroup;
     loading = false;
     isBrowser = false;
     activeTab: 'profile' | 'password' = 'profile';
 
-    constructor(
-        private authService: AuthService,
-        private fb: FormBuilder,
-        private toast: ToastService,
-        @Inject(PLATFORM_ID) private platformId: Object
-    ) {
+    private authService = inject(AuthService);
+    private fb = inject(FormBuilder);
+    private toast = inject(ToastService);
+    private platformId = inject(PLATFORM_ID);
+    public userContextService = inject(UserContextService); // Inject UserContextService
+
+    constructor() {
         this.isBrowser = isPlatformBrowser(this.platformId);
 
         this.profileForm = this.fb.group({
@@ -42,15 +44,14 @@ export class MyProfileComponent implements OnInit {
     ngOnInit(): void {
         if (!this.isBrowser) return;
 
-        this.authService.currentUser.subscribe((user) => {
-            this.currentUser = user;
-            if (user) {
-                this.profileForm.patchValue({
-                    name: user.name,
-                    email: user.email,
-                });
-            }
-        });
+        // Initialize currentUser from UserContextService
+        this.currentUser = this.userContextService.user();
+        if (this.currentUser) {
+            this.profileForm.patchValue({
+                name: this.currentUser.userName,
+                email: this.currentUser.email,
+            });
+        }
     }
 
     updateProfile(): void {
@@ -61,8 +62,10 @@ export class MyProfileComponent implements OnInit {
 
         this.loading = true;
         this.authService.updateProfile(this.profileForm.value).subscribe({
-            next: () => {
+            next: (response) => {
                 this.toast.success('Success', 'Profile updated successfully');
+                // Update the user context after successful profile update
+                this.userContextService.setCurrentUser(response.body);
                 this.loading = false;
             },
             error: (err) => {
@@ -100,8 +103,9 @@ export class MyProfileComponent implements OnInit {
     }
 
     get userInitials(): string {
-        if (!this.currentUser?.name) return 'U';
-        const names = this.currentUser.name.split(' ');
+        const user = this.userContextService.user();
+        if (!user || !user.userName) return 'U';
+        const names = user.userName.split(' ');
         if (names.length > 1) {
             return names[0][0] + names[names.length - 1][0];
         }

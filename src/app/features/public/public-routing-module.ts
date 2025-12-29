@@ -1,35 +1,74 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { BlogList } from './blog-list/blog-list.component';
-import { BlogDetailComponent } from './blog-detail/blog-detail.component';
-import { PublicLayout } from './public-layout/public-layout.component';
-import { AboutComponent } from './about/about.component';
-import { ServiceComponent } from './service/service.component';
-import { ContactComponent } from './contact/contact.component';
-import { TermsOfServiceComponent } from './legal/terms-of-service.component';
-import { PrivacyPolicyComponent } from './legal/privacy-policy.component';
-import { DisclaimerComponent } from './legal/disclaimer.component';
-import { CareersComponent } from './careers/careers.component';
-import { CareerDetailComponent } from './career-detail/career-detail.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PublicLayout,
+    loadComponent: () => import('./public-layout/public-layout.component').then(c => c.PublicLayout),
     children: [
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      { path: 'blog', component: BlogList },
-      { path: 'about', component: AboutComponent },
-      { path: 'blog/:id', component: BlogDetailComponent },
-      { path: 'service', component: ServiceComponent },
-      { path: 'contact', component: ContactComponent },
-      { path: 'terms-of-service', component: TermsOfServiceComponent },
-      { path: 'privacy-policy', component: PrivacyPolicyComponent },
-      { path: 'disclaimer', component: DisclaimerComponent },
-      { path: 'careers', component: CareersComponent },
-      { path: 'careers/:id', component: CareerDetailComponent },
+      {
+        path: '',
+        loadComponent: () => import('./home/home.component').then(c => c.HomeComponent),
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        loadComponent: () => import('./home/home.component').then(c => c.HomeComponent)
+      },
+      {
+        path: 'blog',
+        loadComponent: () => import('./blog-list/blog-list.component').then(c => c.BlogList)
+      },
+      {
+        path: 'about',
+        loadComponent: () => import('./about/about.component').then(c => c.AboutComponent)
+      },
+      {
+        path: 'blog/:id',
+        loadComponent: () => import('./blog-detail/blog-detail.component').then(c => c.BlogDetailComponent)
+      },
+      {
+        path: 'service',
+        loadComponent: () => import('./service/service.component').then(c => c.ServiceComponent)
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./contact/contact.component').then(c => c.ContactComponent)
+      },
+      {
+        path: 'terms-of-service',
+        loadComponent: () => import('./legal/terms-of-service.component').then(c => c.TermsOfServiceComponent)
+      },
+      {
+        path: 'privacy-policy',
+        loadComponent: () => import('./legal/privacy-policy.component').then(c => c.PrivacyPolicyComponent)
+      },
+      {
+        path: 'disclaimer',
+        loadComponent: () => import('./legal/disclaimer.component').then(c => c.DisclaimerComponent)
+      },
+      {
+        path: 'careers',
+        loadComponent: () => import('./careers/careers.component').then(c => c.CareersComponent)
+      },
+      {
+        path: 'careers/:id',
+        loadComponent: () => import('./career-detail/career-detail.component').then(c => c.CareerDetailComponent)
+      },
+      // products
+      {
+        path: 'image-converter',
+        loadComponent: () => import('./products/image-converter/image-converter.component').then(c => c.ImageConverterComponent)
+      },
+      // Internship routes
+      {
+        path: 'internship/:id',
+        loadComponent: () => import('./internship/detail/internship-detail.component').then(c => c.InternshipDetailComponent)
+      },
+      {
+        path: 'internship/apply',
+        loadComponent: () => import('./internship/apply/internship-apply.component').then(c => c.InternshipApplyComponent)
+      },
     ],
   },
 ];

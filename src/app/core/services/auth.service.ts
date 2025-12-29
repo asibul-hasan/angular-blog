@@ -1,27 +1,17 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, throwError, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { isPlatformBrowser } from '@angular/common';
 import { StorageService } from './storage.service';
-import { initializeUserContext } from './user-context';
+import { UserContextService, UserInfo, UserCompany } from './user-context.service';
 
-export interface User {
-    _id: string;
-    name: string;
-    email: string;
-    role: string;
-    avatar?: string;
-    isActive: boolean;
-}
+export type User = UserInfo;
 
 export interface AuthResponse {
-    body: {
-        user: User;
-        token: string;
-        refreshToken?: string;
-    };
+    body: User;
+    TOKEN: string;
+    refreshToken?: string;
     message: string;
 }
 
@@ -49,63 +39,18 @@ export interface RefreshTokenResponse {
     providedIn: 'root',
 })
 export class AuthService {
-    private readonly API_URL = `${environment.apiUrl}/auth`;
-    private currentUserSubject: BehaviorSubject<User | null>;
-    public currentUser: Observable<User | null>;
-    private storage: Storage;
+    private readonly API_URL = `${(environment as any).apiUrl}/auth`;
+    private http = inject(HttpClient);
+    private router = inject(Router);
+    private storageService = inject(StorageService);
+    private userContextService = inject(UserContextService);
+
     private refreshTokenTimeout: any;
 
-    constructor(
-        private http: HttpClient,
-        private router: Router,
-        @Inject(StorageService) private storageService: StorageService,
-        @Inject(PLATFORM_ID) private platformId: Object
-    ) {
-        initializeUserContext(this.storageService);
-
-        if (isPlatformBrowser(this.platformId)) {
-            this.storage = localStorage;
-            const storedUser = this.storageService.getItem('currentUser');
-            const storedToken = this.storageService.getItem('token');
-
-            if (storedUser && storedToken) {
-                try {
-                    this.currentUserSubject = new BehaviorSubject<User | null>(
-                        JSON.parse(storedUser)
-                    );
-                } catch (e) {
-                    this.storageService.removeItem('currentUser');
-                    this.storageService.removeItem('token');
-                    this.storageService.removeItem('refreshToken');
-                    this.currentUserSubject = new BehaviorSubject<User | null>(null);
-                }
-            } else {
-                this.storageService.removeItem('currentUser');
-                this.storageService.removeItem('token');
-                this.storageService.removeItem('refreshToken');
-                this.currentUserSubject = new BehaviorSubject<User | null>(null);
-            }
-        } else {
-            this.storage = {
-                getItem: () => null,
-                setItem: () => { },
-                removeItem: () => { },
-                clear: () => { },
-                key: () => null,
-                length: 0,
-            };
-            this.currentUserSubject = new BehaviorSubject<User | null>(null);
-        }
-
-        this.currentUser = this.currentUserSubject.asObservable();
-
+    constructor() {
         if (this.isLoggedIn) {
             this.startRefreshTokenTimer();
         }
-    }
-
-    public get currentUserValue(): User | null {
-        return this.currentUserSubject.value;
     }
 
     public get token(): string | null {
@@ -117,23 +62,23 @@ export class AuthService {
     }
 
     public get isLoggedIn(): boolean {
-        return !!this.token && !!this.currentUserValue;
+        return !!this.token && this.userContextService.isLoggedIn();
     }
 
     public get isAdmin(): boolean {
-        return this.currentUserValue?.role === 'admin';
+        return this.userContextService.isAdmin();
     }
 
     register(data: RegisterRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.API_URL}/register`, data).pipe(
-            tap((response) => this.setAuthData(response.body.user, response.body.token, response.body.refreshToken)),
+            tap((response) => this.setAuthData(response.body, response.TOKEN, response.refreshToken)),
             catchError(this.handleError)
         );
     }
 
     login(data: LoginRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.API_URL}/login`, data).pipe(
-            tap((response) => this.setAuthData(response.body.user, response.body.token, response.body.refreshToken)),
+            tap((response) => this.setAuthData(response.body, response.TOKEN, response.refreshToken)),
             catchError(this.handleError)
         );
     }
@@ -147,8 +92,7 @@ export class AuthService {
         this.stopRefreshTokenTimer();
         this.storageService.removeItem('token');
         this.storageService.removeItem('refreshToken');
-        this.storageService.removeItem('currentUser');
-        this.currentUserSubject.next(null);
+        this.userContextService.setCurrentUser(null);
         this.router.navigate(['/login']);
     }
 
@@ -157,8 +101,7 @@ export class AuthService {
             .get<{ body: User; message: string }>(`${this.API_URL}/profile`)
             .pipe(
                 tap((response) => {
-                    this.currentUserSubject.next(response.body);
-                    this.storageService.setItem('currentUser', JSON.stringify(response.body));
+                    this.userContextService.setCurrentUser(response.body);
                 }),
                 catchError(this.handleError)
             );
@@ -169,8 +112,7 @@ export class AuthService {
             .put<{ body: User; message: string }>(`${this.API_URL}/profile`, data)
             .pipe(
                 tap((response) => {
-                    this.currentUserSubject.next(response.body);
-                    this.storageService.setItem('currentUser', JSON.stringify(response.body));
+                    this.userContextService.setCurrentUser(response.body);
                 }),
                 catchError(this.handleError)
             );
@@ -204,7 +146,7 @@ export class AuthService {
             }),
             catchError(error => {
                 this.logout();
-                return throwError(error);
+                return throwError(() => error);
             })
         );
     }
@@ -233,8 +175,7 @@ export class AuthService {
         if (refreshToken) {
             this.storageService.setItem('refreshToken', refreshToken);
         }
-        this.storageService.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
+        this.userContextService.setCurrentUser(user);
         this.startRefreshTokenTimer();
     }
 
@@ -253,15 +194,16 @@ export class AuthService {
     }
 
     hasPermission(module: string, permission: string): Promise<boolean> {
-        const user = this.currentUserValue;
+        const user = this.userContextService.user();
         if (!user) {
             return Promise.resolve(false);
         }
 
-        if (user.role === 'admin') {
+        if (user.userRole === 'admin') {
             return Promise.resolve(true);
         }
 
+        // Add more complex permission logic here if needed
         return Promise.resolve(true);
     }
 }

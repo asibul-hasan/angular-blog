@@ -72,8 +72,7 @@ import { LoaderService } from '../../services/loader/loader.service';
         display: flex;
         justify-content: center;
         align-items: center;
-
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: rgba(0, 0, 0, 1);
         backdrop-filter: blur(5px);
 
         z-index: 50;

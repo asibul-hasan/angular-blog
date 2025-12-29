@@ -1,6 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { BlogApiService } from '../../shared/services/blog/blog.service';
 import { CategoryService } from '../../shared/services/category/category.service';
+import { Observable, of } from 'rxjs';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Injectable({
     providedIn: 'root',
@@ -8,6 +10,7 @@ import { CategoryService } from '../../shared/services/category/category.service
 export class BlogStoreService {
     private readonly blogApi = inject(BlogApiService);
     private readonly CategoryApi = inject(CategoryService);
+    private readonly toastService = inject(ToastService);
 
     // 🔹 Signal-based blog cache
     private readonly _blogs = signal<any[]>([]);
@@ -16,6 +19,11 @@ export class BlogStoreService {
     // 🔹 Signal-based category cache
     private readonly _categories = signal<any[]>([]);
     readonly categories = this._categories.asReadonly();
+
+    // 🔹 Observable for categories (for backward compatibility)
+    get categories$(): Observable<any[]> {
+        return of(this._categories());
+    }
 
     /**
      * Load blogs from API (sorted by date descending)
@@ -40,7 +48,13 @@ export class BlogStoreService {
                     this._blogs.set([]);
                 }
             },
-            error: (err) => console.error('Error loading blogs:', err),
+            error: (err) => {
+                console.error('Error loading blogs:', err);
+                // Show user-friendly error message
+                this.toastService.error('Failed to load blogs', 'Please check your connection and try again');
+                // Set empty array to prevent undefined issues
+                this._blogs.set([]);
+            },
         });
     }
 
@@ -57,15 +71,19 @@ export class BlogStoreService {
     loadCategories(): void {
         this.CategoryApi.getCategories().subscribe({
             next: (res) => {
-                if (res && Array.isArray(res.body)) {
+                if (res && res.body && Array.isArray(res.body)) {
                     this._categories.set(res.body);
-                } else if (Array.isArray(res)) {
-                    this._categories.set(res);
                 } else {
                     this._categories.set([]);
                 }
             },
-            error: (err) => console.error('Error loading categories:', err),
+            error: (err) => {
+                console.error('Error loading categories:', err);
+                // Show user-friendly error message
+                this.toastService.error('Failed to load categories', 'Please check your connection and try again');
+                // Set empty array on error to prevent undefined issues
+                this._categories.set([]);
+            },
         });
     }
 
