@@ -1,153 +1,136 @@
-import { Component, Inject, OnInit, PLATFORM_ID, signal, computed } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  Component, inject, signal, computed, PLATFORM_ID, AfterViewInit, OnDestroy, ChangeDetectionStrategy
+} from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BlogApiService } from '../../../shared/services/blog/blog.service';
-import { CommonModule, isPlatformBrowser, ViewportScroller } from '@angular/common';
-import { SocialLinksService } from '../../../shared/services/social-links/social-links.service';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SeoService } from '../../../shared/services/seo/seo.service';
-import { SocialIcon } from '../../../shared/components/template/social-icon-card.component';
 import { BlogCardComponent } from '../../../shared/components/template/blog-card.component';
 import { BlogStoreService } from '../../../core/services/blog-store.service';
+import { fromEvent, Subscription, throttleTime } from 'rxjs';
 
 @Component({
-  selector: 'app-blog',
-  imports: [CommonModule, SocialIcon, BlogCardComponent],
+  selector: 'app-blog-detail',
+  imports: [CommonModule, BlogCardComponent, RouterLink],
   templateUrl: './blog-detail.component.html',
   styleUrls: ['./blog-detail.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogDetailComponent implements OnInit {
-  blogId: string = '';
-  blog: any = null;
-  readTime: number = 0;
-  socialLinks: any[] = [];
+export class BlogDetailComponent implements AfterViewInit, OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly apiService = inject(BlogApiService);
+  private readonly seo = inject(SeoService);
+  private readonly blogStore = inject(BlogStoreService);
+  private readonly platformId = inject(PLATFORM_ID);
 
-  // Featured blogs (from store)
+  readonly blog = signal<any>(null);
+  readonly readingProgress = signal<number>(0);
+  readonly headings = signal<{id: string, text: string}[]>([]);
+  
+  private scrollSub?: Subscription;
+
+  // Featured / Related blogs
   readonly allBlogs = computed(() => this.blogStore.blogs());
-  readonly featuredBlogs = computed(() => {
-    const current = this.blog;
-    const all = this.allBlogs();
-    if (!current) return all.slice(0, 3);
-    // Filter out current blog and get 3 random blogs
-    return all.filter((b: any) => b._id !== current._id && b.slug !== current.slug).slice(0, 3);
+  readonly relatedBlogs = computed(() => {
+    const current = this.blog();
+    if (!current) return this.allBlogs().slice(0, 3);
+    return this.allBlogs()
+      .filter((b: any) => b._id !== current._id && b.slug !== current.slug)
+      .slice(0, 3);
   });
 
-  defaultImg =
-    "'https://res.cloudinary.com/dfcir8epp/image/upload/v1755703537/FFFFFF_hi6y3z.svg'";
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private apiService: BlogApiService,
-    private socialLinksService: SocialLinksService,
-    private seo: SeoService,
-    private blogStore: BlogStoreService,
-    private viewportScroller: ViewportScroller,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.socialLinks = this.socialLinksService.getSocialLinks();
-  }
-
-
-
-
-  ngOnInit() {
-    // Scroll to top IMMEDIATELY on init (before API call)
-    if (isPlatformBrowser(this.platformId)) {
-      window.scrollTo(0, 0);
-    }
-
-    // Load featured blogs
-    this.blogStore.loadBlogs();
-
-    // Get blog slug from route
+  constructor() {
     this.route.paramMap.subscribe(params => {
-      const slug = params.get('id');
-      if (slug) {
-        this.loadBlog(slug);
-      } else {
-        this.router.navigate(['/blog']);
+      const id = params.get('id');
+      if (id) {
+        this.loadBlogData(id);
       }
     });
+    this.blogStore.loadBlogs();
   }
 
-  loadBlog(slug: string) {
-    // First, try to find blog in the store (instant load)
-    const allBlogs = this.allBlogs();
-    const cachedBlog = allBlogs.find((b: any) => b.slug === slug || b._id === slug);
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.scrollSub = fromEvent(window, 'scroll')
+        .pipe(throttleTime(100))
+        .subscribe(() => {
+          this.calculateProgress();
+        });
+    }
+  }
 
-    if (cachedBlog) {
-      // Found in cache - instant load!
-      this.blog = cachedBlog;
-      this.updateBlogMetadata();
+  ngOnDestroy() {
+    this.scrollSub?.unsubscribe();
+  }
+
+  private loadBlogData(id: string) {
+    // Try cache first
+    const cached = this.allBlogs().find((b: any) => b.slug === id || b._id === id);
+    if (cached) {
+      this.setBlog(cached);
       return;
     }
 
-    // Not in cache - fetch from API
-    // Try by ID first (more reliable), then fallback to slug
-    this.apiService.getBlogById(slug).subscribe({
+    this.apiService.getBlogBySlug(id).subscribe({
       next: (res: any) => {
-        if (res.body && res.body.length > 0) {
-          this.blog = res.body[0];
-          this.updateBlogMetadata();
-        } else {
-          // Try by slug as fallback
-          this.tryLoadBySlug(slug);
+        if (res.body && res.body[0]) {
+          this.setBlog(res.body[0]);
         }
-      },
-      error: (err: any) => {
-        console.warn('getBlogById failed, trying slug...', err);
-        this.tryLoadBySlug(slug);
-      },
+      }
     });
   }
 
-  tryLoadBySlug(slug: string) {
-    this.apiService.getBlogBySlug(slug).subscribe({
-      next: (res: any) => {
-        if (res.body && res.body.length > 0) {
-          this.blog = res.body[0];
-          this.updateBlogMetadata();
-        } else {
-          console.error('Blog not found');
-          this.router.navigate(['/blog']);
-        }
-      },
-      error: (err: any) => {
-        console.error('Blog not found by slug either:', err);
-        this.router.navigate(['/blog']);
-      },
-    });
+  private setBlog(data: any) {
+    this.blog.set(data);
+    this.updateSeo(data);
+    this.extractHeadings(data.blog_content);
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+    }
   }
 
-  updateBlogMetadata() {
-    // Update SEO
+  private updateSeo(data: any) {
     this.seo.updateTags({
-      title: this.blog.title,
-      description: this.blog.meta_description,
-      image: this.blog.image ?? this.defaultImg,
-      slug: this.blog.slug,
+      title: data.title,
+      description: data.meta_description || data.short_desc,
+      image: data.image,
+      slug: data.slug,
       type: 'article',
-      author: this.blog.author,
-      publishedDate: this.blog.publishedAt,
-      modifiedDate: this.blog.updatedAt,
-      tags: this.blog.tags,
+      author: data.author,
+      publishedDate: data.publishedAt
     });
-
-    this.calculateReadingTime(this.blog.blog_content);
   }
-  calculateReadingTime(content: string) {
-    const wpm = 200;
-    const words = content.trim().split(/\s+/).length;
-    const minutes = Math.ceil(words / wpm);
-    return (this.readTime = minutes);
+
+  private extractHeadings(content: string) {
+    // Simple mock logic for TOC
+    const headings = [
+      { id: 'intro', text: 'Introduction' },
+      { id: 'key-concepts', text: 'Key Concepts' },
+      { id: 'strategy', text: 'Future Strategy' },
+      { id: 'conclusion', text: 'Conclusion' }
+    ];
+    this.headings.set(headings);
+  }
+
+  private calculateProgress() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (window.scrollY / totalHeight) * 100;
+    this.readingProgress.set(Math.min(100, Math.max(0, progress)));
+  }
+
+  getCategoryName(id: string): string {
+    return 'Technology'; // Fallback
+  }
+
+  formatDate(date: string): string {
+    if (!date) return '';
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
   }
 
   navigateToBlog(blog: any) {
-    if (blog?.slug) {
-      // Scroll to top immediately before navigation
-      if (isPlatformBrowser(this.platformId)) {
-        window.scrollTo(0, 0);
-      }
-      this.router.navigate(['/blog', blog.slug]);
-    }
+    this.router.navigate(['/blog', blog.slug]);
   }
 }

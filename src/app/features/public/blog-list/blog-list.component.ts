@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID, computed, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, PLATFORM_ID, computed, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { BlogCardComponent } from '../../../shared/components/template/blog-card.component';
 import { BlogStoreService } from '../../../core/services/blog-store.service';
@@ -8,10 +8,10 @@ import { SeoService } from '../../../shared/services/seo/seo.service';
 
 @Component({
   selector: 'app-blog-list',
-  standalone: true,
   imports: [CommonModule, UpperSectionComponent, BlogCardComponent],
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogList implements OnInit, OnDestroy {
   // Selected category signal
@@ -56,28 +56,20 @@ export class BlogList implements OnInit, OnDestroy {
 
   readonly buttonText = 'Read More';
 
-  constructor(private readonly blogStore: BlogStoreService,
-    private router: Router, private seo: SeoService, @Inject(PLATFORM_ID) private platformId: Object
-  ) {
+  private readonly blogStore = inject(BlogStoreService);
+  private readonly router = inject(Router);
+  private readonly seo = inject(SeoService);
+  private readonly platformId = inject(PLATFORM_ID);
 
-    let origin = '';
-
-    if (isPlatformBrowser(this.platformId)) {
-      // ✅ Only access `window` in the browser
-      origin = window.location.origin;
-    }
-
-    // use meta services
+  constructor() {
+    const origin = isPlatformBrowser(this.platformId) ? window.location.origin : '';
     this.seo.updateTags({
       title: 'Insights on IT, Software & Digital Marketing Trends',
-      description:
-        'Stay updated with the latest insights, trends, and tips in software development, IT solutions, digital marketing, and tech innovations on the InfoAidTech blog.',
-      image:
-        'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: origin, // ✅ safe to pass (empty on server)
+      description: 'Stay updated with the latest insights, trends, and tips in software development, IT solutions, digital marketing, and tech innovations on the InfoAidTech blog.',
+      image: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
+      slug: origin,
       type: 'website',
     });
-
   }
 
   ngOnInit() {

@@ -1,191 +1,431 @@
 <app-upper-section [title]="'About Us'"></app-upper-section>
 
-<section class="py-20 md:py-32 text-white relative overflow-hidden">
-  <!-- Animated background gradient orbs -->
-  <div
-    class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#f76179]/30 rounded-full blur-[120px] animate-pulse"
-  ></div>
-  <div
-    class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#1e3e62]/20 rounded-full blur-[150px] animate-pulse"
-    style="animation-delay: 1s"
-  ></div>
-  <div
-    class="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-purple-500/20 rounded-full blur-[100px] animate-pulse"
-    style="animation-delay: 2s"
-  ></div>
+<!-- ══════════════════════════════════════════════
+     SECTION 1 — BIG INTRO STATEMENT
+══════════════════════════════════════════════ -->
+<section class="relative overflow-hidden bg-black text-white">
+  <!-- Orbs -->
+  <div class="pointer-events-none absolute top-0 left-0 w-[700px] h-[700px] rounded-full blur-[180px] opacity-30" style="background:radial-gradient(circle,#f76179,transparent 70%)"></div>
+  <div class="pointer-events-none absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full blur-[180px] opacity-20" style="background:radial-gradient(circle,#1e3e62,transparent 70%)"></div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <!-- Header with modern typography -->
-    <div class="mb-20 text-center max-w-4xl mx-auto">
-      <div
-        class="inline-block mb-6 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
-      >
-        <span
-          class="text-sm font-semibold tracking-widest uppercase bg-linear-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent"
-          >Who We Are</span
-        >
-      </div>
-      <h2
-        class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-6 bg-linear-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-none"
-      >
-        Our Story
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-40 grid lg:grid-cols-2 gap-16 items-center">
+
+    <!-- Left — Headline block -->
+    <div>
+      <span class="inline-flex items-center gap-2 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-8">
+        <span class="w-2 h-2 rounded-full bg-[#f76179] animate-pulse inline-block"></span>
+        Est. 2019 · Dhaka, Bangladesh
+      </span>
+
+      <h2 class="text-5xl sm:text-6xl xl:text-7xl font-black tracking-tighter leading-[0.95] mb-8">
+        We Build<br/>
+        <span class="relative inline-block">
+          <span class="bg-gradient-to-r from-[#f76179] via-rose-400 to-[#1e3e62] bg-clip-text text-transparent">Digital</span>
+        </span><br/>
+        Futures.
       </h2>
-      <p class="text-2xl md:text-3xl font-light text-gray-300 tracking-wide">
-        Empowering innovation,
-        <span class="text-[#f76179] font-semibold italic"
-          >one solution at a time</span
-        >
+
+      <p class="text-xl text-gray-400 leading-relaxed max-w-lg mb-10">
+        InfoAidTech is a global software boutique headquartered in Bangladesh. We fuse deep technical craft with strategic thinking to deliver software that actually moves the needle.
       </p>
+
+      <div class="flex flex-wrap gap-4">
+        <a href="/contact" class="inline-flex items-center gap-2 px-7 py-4 rounded-xl font-bold text-white text-sm shadow-2xl shadow-[#f76179]/40 hover:scale-105 hover:shadow-[#f76179]/60 transition-all duration-300"
+           style="background:linear-gradient(135deg,#f76179,#c0365a)">
+          Start a Project
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <a href="/service" class="inline-flex items-center gap-2 px-7 py-4 rounded-xl font-bold text-white text-sm border border-white/15 hover:bg-white/10 transition-all duration-300">
+          Our Services
+        </a>
+      </div>
     </div>
 
-    <!-- Main Content with Glass Morphism -->
-    <div class="grid lg:grid-cols-12 gap-8 mb-20">
-      <!-- Story Content -->
-      <div class="lg:col-span-7 space-y-8">
-        <div
-          class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 hover:bg-white/10 transition-all duration-500 group"
-        >
-          <p class="text-xl md:text-2xl text-gray-200 leading-relaxed mb-6">
-            Welcome to
-            <span
-              class="font-black text-3xl bg-linear-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent"
-              >Infoaidtech</span
-            >, a global software development and technology solutions company
-            headquartered in
-            <span class="font-bold text-[#f76179]">Bangladesh</span>.
-          </p>
-          <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
-            We specialize in building custom software, web applications, and
-            digital solutions that help businesses
-            <span class="font-bold text-white border-b-2 border-[#f76179]"
-              >innovate, scale, and succeed</span
-            >
-            in the modern digital economy.
-          </p>
+    <!-- Right — Bento mini-grid -->
+    <div class="grid grid-cols-2 grid-rows-2 gap-4">
+      <!-- Card 1 — Big stat -->
+      <div class="col-span-2 relative overflow-hidden rounded-3xl p-8 flex items-center gap-6"
+           style="background:linear-gradient(135deg,rgba(247,97,121,0.15),rgba(30,62,98,0.15));border:1px solid rgba(247,97,121,0.25)">
+        <div class="text-6xl font-black text-white leading-none">120<span class="text-[#f76179]">+</span></div>
+        <div>
+          <p class="text-white font-bold text-lg">Projects Shipped</p>
+          <p class="text-gray-400 text-sm">from startups to enterprises</p>
         </div>
+        <!-- Decorative shape -->
+        <div class="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10" style="background:#f76179"></div>
+      </div>
 
-        <div
-          class="bg-linear-to-br from-[#f76179]/20 to-[#1e3e62]/20 backdrop-blur-xl border border-[#f76179]/30 rounded-3xl p-8 md:p-10 hover:scale-[1.02] transition-all duration-500"
-        >
-          <p class="text-lg md:text-xl text-gray-100 leading-relaxed">
-            Founded with a passion for technology and excellence, Infoaidtech
-            blends
-            <span class="font-bold text-white"
-              >global expertise with local insight</span
-            >
-            to deliver solutions that are efficient, secure, and future-ready.
-            Our mission is simple — to empower organizations and individuals
-            through technology that truly makes a difference.
-          </p>
+      <!-- Card 2 -->
+      <div class="rounded-3xl p-6 flex flex-col justify-between"
+           style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+        <span class="text-3xl">🌍</span>
+        <div>
+          <p class="text-3xl font-black text-white">50<span class="text-[#f76179]">+</span></p>
+          <p class="text-gray-400 text-xs mt-1">Clients Worldwide</p>
         </div>
       </div>
 
-      <!-- Quote Card with Modern Design -->
-      <div class="lg:col-span-5 flex">
-        <div
-          class="bg-linear-to-br from-white/10 to-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl p-10 relative overflow-hidden group hover:border-[#f76179]/50 transition-all duration-500 flex flex-col justify-center"
-        >
-          <div
-            class="absolute inset-0 bg-linear-to-br from-[#f76179]/10 to-[#1e3e62]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          ></div>
-          <div
-            class="absolute -top-6 -right-6 text-white/5 text-[200px] font-serif leading-none"
-          >
-            "
+      <!-- Card 3 -->
+      <div class="rounded-3xl p-6 flex flex-col justify-between"
+           style="background:linear-gradient(135deg,rgba(30,62,98,0.4),rgba(30,62,98,0.1));border:1px solid rgba(30,62,98,0.5)">
+        <span class="text-3xl">⚡</span>
+        <div>
+          <p class="text-3xl font-black text-white">5<span class="text-[#f76179]">yr</span></p>
+          <p class="text-gray-400 text-xs mt-1">Of Excellence</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 2 — STATS BAR
+══════════════════════════════════════════════ -->
+<section class="relative bg-black border-y" style="border-color:rgba(255,255,255,0.06)">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+    @for (stat of stats; track stat.label) {
+      <div class="text-center px-6 py-4 group">
+        <div class="text-5xl font-black mb-1 group-hover:scale-110 transition-transform duration-300"
+             [style]="'background:linear-gradient(135deg,' + stat.color1 + ',' + stat.color2 + ');-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text'">
+          {{ stat.value }}
+        </div>
+        <p class="text-gray-500 text-xs uppercase tracking-widest font-semibold">{{ stat.label }}</p>
+      </div>
+    }
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3 — OUR STORY (split layout)
+══════════════════════════════════════════════ -->
+<section class="relative overflow-hidden bg-black text-white py-28 md:py-36">
+  <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.03]">
+    <span class="text-[32vw] font-black tracking-tighter text-white select-none">IAT</span>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-12 gap-6">
+
+      <!-- Label column -->
+      <div class="lg:col-span-3 flex lg:flex-col justify-between">
+        <div>
+          <span class="inline-block px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-[11px] font-bold tracking-widest uppercase text-[#f76179] mb-4">Our Story</span>
+          <h3 class="text-4xl md:text-5xl font-black text-white leading-tight">Who We<br/>Really Are</h3>
+        </div>
+        <div class="hidden lg:block">
+          <div class="w-16 h-1 bg-gradient-to-r from-[#f76179] to-[#1e3e62] rounded-full mb-4"></div>
+          <p class="text-gray-600 text-xs uppercase tracking-widest">Scroll to explore</p>
+        </div>
+      </div>
+
+      <!-- Story cards -->
+      <div class="lg:col-span-9 grid md:grid-cols-3 gap-5">
+
+        <!-- Card A — large -->
+        <div class="md:col-span-2 rounded-3xl p-8 relative overflow-hidden group hover:scale-[1.02] transition-all duration-500"
+             style="background:linear-gradient(135deg,rgba(247,97,121,0.12),rgba(30,62,98,0.08));border:1px solid rgba(247,97,121,0.2)">
+          <div class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full opacity-5" style="background:#f76179"></div>
+          <p class="text-2xl font-bold text-white leading-relaxed mb-4">
+            We're a team obsessed with
+            <span class="text-[#f76179]"> building things that last</span> — not just shipping features.
+          </p>
+          <p class="text-gray-400 leading-relaxed">
+            Founded in 2019 by a group of engineers and designers, InfoAidTech set out to prove that great software isn't about budget — it's about taste, precision, and partnership.
+          </p>
+        </div>
+
+        <!-- Card B — vertical -->
+        <div class="rounded-3xl p-8 flex flex-col justify-between group hover:scale-[1.02] transition-all duration-500"
+             style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+          <div class="text-5xl mb-6">🏆</div>
+          <div>
+            <p class="text-white font-black text-xl mb-2">Award‑quality delivery</p>
+            <p class="text-gray-500 text-sm leading-relaxed">Recognized by clients across 15+ countries for on-time, on-budget execution.</p>
           </div>
-          <blockquote
-            class="text-2xl md:text-3xl font-bold text-white relative z-10 leading-tight mb-8"
-          >
-            Blending global expertise with local insight to deliver secure,
-            efficient, and future-ready solutions.
+        </div>
+
+        <!-- Card C -->
+        <div class="rounded-3xl p-8 group hover:scale-[1.02] transition-all duration-500"
+             style="background:rgba(30,62,98,0.2);border:1px solid rgba(30,62,98,0.4)">
+          <p class="text-gray-300 leading-relaxed">
+            From a 3-person startup to a 20-member powerhouse, every line of code we write carries the same intention — <span class="text-white font-bold">to make a meaningful difference</span>.
+          </p>
+        </div>
+
+        <!-- Card D — quote -->
+        <div class="md:col-span-2 rounded-3xl p-8 relative overflow-hidden group hover:scale-[1.02] transition-all duration-500"
+             style="background:linear-gradient(135deg,rgba(30,62,98,0.25),rgba(247,97,121,0.1));border:1px solid rgba(30,62,98,0.35)">
+          <div class="absolute top-4 right-6 text-8xl text-white/5 font-serif select-none">"</div>
+          <blockquote class="text-2xl md:text-3xl font-black text-white leading-snug mb-6">
+            Technology should be a springboard, not a barrier.
           </blockquote>
-          <div class="flex items-center gap-3 relative z-10">
-            <div
-              class="w-12 h-0.5 bg-linear-to-r from-[#f76179] to-transparent"
-            ></div>
-            <p
-              class="text-sm text-gray-400 font-semibold uppercase tracking-widest"
-            >
-              Our Guiding Principle
-            </p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center font-black text-sm text-white" style="background:linear-gradient(135deg,#f76179,#1e3e62)">AR</div>
+            <div>
+              <p class="text-white text-sm font-bold">Asibul Rahman</p>
+              <p class="text-gray-500 text-xs">Founder & CEO</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Mission & Vision - Bento Grid Style -->
+<!-- ══════════════════════════════════════════════
+     SECTION 4 — MISSION & VISION (side-by-side)
+══════════════════════════════════════════════ -->
+<section class="bg-black text-white py-24 md:py-32 relative overflow-hidden">
+  <div class="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[150px] opacity-15" style="background:#f76179"></div>
+  <div class="pointer-events-none absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-[150px] opacity-10" style="background:#1e3e62"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-5">Purpose</span>
+      <h2 class="text-5xl md:text-6xl font-black text-white tracking-tighter">Why We Exist</h2>
+    </div>
+
     <div class="grid md:grid-cols-2 gap-6">
-      <!-- Mission Card -->
-      <div class="group relative">
-        <div
-          class="absolute inset-0 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-        ></div>
-        <div
-          class="relative bg-linear-to-br from-[#f76179]/10 to-[#1e3e62]/10 backdrop-blur-xl border border-[#f76179]/30 rounded-3xl p-8 md:p-10 hover:border-[#f76179]/50 transition-all duration-500 h-full"
-        >
-          <div class="flex items-start gap-4 mb-6">
-            <div
-              class="w-16 h-16 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-2xl flex items-center justify-center text-3xl shadow-2xl shadow-[#f76179]/50 group-hover:scale-110 transition-transform duration-500"
-            >
-              💡
-            </div>
-            <div>
-              <h3
-                class="text-4xl md:text-5xl font-black text-white tracking-tight"
-              >
-                Our Mission
-              </h3>
-              <div
-                class="w-20 h-1 bg-linear-to-r from-[#f76179] to-[#1e3e62] mt-3 rounded-full"
-              ></div>
-            </div>
-          </div>
-          <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
-            To deliver reliable, scalable, and innovative software solutions
-            that drive growth, efficiency, and digital transformation for
-            businesses worldwide — while nurturing the next generation of tech
-            professionals in Bangladesh.
+      <!-- Mission -->
+      <div class="rounded-3xl p-10 relative overflow-hidden group hover:-translate-y-2 transition-all duration-500"
+           style="background:linear-gradient(140deg,rgba(247,97,121,0.15),rgba(247,97,121,0.03));border:1px solid rgba(247,97,121,0.25)">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+             style="background:linear-gradient(140deg,rgba(247,97,121,0.08),transparent)"></div>
+        <!-- Number accent -->
+        <div class="text-[120px] font-black leading-none text-[#f76179]/10 absolute -top-4 -right-4 select-none">01</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-8 shadow-2xl"
+               style="background:linear-gradient(135deg,#f76179,#c0365a);box-shadow:0 8px 32px rgba(247,97,121,0.4)">💡</div>
+          <h3 class="text-4xl font-black text-white mb-4 tracking-tight">Mission</h3>
+          <div class="w-12 h-1 bg-[#f76179] rounded-full mb-6"></div>
+          <p class="text-gray-300 text-lg leading-relaxed">
+            To deliver reliable, scalable, and innovative software solutions that drive growth and digital transformation — while nurturing Bangladesh's next generation of tech professionals.
           </p>
         </div>
       </div>
 
-      <!-- Vision Card -->
-      <div class="group relative">
-        <div
-          class="absolute inset-0 bg-linear-to-br from-[#1e3e62] to-[#f76179] rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-        ></div>
-        <div
-          class="relative bg-linear-to-br from-[#1e3e62]/10 to-[#f76179]/10 backdrop-blur-xl border border-[#1e3e62]/30 rounded-3xl p-8 md:p-10 hover:border-[#1e3e62]/50 transition-all duration-500 h-full"
-        >
-          <div class="flex items-start gap-4 mb-6">
-            <div
-              class="w-16 h-16 bg-linear-to-br from-[#1e3e62] to-[#f76179] rounded-2xl flex items-center justify-center text-3xl shadow-2xl shadow-[#1e3e62]/50 group-hover:scale-110 transition-transform duration-500"
-            >
-              🌍
-            </div>
-            <div>
-              <h3
-                class="text-4xl md:text-5xl font-black text-white tracking-tight"
-              >
-                Our Vision
-              </h3>
-              <div
-                class="w-20 h-1 bg-linear-to-r from-[#1e3e62] to-[#f76179] mt-3 rounded-full"
-              ></div>
-            </div>
-          </div>
-          <p class="text-lg md:text-xl text-gray-200 leading-relaxed mb-4">
-            To be recognized globally as a leading software company from
-            Bangladesh, known for quality, innovation, and impact.
-          </p>
-          <p class="text-lg md:text-xl text-gray-200 leading-relaxed">
-            We aim to bridge the gap between emerging markets and the global
-            tech ecosystem — helping clients and communities thrive through
-            digital excellence.
+      <!-- Vision -->
+      <div class="rounded-3xl p-10 relative overflow-hidden group hover:-translate-y-2 transition-all duration-500"
+           style="background:linear-gradient(140deg,rgba(30,62,98,0.25),rgba(30,62,98,0.05));border:1px solid rgba(30,62,98,0.4)">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+             style="background:linear-gradient(140deg,rgba(30,62,98,0.12),transparent)"></div>
+        <div class="text-[120px] font-black leading-none text-[#1e3e62]/20 absolute -top-4 -right-4 select-none">02</div>
+        <div class="relative z-10">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-8 shadow-2xl"
+               style="background:linear-gradient(135deg,#1e3e62,#2d5a8f);box-shadow:0 8px 32px rgba(30,62,98,0.5)">🌍</div>
+          <h3 class="text-4xl font-black text-white mb-4 tracking-tight">Vision</h3>
+          <div class="w-12 h-1 rounded-full mb-6" style="background:linear-gradient(to right,#1e3e62,#f76179)"></div>
+          <p class="text-gray-300 text-lg leading-relaxed">
+            To be globally recognized as a top software company from Bangladesh — bridging emerging markets with the global tech ecosystem through quality, innovation, and lasting impact.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5 — TIMELINE
+══════════════════════════════════════════════ -->
+<section class="bg-black text-white py-24 md:py-32 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-5">Our Journey</span>
+      <h2 class="text-5xl md:text-6xl font-black text-white tracking-tighter">Milestones</h2>
+    </div>
+
+    <!-- Timeline -->
+    <div class="relative">
+      <!-- Center line -->
+      <div class="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 hidden md:block" style="background:linear-gradient(to bottom,transparent,rgba(247,97,121,0.4),rgba(30,62,98,0.4),transparent)"></div>
+
+      <div class="space-y-10 md:space-y-0">
+        @for (milestone of milestones; track milestone.year; let i = $index) {
+          <div class="relative md:grid md:grid-cols-2 md:gap-8 md:items-center"
+               [class]="i % 2 === 0 ? '' : 'md:direction-rtl'">
+
+            <!-- Content -->
+            <div [class]="i % 2 === 0 ? 'md:text-right md:pr-12' : 'md:order-2 md:pl-12'">
+              <div class="inline-block rounded-2xl p-6 group hover:scale-[1.03] transition-all duration-300 w-full md:max-w-sm" [class]="i % 2 === 0 ? 'md:ml-auto' : ''"
+                   style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                <span class="text-3xl font-black mb-2 block" style="background:linear-gradient(135deg,#f76179,#1e3e62);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">{{ milestone.year }}</span>
+                <h4 class="text-white font-bold text-lg mb-1">{{ milestone.title }}</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">{{ milestone.desc }}</p>
+              </div>
+            </div>
+
+            <!-- Center dot -->
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full items-center justify-center text-sm font-black text-white z-10 shadow-xl"
+                 style="background:linear-gradient(135deg,#f76179,#1e3e62);box-shadow:0 0 20px rgba(247,97,121,0.5)">
+              {{ milestone.icon }}
+            </div>
+
+            <!-- Spacer -->
+            <div [class]="i % 2 === 0 ? '' : 'md:order-1'"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 6 — CORE VALUES
+══════════════════════════════════════════════ -->
+<section class="bg-black text-white py-24 md:py-32 relative overflow-hidden">
+  <div class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full blur-[120px] opacity-10" style="background:#f76179"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-5">Core Values</span>
+      <h2 class="text-5xl md:text-6xl font-black text-white tracking-tighter">What Guides Us</h2>
+      <p class="text-gray-500 text-lg mt-4 max-w-xl mx-auto">Every decision we make is filtered through these four pillars.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      @for (value of coreValues; track value.title; let i = $index) {
+        <div class="group relative rounded-3xl p-8 hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 overflow-hidden"
+             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+          <!-- Hover glow -->
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+               [style]="'background:linear-gradient(140deg,' + value.glow + ',transparent)'"></div>
+
+          <!-- Number -->
+          <div class="text-[80px] font-black leading-none mb-4 select-none" style="color:rgba(255,255,255,0.04)">0{{ i + 1 }}</div>
+
+          <div class="relative z-10 -mt-16">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5 shadow-lg"
+                 [style]="'background:' + value.bg">{{ value.emoji }}</div>
+            <h4 class="text-white font-black text-xl mb-3 tracking-tight">{{ value.title }}</h4>
+            <p class="text-gray-500 text-sm leading-relaxed">{{ value.desc }}</p>
+          </div>
+
+          <!-- Bottom border bar -->
+          <div class="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               [style]="'background:linear-gradient(to right,' + value.bar1 + ',' + value.bar2 + ')'"></div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 7 — TEAM
+══════════════════════════════════════════════ -->
+<section class="bg-black text-white py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-5">The People</span>
+      <h2 class="text-5xl md:text-6xl font-black text-white tracking-tighter">Meet the Team</h2>
+      <p class="text-gray-500 text-lg mt-4">The brilliant humans behind every great project.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      @for (member of team; track member.name) {
+        <div class="group relative rounded-3xl overflow-hidden hover:-translate-y-2 transition-all duration-500"
+             style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+          <!-- Avatar background gradient -->
+          <div class="h-40 relative flex items-center justify-center overflow-hidden"
+               [style]="'background:' + member.gradient">
+            <!-- Decorative circles -->
+            <div class="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/10"></div>
+            <div class="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-white/5"></div>
+            <!-- Initials -->
+            <span class="text-5xl font-black text-white relative z-10 drop-shadow-lg">{{ member.initials }}</span>
+          </div>
+          <!-- Info -->
+          <div class="p-6">
+            <h4 class="font-black text-white text-lg leading-tight mb-0.5">{{ member.name }}</h4>
+            <p class="text-[#f76179] text-xs font-bold uppercase tracking-wider mb-3">{{ member.role }}</p>
+            <p class="text-gray-500 text-sm leading-relaxed">{{ member.bio }}</p>
+          </div>
+          <!-- Hover overlay border -->
+          <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style="border:1px solid rgba(247,97,121,0.35)"></div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8 — TECH STACK MARQUEE
+══════════════════════════════════════════════ -->
+<section class="bg-black text-white py-16 overflow-hidden border-y" style="border-color:rgba(255,255,255,0.06)">
+  <div class="text-center mb-10">
+    <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179]">Our Stack</span>
+  </div>
+
+  <!-- Track 1 -->
+  <div class="flex gap-4 mb-4 overflow-hidden">
+    <div class="flex gap-4 animate-marquee whitespace-nowrap">
+      @for (tech of techRow1; track tech) {
+        <span class="px-5 py-2.5 rounded-full text-sm font-semibold text-gray-400 hover:text-white hover:border-[#f76179]/50 transition-all duration-200 cursor-default shrink-0"
+              style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">{{ tech }}</span>
+      }
+      <!-- Duplicate for seamless loop -->
+      @for (tech of techRow1; track tech + 'dup') {
+        <span class="px-5 py-2.5 rounded-full text-sm font-semibold text-gray-400 shrink-0"
+              style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">{{ tech }}</span>
+      }
+    </div>
+  </div>
+
+  <!-- Track 2 — reverse -->
+  <div class="flex gap-4 overflow-hidden">
+    <div class="flex gap-4 animate-marquee-reverse whitespace-nowrap">
+      @for (tech of techRow2; track tech) {
+        <span class="px-5 py-2.5 rounded-full text-sm font-semibold text-gray-400 hover:text-white transition-all duration-200 cursor-default shrink-0"
+              style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">{{ tech }}</span>
+      }
+      @for (tech of techRow2; track tech + 'dup2') {
+        <span class="px-5 py-2.5 rounded-full text-sm font-semibold text-gray-400 shrink-0"
+              style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">{{ tech }}</span>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 9 — CTA
+══════════════════════════════════════════════ -->
+<section class="bg-black text-white py-24 md:py-32 relative overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+    <div class="w-[700px] h-[700px] rounded-full blur-[200px] opacity-20" style="background:radial-gradient(circle,#f76179,#1e3e62 60%,transparent 80%)"></div>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 text-center">
+    <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-8">Ready to build?</span>
+    <h2 class="text-5xl md:text-7xl font-black tracking-tighter text-white mb-6 leading-none">
+      Let's Create<br/>
+      <span class="bg-gradient-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent">Something Great</span>
+    </h2>
+    <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+      Whether you have a fully-formed idea or just a spark — we're here to help you take it from concept to launch.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/contact" class="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-xl font-black text-white text-base shadow-2xl hover:scale-105 transition-all duration-300"
+         style="background:linear-gradient(135deg,#f76179,#c0365a);box-shadow:0 8px 40px rgba(247,97,121,0.4)">
+        Get in Touch
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+      <a href="/service" class="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-xl font-bold text-white text-base border border-white/15 hover:bg-white/10 transition-all duration-300">
+        Explore Services
+      </a>
+    </div>
+  </div>
+</section>
+
 <app-testimonial-section></app-testimonial-section>
+
+<style>
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+  .animate-marquee         { animation: marquee 30s linear infinite; }
+  .animate-marquee-reverse { animation: marquee-reverse 25s linear infinite; }
+</style>

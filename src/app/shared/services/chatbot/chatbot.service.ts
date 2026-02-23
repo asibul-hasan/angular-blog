@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
@@ -16,18 +16,16 @@ export interface ChatbotConfig {
     systemPrompt: string;
 }
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ChatbotService {
+    private readonly http = inject(HttpClient);
+
     private messages$ = new BehaviorSubject<ChatMessage[]>([]);
     private isOpen$ = new BehaviorSubject<boolean>(false);
     private isTyping$ = new BehaviorSubject<boolean>(false);
 
-    // Enhanced configuration for focused chatbot
     private config: ChatbotConfig = {
-        // model: 'meta-llama/Llama-3.2-3B-Instruct',
-        model: 'gemini-1.5-flash', // Changed from Llama to Gemini
+        model: 'gemini-1.5-flash',
         temperature: 0.7,
         maxTokens: 500,
         systemPrompt: `You are Haptic, InfoAidTech's specialized AI assistant. You ONLY help with InfoAidTech's services and technology topics.
@@ -43,6 +41,7 @@ WHAT YOU CAN DISCUSS:
 ✅ Technology topics: Web Dev, Mobile Dev, DevOps, AI/ML, Cybersecurity
 ✅ Programming languages and frameworks
 ✅ InfoAidTech's website features and navigation
+✅ InfoAidTech tools like the Image Converter (supports JPEG, PNG, WebP, AVIF, BMP, ICO, TIFF, GIF)
 ✅ Social media content (LinkedIn, Twitter, Facebook, GitHub)
 
 WHAT YOU CANNOT DISCUSS:
@@ -69,22 +68,14 @@ You: "Haha, I'm better at helping with code than comedy! 🚀 Want to learn abou
 Remember: Every conversation should guide users to InfoAidTech's content or services!`,
     };
 
-    constructor(private http: HttpClient) {
+    constructor() {
         this.initializeChat();
     }
 
     private initializeChat(): void {
         const welcomeMessage: ChatMessage = {
             role: 'assistant',
-            content: `👋 Hi! I'm Haptic, your InfoAidTech guide!
-
-I help with:
-🔧 **Tech Tutorials** - Programming, web dev, mobile apps
-💼 **Career Opportunities** - Browse tech jobs
-📚 **Learning Resources** - Guides and best practices
-🔍 **Site Navigation** - Find what you need
-
-What tech topic interests you today?`,
+            content: `👋 Hi! I'm Haptic, your InfoAidTech guide!\n\nI help with:\n🔧 Tech Tutorials — Programming, web dev, mobile apps\n💼 Career Opportunities — Browse tech jobs\n📚 Learning Resources — Guides and best practices\n🔍 Site Navigation — Find what you need\n🖼️ Image Converter — Convert between 8 formats\n\nWhat tech topic interests you today?`,
             timestamp: new Date(),
         };
         this.messages$.next([welcomeMessage]);
@@ -121,8 +112,7 @@ What tech topic interests you today?`,
             timestamp: new Date(),
         };
 
-        const currentMessages = this.messages$.value;
-        this.messages$.next([...currentMessages, userMsg]);
+        this.messages$.next([...this.messages$.value, userMsg]);
         this.isTyping$.next(true);
 
         return this.sendToChatbot(userMessage).pipe(
@@ -132,90 +122,54 @@ What tech topic interests you today?`,
                     content: response,
                     timestamp: new Date(),
                 };
-
-                const updatedMessages = this.messages$.value;
-                this.messages$.next([...updatedMessages, assistantMsg]);
+                this.messages$.next([...this.messages$.value, assistantMsg]);
                 this.isTyping$.next(false);
-
                 return assistantMsg;
             }),
             catchError((error) => {
                 console.error('Chatbot error:', error);
-                let errorMessage = "Sorry, I'm having trouble connecting! 😅 Please try again in a moment.";
-
-                if (error.name === 'TimeoutError') {
-                    errorMessage = "That's taking longer than expected. Could you try asking again?";
-                } else if (error.message) {
-                    errorMessage = error.message;
-                }
-
                 const errorMsg: ChatMessage = {
                     role: 'assistant',
-                    content: errorMessage,
+                    content: error?.name === 'TimeoutError'
+                        ? "That's taking longer than expected. Could you try asking again?"
+                        : "Sorry, I'm having trouble connecting! 😅 Please try again in a moment.",
                     timestamp: new Date(),
                 };
-
-                const updatedMessages = this.messages$.value;
-                this.messages$.next([...updatedMessages, errorMsg]);
+                this.messages$.next([...this.messages$.value, errorMsg]);
                 this.isTyping$.next(false);
-
                 return of(errorMsg);
             })
         );
     }
 
     private sendToChatbot(message: string): Observable<string> {
-        // Get only recent conversation history (last 6 messages for context)
         const recentHistory = this.messages$.value
             .slice(-6)
             .map((msg) => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
             .join('\n');
 
-        // ========== HUGGING FACE CODE (COMMENTED OUT) ==========
-        // return this.http
-        //     .post<any>(`${environment.apiUrl}/chatbot/hf/chat`, {
-        //         message: message,
-        //         conversationHistory: recentHistory,
-        //         systemPrompt: this.config.systemPrompt
-        //     })
-        //     .pipe(
-        //         map((response) => {
-        //             if (response?.success && response?.response) {
-        //                 return response.response;
-        //             }
-        //             throw new Error('Invalid response format');
-        //         }),
-        //         catchError((error) => {
-        //             console.error('Chatbot Error:', error);
-        //             throw new Error(`Chat error: ${error.error?.message || error.message || 'Connection failed'}`);
-        //         })
-        //     );
-        // ========== END HUGGING FACE CODE ==========
-
-        // ========== GOOGLE GEMINI CODE (NEW) ==========
         return this.http
-            .post<any>(`${environment.apiUrl}/chatbot/gemini/chat`, {
-                message: message,
-                conversationHistory: recentHistory,
-                systemPrompt: this.config.systemPrompt
-            })
+            .post<{ success: boolean; response: string; fallback?: boolean }>(
+                `${environment.apiUrl}/chatbot/gemini/chat`,
+                {
+                    message,
+                    conversationHistory: recentHistory,
+                    systemPrompt: this.config.systemPrompt,
+                }
+            )
             .pipe(
                 map((response) => {
-                    if (response?.success && response?.response) {
-                        return response.response;
-                    }
-                    // If fallback response is provided
-                    if (response?.fallback && response?.response) {
+                    if ((response?.success || response?.fallback) && response?.response) {
                         return response.response;
                     }
                     throw new Error('Invalid response format');
                 }),
                 catchError((error) => {
-                    console.error('Chatbot Error:', error);
-                    throw new Error(`Chat error: ${error.error?.message || error.message || 'Connection failed'}`);
+                    throw new Error(
+                        `Chat error: ${error.error?.message || error.message || 'Connection failed'}`
+                    );
                 })
             );
-        // ========== END GOOGLE GEMINI CODE ==========
     }
 
     clearChat(): void {

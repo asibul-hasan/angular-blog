@@ -1,295 +1,147 @@
-<app-upper-section [title]="'Contact Us'"></app-upper-section>
+<app-upper-section [title]="'Get in Touch'"></app-upper-section>
 
-<section class="py-20 md:py-32 text-white relative overflow-hidden">
-  <!-- Animated background gradient orbs -->
-  <div
-    class="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#f76179]/30 rounded-full blur-[120px] animate-pulse"
-  ></div>
-  <div
-    class="absolute bottom-0 right-1/3 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] animate-pulse"
-    style="animation-delay: 1s"
-  ></div>
-  <div
-    class="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-[#1e3e62]/20 rounded-full blur-[100px] animate-pulse"
-    style="animation-delay: 2s"
-  ></div>
+<section class="bg-black text-white min-h-screen pt-24 pb-32 relative overflow-hidden">
+  <!-- Dynamic Center Glow -->
+  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full blur-[250px] opacity-[0.12]" style="background:radial-gradient(circle,#f76179,#1e3e62 70%,transparent 80%)"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <!-- Header -->
-    <div class="mb-20 text-center max-w-4xl mx-auto">
-      <div
-        class="inline-block mb-6 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
-      >
-        <span
-          class="text-sm font-semibold tracking-widest uppercase bg-linear-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent"
-          >Get In Touch</span
-        >
+    
+    <div class="grid lg:grid-cols-12 gap-16 xl:gap-24 items-start">
+      
+      <!-- Left: Context Column -->
+      <div class="lg:col-span-5 space-y-16">
+        <div>
+          <span class="inline-flex items-center gap-2 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.3em] uppercase text-[#f76179] mb-10">
+            Nexus point
+          </span>
+          <h2 class="text-6xl md:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.9] mb-10 text-white">
+            Start the<br/>
+            <span class="bg-gradient-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent">Nexus.</span>
+          </h2>
+          <p class="text-xl text-gray-500 font-light leading-relaxed max-w-sm">
+            Ready to convert your technical vision into a market-leading reality? We handle the engineering complexity, you handle the growth.
+          </p>
+        </div>
+
+        <!-- Contact Bento Grid (Left side) -->
+        <div class="grid gap-5">
+          @for (info of quickInfo; track info.label) {
+            <div class="group flex items-center gap-8 p-8 rounded-[40px] bg-white/[0.02] border border-white/5 hover:border-[#f76179]/30 hover:bg-white/5 transition-all duration-500">
+              <div class="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-2xl"
+                   style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+                {{ info.icon }}
+              </div>
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-700 mb-2">{{ info.label }}</p>
+                <p class="text-2xl font-black text-white group-hover:text-[#f76179] transition-colors">{{ info.value }}</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Operating Matrix -->
+        <div class="p-10 rounded-[48px] bg-gradient-to-br from-[#1e3e62]/10 to-transparent border border-white/5">
+          <div class="flex items-center gap-5 mb-10">
+            <span class="text-4xl">🌎</span>
+            <h4 class="text-3xl font-black text-white tracking-tighter">Availability Matrix</h4>
+          </div>
+          <div class="space-y-6">
+            @for (hour of officeHours; track hour.day) {
+              <div class="flex justify-between items-center py-4 border-b border-white/5 last:border-0">
+                <span class="text-gray-500 font-bold text-sm tracking-tight">{{ hour.day }}</span>
+                <span [class.text-red-400]="hour.hours === 'Closed'" class="text-white font-black text-sm tracking-wider uppercase">{{ hour.hours }}</span>
+              </div>
+            }
+          </div>
+        </div>
       </div>
-      <!-- <h2
-        class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-6 bg-linear-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-none"
-      >
-        Contact Us
-      </h2> -->
-      <p class="text-2xl md:text-3xl font-light text-gray-300 tracking-wide">
-        Let's start a
-        <span class="text-[#f76179] font-semibold italic">conversation</span>
-      </p>
-    </div>
 
-    <!-- Main Content Grid -->
-    <div class="grid lg:grid-cols-2 gap-8 mb-16">
-      <!-- Contact Form -->
-      <div class="group relative">
-        <div
-          class="absolute inset-0 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"
-        ></div>
-        <div
-          class="relative bg-linear-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-10"
-        >
-          <h3 class="text-3xl font-black text-white mb-8 tracking-tight">
-            Send us a Message
-          </h3>
+      <!-- Right: Form Complex -->
+      <div class="lg:col-span-7">
+        <div class="relative rounded-[56px] p-10 md:p-16 xl:p-20 overflow-hidden border border-white/10 bg-white/[0.01] backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+          
+          <div class="mb-16">
+            <h3 class="text-4xl font-black text-white mb-3 tracking-tighter">Initialize Project</h3>
+            <p class="text-gray-600 font-bold text-sm uppercase tracking-widest">Protocol Version 1.0.4</p>
+          </div>
 
-          <form
-            [formGroup]="contactForm"
-            (ngSubmit)="onSubmit()"
-            class="space-y-6"
-          >
-            <!-- Name Input -->
-            <div>
-              <label
-                class="block text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wider"
-                >Full Name</label
-              >
-              <input
-                type="text"
-                formControlName="name"
-                placeholder="John Doe"
-                class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#f76179]/50 focus:bg-white/10 transition-all duration-300"
-                [class.border-red-500]="
-                  contactForm.get('name')?.invalid &&
-                  contactForm.get('name')?.touched
-                "
-              />
-              <div
-                *ngIf="
-                  contactForm.get('name')?.invalid &&
-                  contactForm.get('name')?.touched
-                "
-                class="mt-1 text-red-400 text-sm"
-              >
-                <div *ngIf="contactForm.get('name')?.errors?.['required']">
-                  Name is required
-                </div>
-                <div *ngIf="contactForm.get('name')?.errors?.['minlength']">
-                  Name must be at least 2 characters
-                </div>
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-12">
+            <div class="grid md:grid-cols-2 gap-10">
+              <!-- Name -->
+              <div class="relative group">
+                <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Subject ID</label>
+                <input type="text" formControlName="name" placeholder="Full Name"
+                       class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all font-bold">
+              </div>
+
+              <!-- Email -->
+              <div class="relative group">
+                <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Data Port</label>
+                <input type="email" formControlName="email" placeholder="email@address.net"
+                       class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all font-bold">
               </div>
             </div>
 
-            <!-- Email Input -->
-            <div>
-              <label
-                class="block text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wider"
-                >Email Address</label
-              >
-              <input
-                type="email"
-                formControlName="email"
-                placeholder="john@example.com"
-                class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#f76179]/50 focus:bg-white/10 transition-all duration-300"
-                [class.border-red-500]="
-                  contactForm.get('email')?.invalid &&
-                  contactForm.get('email')?.touched
-                "
-              />
-              <div
-                *ngIf="
-                  contactForm.get('email')?.invalid &&
-                  contactForm.get('email')?.touched
-                "
-                class="mt-1 text-red-400 text-sm"
-              >
-                <div *ngIf="contactForm.get('email')?.errors?.['required']">
-                  Email is required
-                </div>
-                <div *ngIf="contactForm.get('email')?.errors?.['email']">
-                  Please enter a valid email
-                </div>
+            <!-- Subject -->
+            <div class="relative group">
+              <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Header</label>
+              <input type="text" formControlName="subject" placeholder="What is the core focus?"
+                     class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all font-bold">
+            </div>
+
+            <!-- Service Dropdown -->
+            <div class="relative group">
+              <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Sector</label>
+              <div class="relative">
+                <select formControlName="serviceInterest" class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white appearance-none focus:outline-none focus:border-[#f76179] transition-all font-black uppercase tracking-widest text-xs">
+                  <option value="" disabled selected class="bg-black">Select Domain...</option>
+                  @for (opt of serviceOptions; track opt) {
+                    <option [value]="opt" class="bg-black">{{ opt }}</option>
+                  }
+                </select>
+                <div class="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600">▼</div>
               </div>
             </div>
 
-            <!-- Subject Input -->
-            <div>
-              <label
-                class="block text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wider"
-                >Subject</label
-              >
-              <input
-                type="text"
-                formControlName="subject"
-                placeholder="Project Inquiry"
-                class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#f76179]/50 focus:bg-white/10 transition-all duration-300"
-                [class.border-red-500]="
-                  contactForm.get('subject')?.invalid &&
-                  contactForm.get('subject')?.touched
-                "
-              />
-              <div
-                *ngIf="
-                  contactForm.get('subject')?.invalid &&
-                  contactForm.get('subject')?.touched
-                "
-                class="mt-1 text-red-400 text-sm"
-              >
-                <div *ngIf="contactForm.get('subject')?.errors?.['required']">
-                  Subject is required
-                </div>
-                <div *ngIf="contactForm.get('subject')?.errors?.['minlength']">
-                  Subject must be at least 3 characters
-                </div>
-              </div>
+            <!-- Message -->
+            <div class="relative group">
+              <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Detailed Brief</label>
+              <textarea rows="6" formControlName="message" placeholder="Technical requirements, goals, and architectural vision..."
+                        class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all resize-none font-medium leading-relaxed"></textarea>
             </div>
 
-            <!-- Message Textarea -->
-            <div>
-              <label
-                class="block text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wider"
-                >Message</label
-              >
-              <textarea
-                rows="5"
-                formControlName="message"
-                placeholder="Tell us about your project..."
-                class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#f76179]/50 focus:bg-white/10 transition-all duration-300 resize-none"
-                [class.border-red-500]="
-                  contactForm.get('message')?.invalid &&
-                  contactForm.get('message')?.touched
-                "
-              ></textarea>
-              <div
-                *ngIf="
-                  contactForm.get('message')?.invalid &&
-                  contactForm.get('message')?.touched
-                "
-                class="mt-1 text-red-400 text-sm"
-              >
-                <div *ngIf="contactForm.get('message')?.errors?.['required']">
-                  Message is required
-                </div>
-                <div *ngIf="contactForm.get('message')?.errors?.['minlength']">
-                  Message must be at least 10 characters
-                </div>
-              </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button
-              type="submit"
-              [disabled]="contactForm.invalid"
-              class="w-full px-8 py-5 bg-linear-to-r from-[#f76179] to-[#1e3e62] rounded-xl font-bold text-lg text-white shadow-2xl shadow-[#f76179]/50 hover:scale-[1.02] transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Send Message
+            <button type="submit" [disabled]="contactForm.invalid"
+                    class="group relative w-full py-8 rounded-3xl font-black text-white text-xl transition-all shadow-2xl disabled:opacity-30 disabled:cursor-not-allowed hover:scale-[1.01] flex items-center justify-center gap-4 overflow-hidden"
+                    style="background:linear-gradient(135deg,#f76179,#c0365a);box-shadow:0 20px 60px rgba(247,97,121,0.4)">
+              <span class="relative z-10">Transmit Request</span>
+              <svg class="w-6 h-6 relative z-10 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+              <!-- Hover shimmer -->
+              <div class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
             </button>
           </form>
         </div>
       </div>
+    </div>
 
-      <!-- Contact Info & Map -->
-      <div class="space-y-8">
-        <!-- Contact Information Cards -->
-        <div class="grid gap-6">
-          <!-- Email Card -->
-          <div class="group relative">
-            <div
-              class="absolute inset-0 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-            ></div>
-            <div
-              class="relative bg-linear-to-br from-[#f76179]/10 to-[#1e3e62]/10 backdrop-blur-xl border border-[#f76179]/30 rounded-3xl p-6 hover:border-[#f76179]/50 transition-all duration-500 flex items-center gap-6"
-            >
-              <div
-                class="w-14 h-14 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-2xl flex items-center justify-center text-2xl shadow-2xl shadow-[#f76179]/50 shrink-0"
-              >
-                📧
-              </div>
-              <div>
-                <h4
-                  class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1"
-                >
-                  Email Us
-                </h4>
-                <p class="text-xl font-bold text-white">info@infoaidtech.net</p>
-              </div>
-            </div>
+    <!-- FAQ Section -->
+    <div class="mt-40">
+      <div class="text-center mb-20">
+        <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.3em] uppercase text-[#f76179] mb-8">Intelligence Base</span>
+        <h3 class="text-5xl md:text-6xl font-black text-white tracking-tighter">Protocols & FAQ</h3>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        @for (faq of faqs; track faq.q) {
+          <div class="bg-white/[0.02] border border-white/5 rounded-[40px] p-10 hover:bg-white/5 transition-all duration-300 group">
+            <h4 class="text-xl font-black text-white mb-6 flex items-start gap-4">
+              <span class="text-[#f76179] font-black group-hover:scale-125 transition-transform">?</span>
+              {{ faq.q }}
+            </h4>
+            <p class="text-gray-500 text-lg leading-relaxed pl-8 border-l border-white/10">{{ faq.a }}</p>
           </div>
-        </div>
-
-        <!-- Office Hours -->
-        <div class="group relative">
-          <div
-            class="absolute inset-0 bg-linear-to-br from-[#1e3e62] to-[#f76179] rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-          ></div>
-          <div
-            class="relative bg-linear-to-br from-[#1e3e62]/10 to-[#f76179]/10 backdrop-blur-xl border border-[#1e3e62]/30 rounded-3xl p-8 hover:border-[#1e3e62]/50 transition-all duration-500"
-          >
-            <div class="flex items-center gap-4 mb-6">
-              <div
-                class="w-14 h-14 bg-linear-to-br from-[#1e3e62] to-[#f76179] rounded-2xl flex items-center justify-center text-2xl shadow-2xl shadow-[#1e3e62]/50"
-              >
-                🕐
-              </div>
-              <h3 class="text-3xl font-black text-white tracking-tight">
-                Office Hours
-              </h3>
-            </div>
-            <div class="space-y-3 text-lg">
-              <div class="flex justify-between">
-                <span class="text-gray-300">Monday - Friday:</span>
-                <span class="text-white font-bold">9:00 AM - 6:00 PM</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-300">Saturday:</span>
-                <span class="text-white font-bold">10:00 AM - 4:00 PM</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-300">Sunday:</span>
-                <span class="text-white font-bold">Closed</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Social Media -->
-        <div class="group relative">
-          <div
-            class="absolute inset-0 bg-linear-to-br from-[#f76179] to-purple-600 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-          ></div>
-          <div
-            class="relative bg-linear-to-br from-[#f76179]/10 to-purple-600/10 backdrop-blur-xl border border-[#f76179]/30 rounded-3xl p-8 hover:border-[#f76179]/50 transition-all duration-500"
-          >
-            <h3 class="text-2xl font-black text-white mb-6 tracking-tight">
-              Connect With Us
-            </h3>
-            <div class="flex gap-4">
-              <app-social-icon />
-            </div>
-          </div>
-        </div>
+        }
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 0.3;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.5;
-      transform: scale(1.1);
-    }
-  }
-</style>

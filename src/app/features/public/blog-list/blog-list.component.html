@@ -1,279 +1,134 @@
-<app-upper-section [title]="'Blog'"></app-upper-section>
+<app-upper-section [title]="'Insights'"></app-upper-section>
 
-<section class="py-20 md:py-32 bg-black text-white relative overflow-hidden">
-  <!-- Animated background gradient orbs -->
-  <div
-    class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#f76179]/30 rounded-full blur-[120px] animate-pulse"
-  ></div>
-  <div
-    class="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[150px] animate-pulse"
-    style="animation-delay: 1s"
-  ></div>
-  <div
-    class="absolute top-2/3 left-1/3 w-[400px] h-[400px] bg-[#1e3e62]/20 rounded-full blur-[100px] animate-pulse"
-    style="animation-delay: 2s"
-  ></div>
+<section class="bg-black text-white min-h-screen pt-24 pb-32 relative overflow-hidden">
+  <!-- Dynamic Orbs -->
+  <div class="pointer-events-none absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[180px] opacity-20" style="background:radial-gradient(circle,#f76179,transparent 70%)"></div>
+  <div class="pointer-events-none absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full blur-[180px] opacity-15" style="background:radial-gradient(circle,#1e3e62,transparent 70%)"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <!-- Header -->
-    <div class="mb-20 text-center max-w-4xl mx-auto">
-      <div
-        class="inline-block mb-6 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
-      >
-        <span
-          class="text-sm font-semibold tracking-widest uppercase bg-linear-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent"
-        >
-          Insights & Updates
-        </span>
-      </div>
-      <!-- <h2
-        class="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter mb-6 bg-linear-to-r from-white via-gray-100 to-white bg-clip-text text-transparent leading-none"
-      >
-        Our Blog
-      </h2> -->
-      <p class="text-2xl md:text-3xl font-light text-gray-300 tracking-wide">
-        Discover the latest in
-        <span class="text-[#f76179] font-semibold italic">tech & innovation</span>
+
+    <div class="text-center mb-16">
+      <span class="inline-flex items-center gap-2 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-5">
+        <span class="w-2 h-2 rounded-full bg-[#f76179] animate-pulse inline-block"></span>
+        Latest Insights
+      </span>
+      <h2 class="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[0.95]">
+        Thoughts, Ideas <br/>
+        <span class="bg-gradient-to-r from-[#f76179] via-rose-400 to-[#1e3e62] bg-clip-text text-transparent">& Perspectives</span>
+      </h2>
+      <p class="text-xl text-gray-400 leading-relaxed max-w-2xl mx-auto mt-6">
+        Dive into our latest thinking on software engineering, product design, and digital transformation.
       </p>
     </div>
 
-    <!-- Featured Blog Slider (Top 5) -->
-    <div *ngIf="currentFeaturedBlog()" class="mb-16 group relative">
-      <div
-        class="absolute inset-0 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"
-      ></div>
-      <div
-        class="relative bg-linear-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl overflow-hidden hover:border-[#f76179]/50 transition-all duration-500"
-      >
-        <div class="grid lg:grid-cols-2 gap-0">
-          <!-- Featured Image -->
-          <div class="relative h-64 lg:h-full overflow-hidden cursor-pointer" (click)="navigateToBlog(currentFeaturedBlog())">
-            <img
-              [src]="
-                currentFeaturedBlog()?.image ||
-                'https://res.cloudinary.com/dfcir8epp/image/upload/v1755703537/FFFFFF_hi6y3z.svg'
-              "
-              [alt]="currentFeaturedBlog()?.title"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div
-              class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"
-            ></div>
-            <div
-              class="absolute top-4 left-4 px-4 py-2 bg-linear-to-r from-amber-500 to-orange-500 rounded-full text-xs font-bold uppercase tracking-wider shadow-xl"
-            >
-              Featured
+    <!-- Featured Post Hero -->
+    @if (currentFeaturedBlog(); as main) {
+      <div class="relative rounded-[40px] overflow-hidden mb-24 group transition-all duration-500 hover:shadow-2xl hover:scale-[1.01]"
+           style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
+        <div class="grid lg:grid-cols-12 min-h-[500px]">
+          <!-- Image -->
+          <div (click)="navigateToBlog(main)" class="lg:col-span-7 relative overflow-hidden h-[350px] lg:h-auto cursor-pointer">
+            <img [src]="main.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop'" 
+                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" [alt]="main.title">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent lg:hidden"></div>
+            <!-- Cat Badge -->
+            <div class="absolute top-6 left-6 px-4 py-1.5 bg-[#f76179] rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
+              {{ getCategoryName(main.category || main.categoryId) }}
             </div>
-            
-            <!-- Navigation Arrows -->
-            <button
-              *ngIf="featuredBlogs().length > 1"
-              (click)="previousSlide(); $event.stopPropagation()"
-              class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-              aria-label="Previous slide"
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-              </svg>
-            </button>
-            <button
-              *ngIf="featuredBlogs().length > 1"
-              (click)="nextSlide(); $event.stopPropagation()"
-              class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-              aria-label="Next slide"
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
-            </button>
           </div>
-
-          <!-- Featured Content -->
-          <div class="p-8 md:p-12 flex flex-col justify-center">
-            <div class="flex items-center gap-3 mb-4">
-              <span
-                class="px-3 py-1 bg-[#f76179]/20 border border-[#f76179]/30 rounded-full text-xs font-semibold text-[#f76179] uppercase tracking-wider"
-              >
-                {{ getCategoryName(currentFeaturedBlog()?.categoryId) }}
-              </span>
-              <span class="text-gray-400 text-sm">•</span>
-              <span class="text-gray-400 text-sm">
-                {{ currentFeaturedBlog()?.readTime || 5 }} min read
-              </span>
-            </div>
-            <h3
-              class="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight leading-tight group-hover:text-[#f76179] transition-colors duration-300"
-            >
-              {{ currentFeaturedBlog()?.title }}
-            </h3>
-            <p class="text-lg text-gray-300 leading-relaxed mb-6 line-clamp-3">
-              {{ currentFeaturedBlog()?.short_desc || currentFeaturedBlog()?.description }}
-            </p>
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 bg-linear-to-br from-[#f76179] to-[#1e3e62] rounded-full"
-                ></div>
-                <div>
-                  <p class="text-sm font-bold text-white">
-                    {{ currentFeaturedBlog()?.author || "Infoaidtech Team" }}
-                  </p>
-                  <p class="text-xs text-gray-400">
-                    {{
-                      formatDate(
-                        currentFeaturedBlog()?.publishedAt || currentFeaturedBlog()?.createdAt
-                      )
-                    }}
-                  </p>
-                </div>
+            <!-- Content -->
+            <div class="p-8 md:p-16 flex flex-col justify-center relative lg:col-span-5">
+              <div class="absolute -right-10 -bottom-10 w-40 h-40 rounded-full opacity-10" style="background:#f76179"></div>
+              <div class="flex items-center gap-3 text-[11px] text-gray-500 mb-6 font-bold uppercase tracking-[0.2em]">
+                <span>{{ formatDate(main.publishedAt || main.createdAt) }}</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-gray-800"></span>
+                <span>{{ main.readTime || 5 }} min read</span>
               </div>
-              <button
-                class="px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-semibold text-sm transition-all duration-300"
-                (click)="navigateToBlog(currentFeaturedBlog())"
-              >
-                Read More →
+              <h2 class="text-4xl lg:text-5xl font-black text-white tracking-tighter mb-6 leading-[1.05] group-hover:text-[#f76179] transition-colors line-clamp-3">
+                {{ main.title }}
+              </h2>
+              <p class="text-gray-400 text-lg leading-relaxed mb-10 line-clamp-3 font-medium">
+                {{ main.short_desc || main.description }}
+              </p>
+              <div class="flex items-center gap-4 mt-auto">
+                <button (click)="navigateToBlog(main)" class="inline-flex items-center gap-2 px-7 py-4 rounded-xl font-bold text-white text-sm shadow-2xl hover:scale-105 transition-all duration-300"
+                   style="background:linear-gradient(135deg,#f76179,#c0365a); box-shadow:0 8px 32px rgba(247,97,121,0.2)">
+                  Read Article
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </button>
+              </div>
+            </div>
+        </div>
+      </div>
+    }
+
+    <!-- Blog Layout: Sidebar + Grid -->
+    <div class="grid lg:grid-cols-12 gap-12">
+      
+      <!-- Left: Category Sticky Sidebar -->
+      <aside class="lg:col-span-4 xl:col-span-3 lg:sticky lg:top-24 h-fit space-y-8">
+        <div class="p-8 rounded-[32px]" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06)">
+          <h4 class="text-xs font-black uppercase tracking-[0.4em] text-gray-500 mb-8 flex items-center gap-3">
+            <span class="w-8 h-px bg-gray-700"></span>
+            Topics
+          </h4>
+          <div class="flex flex-col gap-3">
+            <button (click)="selectCategory(null)"
+                    [class]="selectedCategory() === null ? 'bg-[#f76179] text-white border-[#f76179]' : 'bg-transparent text-gray-400 hover:bg-white/5 hover:text-white border-white/10'"
+                    class="px-6 py-4 rounded-2xl text-left text-sm font-bold transition-all border flex justify-between items-center group">
+              All Insights
+              <span class="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center text-[10px]" [class.text-white]="selectedCategory() === null">
+                {{ allBlogs().length }}
+              </span>
+            </button>
+            @for (cat of categories(); track cat._id) {
+              <button (click)="selectCategory(cat._id)"
+                      [class]="selectedCategory() === cat._id ? 'bg-[#f76179] text-white border-[#f76179]' : 'bg-transparent text-gray-400 hover:bg-white/5 hover:text-white border-white/10'"
+                      class="px-6 py-4 rounded-2xl text-left text-sm font-bold transition-all border flex justify-between items-center group">
+                {{ cat.name }}
+                <span class="w-6 h-6 rounded-full bg-black/20 flex items-center justify-center text-[10px]" [class.text-white]="selectedCategory() === cat._id">
+                  {{ countBlogsByCategory(cat._id) }}
+                </span>
               </button>
-            </div>
-            
-            <!-- Slider Indicators -->
-            <div *ngIf="featuredBlogs().length > 1" class="flex gap-2 mt-6 justify-center">
-              <button
-                *ngFor="let blog of featuredBlogs(); let i = index"
-                (click)="goToSlide(i)"
-                [class.bg-[#f76179]]="currentSlide() === i"
-                [class.bg-white/30]="currentSlide() !== i"
-                class="w-2 h-2 rounded-full transition-all duration-300 hover:scale-125"
-                [attr.aria-label]="'Go to slide ' + (i + 1)"
-              ></button>
-            </div>
+            }
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Category Filter -->
-    <div class="mb-12 flex flex-wrap gap-3 justify-center">
-      <!-- "All Posts" button -->
-      <button
-        (click)="selectCategory(null)"
-        [ngClass]="
-          selectedCategory() === null
-            ? 'bg-linear-to-r from-[#f76179] to-[#1e3e62] text-white shadow-lg shadow-[#f76179]/30'
-            : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white'
-        "
-        class="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
-      >
-        All Posts
-        <span class="ml-2 text-xs opacity-70">({{ allBlogs().length }})</span>
-      </button>
-
-      <!-- Dynamic categories -->
-      <button
-        *ngFor="let category of categories()"
-        (click)="selectCategory(category._id)"
-        [ngClass]="
-          selectedCategory() === category._id
-            ? 'bg-linear-to-r from-[#f76179] to-[#1e3e62] text-white shadow-lg shadow-[#f76179]/30'
-            : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white'
-        "
-        class="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
-      >
-        {{ category.name }}
-        <span class="ml-2 text-xs opacity-70">
-          ({{ countBlogsByCategory(category._id) }})
-        </span>
-      </button>
-    </div>
-
-    <!-- Results info -->
-    <div class="mb-8 text-center">
-      <p class="text-gray-400 text-sm">
-        <span *ngIf="selectedCategory() === null">
-          Showing all {{ blogs().length }} articles
-        </span>
-        <span *ngIf="selectedCategory() !== null">
-          Showing {{ blogs().length }} articles in
-          <span class="text-[#f76179] font-semibold">
-            {{ getCategoryName(selectedCategory()!) }}
-          </span>
-        </span>
-      </p>
-    </div>
-
-    <!-- Blog Grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <app-blog-card
-        *ngFor="let blog of blogs(); trackBy: trackByBlogId"
-        [blog]="blog"
-      ></app-blog-card>
-
-      <!-- Empty state -->
-      <div
-        *ngIf="blogs().length === 0 && !isLoading()"
-        class="col-span-full text-center py-20"
-      >
-        <div
-          class="inline-flex flex-col items-center gap-4 px-6 py-8 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl"
-        >
-          <div class="text-6xl opacity-50">📝</div>
-          <p class="text-gray-300 font-medium text-lg">
-            No articles found in this category
-          </p>
-          <button
-            (click)="selectCategory(null)"
-            class="mt-2 px-6 py-2 bg-[#f76179]/20 hover:bg-[#f76179]/30 border border-[#f76179]/30 rounded-lg text-[#f76179] text-sm font-semibold transition-all duration-300"
-          >
-            View All Posts
-          </button>
+        <!-- Mini Newsletter -->
+        <div class="rounded-[32px] p-8 relative overflow-hidden group"
+             style="background:linear-gradient(135deg,rgba(247,97,121,0.1),rgba(30,62,98,0.1));border:1px solid rgba(247,97,121,0.2)">
+          <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-20" style="background:#f76179"></div>
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl mb-6 shadow-xl"
+               style="background:linear-gradient(135deg,#f76179,#c0365a)">✉️</div>
+          <h5 class="font-black text-white text-xl mb-2">Weekly Brief</h5>
+          <p class="text-sm text-gray-400 leading-relaxed mb-8">The best of tech and business directly to your inbox. Zero fluff.</p>
+          <div class="flex flex-col gap-3">
+            <input type="email" placeholder="Email address" 
+                   class="px-5 py-4 bg-black/40 border border-white/10 rounded-2xl text-sm focus:border-[#f76179] focus:outline-none focus:ring-1 focus:ring-[#f76179] transition-all text-white placeholder-gray-500">
+            <button class="w-full py-4 text-white font-black text-sm rounded-2xl hover:scale-[1.02] shadow-xl transition-all"
+                    style="background:linear-gradient(135deg,#1e3e62,#2d5a8f)">Join 5K+ Readers</button>
+          </div>
         </div>
-      </div>
+      </aside>
 
-      <!-- Loading state -->
-      <div *ngIf="isLoading()" class="col-span-full text-center py-20">
-        <div
-          class="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full"
-        >
-          <div
-            class="w-5 h-5 border-2 border-[#f76179] border-t-transparent rounded-full animate-spin"
-          ></div>
-          <p class="text-gray-300 font-medium">Loading blogs...</p>
+      <!-- Right: Main Grid -->
+      <div class="lg:col-span-8 xl:col-span-9">
+        <div class="grid md:grid-cols-2 gap-6 xl:gap-8">
+          @for (blog of blogs(); track blog._id) {
+            <app-blog-card [blog]="blog"></app-blog-card>
+          }
         </div>
-      </div>
-    </div>
 
-    <!-- Load More Button (optional - only show if there are blogs) -->
-    <div *ngIf="blogs().length > 0" class="mt-16 text-center">
-      <button
-        class="px-10 py-5 bg-linear-to-r from-[#f76179] to-[#1e3e62] rounded-xl font-bold text-lg text-white shadow-2xl shadow-[#f76179]/50 hover:scale-105 transition-transform duration-300"
-        (click)="loadMoreBlogs()"
-      >
-        Load More Posts
-      </button>
+        <!-- Load More -->
+        @if (blogs().length > 0) {
+          <div class="mt-20 flex justify-center">
+            <button (click)="loadMoreBlogs()" class="inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-bold text-white text-sm border border-white/15 hover:bg-white/10 transition-all duration-300">
+              <span class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin hidden"></span>
+              Load Older Posts
+            </button>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </section>
-
-<style>
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 0.3;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.5;
-      transform: scale(1.1);
-    }
-  }
-
-  .animate-pulse {
-    animation: pulse 4s ease-in-out infinite;
-  }
-
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-</style>

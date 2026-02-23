@@ -1,0 +1,208 @@
+{
+  "hero": {
+    "title": "Free Online Image Converter",
+    "subtitle": "Convert JFIF to JPG, PNG to WebP, and More - Instantly & Securely",
+    "description": "Professional-grade image conversion tool that works entirely in your browser. No uploads, no registration, completely free forever.",
+    "features": [
+      "✓ No File Size Limits",
+      "✓ Batch Processing",
+      "✓ 100% Private"
+    ]
+  },
+  "settings": {
+    "title": "Conversion Settings",
+    "description": "Customize your image output preferences",
+    "outputFormatLabel": "Output Format",
+    "compressionModeLabel": "Compression Mode",
+    "qualityLevelLabel": "Quality Level",
+    "targetFileSizeLabel": "Target File Size"
+  },
+  "upload": {
+    "title": "Drop your images here",
+    "subtitle": "or click the button below to browse",
+    "buttonText": "Select Images",
+    "supportedFormats": "Supports: JPEG, JFIF, PNG, GIF, BMP, WebP, and more"
+  },
+  "fileList": {
+    "title": "Your Images",
+    "readyText": "Ready for conversion",
+    "clearAll": "Clear All",
+    "download": "Download",
+    "remove": "Remove"
+  },
+  "actions": {
+    "convertButton": "Convert Images",
+    "convertingText": "Converting...",
+    "downloadAll": "Download All as ZIP"
+  },
+  "stats": {
+    "successMessage": "images converted successfully!"
+  },
+  "features": [
+    {
+      "title": "Universal Format Support",
+      "description": "Convert between JPG, PNG, WebP, BMP and more. Supports high-quality output for photographers and designers.",
+      "icon": "convert"
+    },
+    {
+      "title": "Smart Optimization",
+      "description": "Our engine balances quality and file size intelligently. Get the perfect image for web or print instantly.",
+      "icon": "star"
+    },
+    {
+      "title": "100% Secure & Private",
+      "description": "Your photos never leave your browser. All processing happens on your device using advanced client-side technology.",
+      "icon": "shield"
+    }
+  ],
+  "howTo": {
+    "title": "How to Convert JFIF to JPG in 3 Simple Steps",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Upload JFIF File",
+        "description": "Drag and drop your JFIF file into the upload area or click to select from your device. Multiple files supported for batch conversion."
+      },
+      {
+        "number": "2",
+        "title": "Choose JPG Format",
+        "description": "Select JPEG/JPG as your output format from the conversion settings panel and adjust quality settings to your preference."
+      },
+      {
+        "number": "3",
+        "title": "Download Image",
+        "description": "Click \"Convert Images\" and then download your high-quality JPG file instantly. Get all files in a ZIP for batch conversions."
+      }
+    ]
+  },
+  "whatIsJfif": {
+    "title": "What is JFIF? Understanding the File Interchange Format",
+    "content": [
+      "The <strong>JPEG File Interchange Format (JFIF)</strong> is an image file format standard that defines supplementary specifications for the container format containing image data encoded with the JPEG algorithm. While JFIF files use the same compression technology as standard JPG files, they may not be universally compatible with all image viewers, software applications, and web platforms.",
+      "Our image converter ensures 100% compatibility by converting JFIF files to standard JPG format, which is supported by every modern device, browser, and application. This conversion maintains image quality while maximizing accessibility and usability across all platforms."
+    ]
+  },
+  "whyConvert": {
+    "title": "Why Convert Your Images Online?",
+    "items": [
+      {
+        "title": "Web Optimization",
+        "description": "Converting images to WebP or optimized JPEG formats can reduce file sizes by up to 80% without visible quality loss, resulting in faster page load times and improved SEO rankings.",
+        "icon": "M13 10V3L4 14h7v7l9-11h-7z"
+      },
+      {
+        "title": "Universal Compatibility",
+        "description": "Ensure your images work everywhere by converting to widely supported formats like JPG and PNG, eliminating compatibility issues across different devices and platforms.",
+        "icon": "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+      },
+      {
+        "title": "Professional Quality",
+        "description": "Maintain professional image quality with advanced compression algorithms that preserve visual fidelity while reducing file sizes for optimal performance.",
+        "icon": "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+      },
+      {
+        "title": "Time Efficiency",
+        "description": "Process multiple images simultaneously with batch conversion, saving hours of manual work and streamlining your workflow for maximum productivity.",
+        "icon": "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      }
+    ]
+  },
+  "supportedFormats": {
+    "title": "Supported Image Formats",
+    "formats": [
+      { "name": "JPEG", "description": "Most common format", "color": "indigo" },
+      { "name": "PNG", "description": "Transparent backgrounds", "color": "purple" },
+      { "name": "WebP", "description": "Modern web format", "color": "green" },
+      { "name": "GIF", "description": "Animated images", "color": "orange" },
+      { "name": "BMP", "description": "Bitmap format", "color": "cyan" },
+      { "name": "JFIF", "description": "JPEG interchange", "color": "red" },
+      { "name": "TIFF", "description": "High quality", "color": "indigo" },
+      { "name": "SVG", "description": "Vector graphics", "color": "pink" }
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "questions": [
+      {
+        "question": "Is it free to convert JFIF to JPG?",
+        "answer": "Yes, our image converter is 100% free to use with unlimited conversions, no hidden fees, no daily limits, and no registration required. Convert as many images as you need, whenever you need.",
+        "icon": "M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      },
+      {
+        "question": "Do I need to install software?",
+        "answer": "No software installation is required. The entire conversion process happens directly in your web browser using advanced HTML5 technology, making it accessible from any device with a modern browser.",
+        "icon": "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+      },
+      {
+        "question": "How fast is the conversion process?",
+        "answer": "Conversions are nearly instantaneous for most images. Since processing happens locally on your device, speed depends on your computer's performance and image size, but typically takes just seconds.",
+        "icon": "M13 10V3L4 14h7v7l9-11h-7z"
+      },
+      {
+        "question": "Is my data secure and private?",
+        "answer": "Absolutely. Your files are processed entirely within your browser and are never uploaded to any server or cloud storage. Your images remain completely private and secure on your device at all times.",
+        "icon": "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+      },
+      {
+        "question": "Can I convert multiple files at once?",
+        "answer": "Yes, batch conversion is fully supported. You can select and convert multiple JFIF, PNG, or other image files to your desired format simultaneously, saving significant time on large projects.",
+        "icon": "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+      },
+      {
+        "question": "Will image quality be maintained?",
+        "answer": "Yes, our converter uses advanced compression algorithms to maintain excellent visual quality. You can also adjust quality settings manually to find the perfect balance between file size and image clarity.",
+        "icon": "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      }
+    ]
+  },
+  "benefits": {
+    "title": "Why Choose Our Image Converter?",
+    "items": [
+      {
+        "emoji": "⚡",
+        "title": "Instant Processing",
+        "description": "No waiting in queues or slow server uploads. Convert images in seconds with local processing power."
+      },
+      {
+        "emoji": "🔒",
+        "title": "Complete Privacy",
+        "description": "Your images never leave your device. Perfect for sensitive documents and confidential projects."
+      },
+      {
+        "emoji": "🎯",
+        "title": "Professional Results",
+        "description": "Industry-standard compression algorithms ensure optimal quality and compatibility for all use cases."
+      }
+    ]
+  },
+  "useCases": {
+    "title": "Perfect For Every Need",
+    "cases": [
+      {
+        "emoji": "💼",
+        "title": "Business",
+        "description": "Optimize images for websites, presentations, and marketing materials."
+      },
+      {
+        "emoji": "📱",
+        "title": "Social Media",
+        "description": "Prepare images for Instagram, Facebook, Twitter, and other platforms."
+      },
+      {
+        "emoji": "📸",
+        "title": "Photography",
+        "description": "Convert RAW formats and optimize photos for online portfolios."
+      },
+      {
+        "emoji": "🌐",
+        "title": "Web Development",
+        "description": "Create optimized web assets for faster loading and better SEO."
+      }
+    ]
+  },
+  "footerCta": {
+    "title": "Ready to Convert Your Images?",
+    "description": "Join thousands of users who trust our free, secure, and lightning-fast image converter for all their conversion needs.",
+    "buttonText": "Start Converting Now - It's Free!"
+  }
+}

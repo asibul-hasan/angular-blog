@@ -9,8 +9,8 @@ import { UserContextService, UserInfo, UserCompany } from './user-context.servic
 export type User = UserInfo;
 
 export interface AuthResponse {
-    body: User;
-    TOKEN: string;
+    body: any;
+    TOKEN?: string;
     refreshToken?: string;
     message: string;
 }
@@ -96,23 +96,25 @@ export class AuthService {
         this.router.navigate(['/login']);
     }
 
-    getProfile(): Observable<{ body: User; message: string }> {
+    getProfile(): Observable<{ body: any; message: string }> {
         return this.http
-            .get<{ body: User; message: string }>(`${this.API_URL}/profile`)
+            .get<{ body: any; message: string }>(`${this.API_URL}/profile`)
             .pipe(
                 tap((response) => {
-                    this.userContextService.setCurrentUser(response.body);
+                    const rawUser = response.body?.user || response.body;
+                    this.userContextService.setCurrentUser(this.mapUser(rawUser));
                 }),
                 catchError(this.handleError)
             );
     }
 
-    updateProfile(data: Partial<User>): Observable<{ body: User; message: string }> {
+    updateProfile(data: Partial<User>): Observable<{ body: any; message: string }> {
         return this.http
-            .put<{ body: User; message: string }>(`${this.API_URL}/profile`, data)
+            .put<{ body: any; message: string }>(`${this.API_URL}/profile`, data)
             .pipe(
                 tap((response) => {
-                    this.userContextService.setCurrentUser(response.body);
+                    const rawUser = response.body?.user || response.body;
+                    this.userContextService.setCurrentUser(this.mapUser(rawUser));
                 }),
                 catchError(this.handleError)
             );
@@ -170,12 +172,31 @@ export class AuthService {
         }
     }
 
-    private setAuthData(user: User, token: string, refreshToken?: string): void {
-        this.storageService.setItem('token', token);
+    private mapUser(rawUser: any): User {
+        if (!rawUser) return null as any;
+        return {
+            userId: rawUser._id || rawUser.userId,
+            userName: rawUser.name || rawUser.userName,
+            email: rawUser.email,
+            userRole: rawUser.role || rawUser.userRole,
+            avatar: rawUser.avatar,
+            isActive: rawUser.isActive !== false,
+            companies: rawUser.companies || [],
+        };
+    }
+
+    private setAuthData(body: any, fallbackToken?: string, fallbackRefreshToken?: string): void {
+        const token = body?.token || fallbackToken;
+        const refreshToken = body?.refreshToken || fallbackRefreshToken;
+        const rawUser = body?.user || body;
+
+        if (token) {
+            this.storageService.setItem('token', token);
+        }
         if (refreshToken) {
             this.storageService.setItem('refreshToken', refreshToken);
         }
-        this.userContextService.setCurrentUser(user);
+        this.userContextService.setCurrentUser(this.mapUser(rawUser));
         this.startRefreshTokenTimer();
     }
 
