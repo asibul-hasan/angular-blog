@@ -25,3 +25,4 @@ export * from './seo';
 export * from './service';
 export * from './social-links';
 export * from './access';
+export * from './intern';

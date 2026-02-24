@@ -33,7 +33,8 @@ export class UserContextService {
         const user = this.currentUser();
         return !!user && !!user.userId && !!user.userName;
     });
-    public isAdmin = computed(() => this.user().userRole === 'admin');
+    private static readonly ADMIN_ROLES = ['admin', 'superadmin', 'hr', 'manager', 'recruiter'];
+    public isAdmin = computed(() => UserContextService.ADMIN_ROLES.includes(this.user().userRole));
 
     private getCurrentUserFromStorage(): UserInfo | null {
         try {

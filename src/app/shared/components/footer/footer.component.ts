@@ -45,12 +45,12 @@ export class Footer implements OnInit {
         heading: 'Pages',
         lists: [
           { path: '/', label: 'Home' },
-          { path: '/about', label: 'About' },
+          { path: '/about', label: 'About Us' },
           { path: '/blog', label: 'Blog' },
           { path: '/services', label: 'Service' },
           { path: '/contact', label: 'Contact' },
           { path: '/careers', label: 'Career' },
-          { path: '/internships', label: 'Internship' }
+          { path: '/internship/apply', label: 'Internship' }
 
         ],
       },
@@ -58,7 +58,7 @@ export class Footer implements OnInit {
         heading: 'Quick Links',
         lists: [
           {
-            path: '/privacy-policy',
+            path: '/privacy-policy',                       
             label: 'Privacy Policy',
           },
           {
@@ -74,6 +74,10 @@ export class Footer implements OnInit {
           {
             path: '/image-converter',
             label: 'Image Converter',
+          },
+          {
+            path: '/json-to-ts',
+            label: 'JSON to TS',
           },
         ],
       },

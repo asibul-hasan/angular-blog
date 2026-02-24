@@ -5,6 +5,7 @@ export interface MenuItem {
     route?: string;
     children?: MenuItem[];
     requiresAdmin?: boolean;
+    requiresIntern?: boolean;
 }
 
 export const MENU_ITEMS: MenuItem[] = [
@@ -12,7 +13,15 @@ export const MENU_ITEMS: MenuItem[] = [
         id: 'dashboard',
         title: 'Dashboard',
         iconClass: 'fa-solid fa-gauge',
-        route: '/dashboard'
+        route: '/dashboard',
+        requiresAdmin: true
+    },
+    {
+        id: 'intern-tasks',
+        title: 'My Tasks',
+        iconClass: 'fa-solid fa-list-check',
+        route: '/dashboard/intern/tasks',
+        requiresIntern: true
     },
     {
         id: 'blog-management',
@@ -69,6 +78,32 @@ export const MENU_ITEMS: MenuItem[] = [
                 title: 'Internship',
                 iconClass: 'fa-solid fa-briefcase',
                 route: '/dashboard/internship'
+            }
+        ]
+    },
+    {
+        id: 'intern-management',
+        title: 'Intern Management',
+        iconClass: 'fa-solid fa-user-graduate',
+        requiresAdmin: true,
+        children: [
+            {
+                id: 'intern-list',
+                title: 'Track Interns',
+                iconClass: 'fa-solid fa-list-ol',
+                route: '/dashboard/intern-management/list'
+            },
+            {
+                id: 'domain-tasks',
+                title: 'Domain Tasks',
+                iconClass: 'fa-solid fa-network-wired',
+                route: '/dashboard/intern-management/domain-tasks'
+            },
+            {
+                id: 'task-review',
+                title: 'Review Tasks',
+                iconClass: 'fa-solid fa-check-double',
+                route: '/dashboard/intern-management/task-review'
             }
         ]
     },

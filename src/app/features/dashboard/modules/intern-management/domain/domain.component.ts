@@ -1,114 +1,90 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SHARED_IMPORTS } from '../../../../../shared';
+import { ToastService } from '../../../../../core/services';
+import { InternService, DomainTask } from '../../../../../shared/services';
 
-interface Domain {
-    id: string;
-    name: string;
-    description: string;
-    createdAt: Date;
-}
+
 
 @Component({
     selector: 'app-domain',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, ...SHARED_IMPORTS],
     templateUrl: './domain.component.html',
-    styleUrls: ['./domain.component.css']
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DomainComponent implements OnInit {
-    domainForm: FormGroup;
-    domains: Domain[] = [];
-    isEditing = false;
-    currentDomainId: string | null = null;
+    private fb = inject(FormBuilder);
+    private internService = inject(InternService);
+    private toast = inject(ToastService);
+    private platformId = inject(PLATFORM_ID);
 
-    constructor(private fb: FormBuilder) {
-        this.domainForm = this.fb.group({
-            name: ['', [Validators.required, Validators.minLength(2)]],
-            description: ['', [Validators.required, Validators.minLength(10)]]
-        });
-    }
+    public isLoading = signal(true);
+    public isSubmitting = signal(false);
+    public domainTasks = signal<DomainTask[]>([]);
+
+    public availableDomains = [
+        'Web Development', 'Graphic Design', 'Data Science',
+        'Digital Marketing', 'App Development', 'Cyber Security',
+        'UI/UX Design', 'Cloud Computing', 'Machine Learning', 'Artificial Intelligence'
+    ];
+
+    public taskForm = this.fb.group({
+        domain: ['', Validators.required],
+        title: ['', [Validators.required, Validators.minLength(3)]],
+        description: ['', [Validators.required, Validators.minLength(10)]],
+        order: [1, [Validators.required, Validators.min(1)]]
+    });
 
     ngOnInit(): void {
-        this.loadDomains();
+        if (isPlatformBrowser(this.platformId)) {
+            this.loadTasks();
+        } else {
+            this.isLoading.set(false);
+        }
     }
 
-    loadDomains(): void {
-        // In a real application, this would come from an API
-        // For now, we'll use mock data
-        this.domains = [
-            {
-                id: '1',
-                name: 'Web Development',
-                description: 'Frontend and backend web development including HTML, CSS, JavaScript, and frameworks',
-                createdAt: new Date()
-            },
-            {
-                id: '2',
-                name: 'Mobile App Development',
-                description: 'Native and cross-platform mobile application development',
-                createdAt: new Date()
-            },
-            {
-                id: '3',
-                name: 'Data Science',
-                description: 'Data analysis, machine learning, and artificial intelligence',
-                createdAt: new Date()
-            }
-        ];
+    loadTasks(): void {
+        this.isLoading.set(true);
+        this.internService.getDomainTasks()
+            .subscribe({
+                next: (res) => {
+                    this.domainTasks.set(res.body);
+                    this.isLoading.set(false);
+                },
+                error: () => {
+                    this.isLoading.set(false);
+                }
+            });
     }
 
     onSubmit(): void {
-        if (this.domainForm.valid) {
-            if (this.isEditing && this.currentDomainId) {
-                this.updateDomain(this.currentDomainId);
-            } else {
-                this.createDomain();
-            }
+        if (this.taskForm.invalid) {
+            this.taskForm.markAllAsTouched();
+            this.toast.warn('Validation', 'Please fill all required fields.');
+            return;
         }
+
+        this.isSubmitting.set(true);
+        this.internService.createDomainTask(this.taskForm.value as any)
+            .subscribe({
+                next: (res) => {
+                    this.toast.success('Created!', res.message);
+                    this.isSubmitting.set(false);
+                    const nextOrder = (this.taskForm.value.order ?? 1) + 1;
+                    this.taskForm.reset({ domain: this.taskForm.value.domain, order: nextOrder, title: '', description: '' });
+                    this.loadTasks();
+                },
+                error: (err) => {
+                    this.toast.error('Error', err.error?.message || 'Failed to create task');
+                    this.isSubmitting.set(false);
+                }
+            });
     }
 
-    createDomain(): void {
-        const newDomain: Domain = {
-            id: Date.now().toString(),
-            name: this.domainForm.value.name,
-            description: this.domainForm.value.description,
-            createdAt: new Date()
-        };
-
-        this.domains.push(newDomain);
-        this.resetForm();
-    }
-
-    editDomain(domain: Domain): void {
-        this.isEditing = true;
-        this.currentDomainId = domain.id;
-        this.domainForm.patchValue({
-            name: domain.name,
-            description: domain.description
-        });
-    }
-
-    updateDomain(id: string): void {
-        const index = this.domains.findIndex(d => d.id === id);
-        if (index !== -1) {
-            this.domains[index] = {
-                ...this.domains[index],
-                name: this.domainForm.value.name,
-                description: this.domainForm.value.description
-            };
-        }
-        this.resetForm();
-    }
-
-    deleteDomain(id: string): void {
-        this.domains = this.domains.filter(d => d.id !== id);
-    }
-
-    resetForm(): void {
-        this.domainForm.reset();
-        this.isEditing = false;
-        this.currentDomainId = null;
+    deleteTask(id: string): void {
+        // Optimistic removal from UI since there is no delete endpoint yet
+        this.domainTasks.update(tasks => tasks.filter(t => t._id !== id));
+        this.toast.info('Removed', 'Task removed from view (no delete API yet).');
     }
 }

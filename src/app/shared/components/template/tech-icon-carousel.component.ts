@@ -7,47 +7,41 @@ import { Observable } from 'rxjs';
     selector: 'app-tech-icon-carousel',
     standalone: true,
     imports: [CommonModule],
-    template: `
+  template: `
     <section class="relative overflow-hidden w-full py-16 lg:py-20">
-      <!-- Gradient overlay matching choose-us section -->
-      <!-- <div class="absolute inset-0 bg-linear-to-br from-purple-500/5 via-transparent to-[#f76179]/5 pointer-events-none"></div> -->
-      
-      <!-- Floating orbs for depth -->
-      <!-- <div class="absolute top-1/4 left-10 w-72 h-72 bg-[#f76179]/10 rounded-full blur-3xl animate-float"></div> -->
-      <!-- <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float-delayed"></div> -->
-
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Section Header -->
-        <!-- <div class="text-center mb-12">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 mb-6">
-            <span class="w-2 h-2 rounded-full bg-[#f76179] animate-pulse"></span>
-            <span class="text-sm font-medium text-white/70 tracking-wide">Technologies We Use</span>
-          </div>
-          <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Our Tech Stack</h2>
-        </div> -->
-
-        <!-- Carousel Track -->
-        <div class="tech-carousel-track" *ngIf="technologies$ | async as technologies">
-          <!-- Original icons -->
-          <div *ngFor="let tech of technologies" class="tech-icon-item">
-            <div class="tech-icon-wrapper">
-              <img
-                [src]="tech.icon"
-                [alt]="tech.name"
-                class="w-12 h-12 md:w-16 md:h-16 object-contain transition-all duration-300"
-                [title]="tech.name"
-              />
+        <!-- Carousel Track Wrapper with CSS Mask for seamless edge fading on ANY background -->
+        <div class="relative flex items-center justify-start w-full overflow-hidden" 
+             style="-webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);"
+             *ngIf="technologies$ | async as technologies">
+          
+          <div class="tech-carousel-track" style="animation: scroll-right 40s linear infinite;">
+            <!-- Original icons -->
+            <div *ngFor="let tech of technologies" class="tech-icon-item shrink-0">
+              <div class="group relative w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-white/20 hover:shadow-xl cursor-default">
+                <!-- Clean, simple white glow for contrast against dark logos instead of a blob -->
+                <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300"></div>
+                <img
+                  [src]="tech.icon"
+                  [alt]="tech.name"
+                  class="relative z-10 w-12 h-12 md:w-16 md:h-16 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                  [title]="tech.name"
+                  loading="lazy"
+                />
+              </div>
             </div>
-          </div>
-          <!-- Duplicated icons for seamless loop -->
-          <div *ngFor="let tech of technologies" class="tech-icon-item">
-            <div class="tech-icon-wrapper">
-              <img
-                [src]="tech.icon"
-                [alt]="tech.name"
-                class="w-12 h-12 md:w-16 md:h-16 object-contain transition-all duration-300"
-                [title]="tech.name"
-              />
+            <!-- Duplicated icons for seamless loop -->
+            <div *ngFor="let tech of technologies" class="tech-icon-item shrink-0">
+              <div class="group relative w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-white/20 hover:shadow-xl cursor-default">
+                <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300"></div>
+                <img
+                  [src]="tech.icon"
+                  [alt]="tech.name"
+                  class="relative z-10 w-12 h-12 md:w-16 md:h-16 object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                  [title]="tech.name"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -57,61 +51,32 @@ import { Observable } from 'rxjs';
     styles: [`
     .tech-carousel-track {
       display: flex;
-      gap: 3rem;
-      animation: scroll-left 40s linear infinite;
+      width: max-content;
+      gap: 2rem;
       will-change: transform;
+      padding: 2rem 0;
     }
 
     .tech-icon-item {
-      flex: 0 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      flex: 0 0 auto;
     }
 
-    .tech-icon-wrapper {
-      padding: 1.5rem;
-      border-radius: 1rem;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .tech-icon-wrapper:hover {
-      background: linear-gradient(135deg, rgba(247, 97, 121, 0.1), rgba(255, 255, 255, 0.05));
-      border-color: rgba(247, 97, 121, 0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px -10px rgba(247, 97, 121, 0.3);
-    }
-
-    @keyframes scroll-left {
+    @keyframes scroll-right {
       0% {
-        transform: translateX(0);
-      }
-      100% {
         transform: translateX(-50%);
       }
+      100% {
+        transform: translateX(0);
+      }
     }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-20px) scale(1.05); }
-    }
-
-    @keyframes floatDelayed {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(20px) scale(1.05); }
-    }
-
-    .animate-float { 
-      animation: float 8s ease-in-out infinite; 
-    }
-
-    .animate-float-delayed { 
-      animation: floatDelayed 10s ease-in-out infinite; 
-      animation-delay: 1s; 
+    
+    @media (min-width: 768px) {
+      .tech-carousel-track {
+        gap: 3rem;
+      }
     }
   `]
 })

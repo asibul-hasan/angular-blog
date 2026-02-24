@@ -5,6 +5,8 @@ import { SeoService } from '../../../../shared/services/seo/seo.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SHARED_IMPORTS } from '../../../../shared';
 import { ToastService } from '../../../../core/services';
+import { InternService } from '../../../../shared/services';
+import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 
 @Component({
     selector: 'app-internship-apply',
@@ -15,43 +17,17 @@ import { ToastService } from '../../../../core/services';
 })
 export class InternshipApplyComponent {
     internshipForm: FormGroup;
-    currentYearOptions = [
-        { value: '1', label: '1st Year' },
-        { value: '2', label: '2nd Year' },
-        { value: '3', label: '3rd Year' },
-        { value: '4', label: '4th Year' },
-        { value: 'other', label: 'Other' }
-    ];
-
-    preferredDomainOptions = [
-        { value: 'web-development', label: 'Web Development' },
-        { value: 'app-development', label: 'App Development' },
-        { value: 'machine-learning', label: 'Machine Learning' },
-        { value: 'python', label: 'Python' },
-        { value: 'java', label: 'Java' },
-        { value: 'artificial-intelligence', label: 'Artificial Intelligence' },
-        { value: 'graphics-design', label: 'Graphics and Logo Design' }
-    ];
-
-    skillLevelOptions = [
-        { value: '1', label: '1 - Beginner' },
-        { value: '2', label: '2 - Basic' },
-        { value: '3', label: '3 - Intermediate' },
-        { value: '4', label: '4 - Advanced' },
-        { value: '5', label: '5 - Expert' }
-    ];
-
-    sourceOptions = [
-        { value: 'social-media', label: 'Social Media ( Instagram, LinkedIn, etc.)' },
-        { value: 'referral', label: 'Referral (Friends, Colleagues, Relatives etc.)' },
-        { value: 'other', label: 'Other' }
-    ];
+    currentYearOptions = APP_CONSTANTS.CURRENT_YEAR_OPTIONS;
+    preferredDomainOptions = APP_CONSTANTS.PREFERRED_DOMAIN_OPTIONS;
+    skillLevelOptions = APP_CONSTANTS.SKILL_LEVEL_OPTIONS;
+    sourceOptions = APP_CONSTANTS.SOURCE_OPTIONS;
 
     constructor(
         private router: Router,
         private seo: SeoService,
         private fb: FormBuilder,
         private toast: ToastService,
+        private internService: InternService,
         @Inject(PLATFORM_ID) private platformId: Object,
     ) {
         let origin = '';
@@ -94,13 +70,33 @@ export class InternshipApplyComponent {
         });
     }
 
+    isSubmitting = false;
+
     onSubmit(): void {
         if (this.internshipForm.valid) {
-            // In a real application, you would send this data to your backend
-            console.log('Internship Application:', this.internshipForm.value);
+            this.isSubmitting = true;
+            
+            const formVals = this.internshipForm.value;
+            const payload = {
+                name: formVals.fullName,
+                email: formVals.email,
+                phone: formVals.whatsapp,
+                domain: formVals.preferredDomain
+            };
 
-            this.toast.success('Success', 'Your application has been submitted successfully!');
-            this.internshipForm.reset();
+            this.internService.applyForInternship(payload)
+                .subscribe({
+                    next: (res) => {
+                        this.isSubmitting = false;
+                        this.toast.success('Success', res.message || 'Application submitted successfully! Check your email.');
+                        this.internshipForm.reset();
+                    },
+                    error: (err) => {
+                        this.isSubmitting = false;
+                        const errorMsg = err.error?.message || 'Failed to submit application.';
+                        this.toast.warn('Error', errorMsg);
+                    }
+                });
         } else {
             this.internshipForm.markAllAsTouched();
             this.toast.warn('Validation', 'Please fill in all required fields correctly.');

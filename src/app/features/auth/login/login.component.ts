@@ -104,8 +104,10 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (error) => {
+        console.error('Login error details:', error);
         this.loading = false;
-        this.errorMessage = error.error?.message || 'Login failed. Please try again.';
+        // The authService throws an Error object containing the formatted message
+        this.errorMessage = error.message || 'Login failed. Please try again.';
       }
     });
   }

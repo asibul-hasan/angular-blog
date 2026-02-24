@@ -34,7 +34,7 @@
             'text-[var(--color-accent)] bg-[var(--color-accent)]/10': isActive(
               item.path
             ),
-            'text-gray-700 dark:text-gray-300 hover:text-[var(--color-accent)] hover:bg-gray-100/50 dark:hover:bg-white/5':
+            'text-gray-300 hover:text-white hover:bg-white/5':
               !isActive(item.path)
           }"
         >
@@ -117,7 +117,7 @@
       <!-- Mobile Menu Button -->
       <button
         type="button"
-        class="lg:hidden p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
+        class="lg:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
         (click)="toggleMenu()"
         [attr.aria-expanded]="isOpen()"
         aria-label="Toggle navigation menu"
@@ -160,7 +160,7 @@
       class="lg:hidden overflow-hidden"
     >
       <div
-        class="px-2 pt-4 pb-6 space-y-2 border-t border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-b-2xl shadow-xl"
+        class="px-4 pt-4 pb-6 space-y-2 border-t border-white/[0.08] bg-black/90 backdrop-blur-3xl rounded-b-3xl shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
       >
         <!-- Mobile Nav Items -->
         <a
@@ -173,7 +173,7 @@
             'text-[var(--color-accent)] bg-[var(--color-accent)]/10': isActive(
               item.path
             ),
-            'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800':
+            'text-gray-300 hover:text-white hover:bg-white/5':
               !isActive(item.path)
           }"
         >

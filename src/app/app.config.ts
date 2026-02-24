@@ -12,9 +12,7 @@ import {
 } from '@angular/common/http';
 import { httpLoaderInterceptor } from './core/interceptors/http-loader.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { Chart, registerables } from 'chart.js';
 import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import {
@@ -22,11 +20,7 @@ import {
   withEventReplay,
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
-import { MatDialogModule } from '@angular/material/dialog';
 import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
-
-// Register all Chart.js components
-Chart.register(...registerables);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -53,10 +47,6 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([authInterceptor, httpLoaderInterceptor])
     ),
-
-    NgxChartsModule,
-    MessageService,
-    MatDialogModule,
 
     // PrimeNG configuration
     providePrimeNG(),    // ✅ Enhanced hydration with HTTP cache

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, PLATFORM_ID, computed, signal, inject, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { BlogCardComponent } from '../../../shared/components/template/blog-card.component';
 import { BlogStoreService } from '../../../core/services/blog-store.service';
 import { UpperSectionComponent } from '../../../shared/components/template/cards/page-upper-section.component';
@@ -8,7 +8,7 @@ import { SeoService } from '../../../shared/services/seo/seo.service';
 
 @Component({
   selector: 'app-blog-list',
-  imports: [CommonModule, UpperSectionComponent, BlogCardComponent],
+  imports: [CommonModule, UpperSectionComponent, BlogCardComponent, NgOptimizedImage],
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -154,16 +154,8 @@ export class AuthService {
     }
 
     private startRefreshTokenTimer() {
-        this.stopRefreshTokenTimer();
-        this.refreshTokenTimeout = setTimeout(() => {
-            this.refreshTokenRequest().subscribe({
-                next: () => console.log('Token refreshed successfully'),
-                error: (error) => {
-                    console.log('Failed to refresh token', error);
-                    this.logout();
-                }
-            });
-        }, 55 * 60 * 1000);
+        // Disabled: Backend issues 30-day JWT tokens and no longer uses 55m rotation.
+        // Attempting to refresh was hitting a 404 endpoint and forcefully logging users out.
     }
 
     private stopRefreshTokenTimer() {

@@ -32,6 +32,10 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'intern-management',
         loadChildren: () => import('./modules/intern-management/intern-management.routes').then(m => m.INTERN_MANAGEMENT_ROUTES)
       },
+      {
+        path: 'intern',
+        loadChildren: () => import('./modules/intern-portal/intern-portal.routes').then(m => m.INTERN_PORTAL_ROUTES)
+      },
       // Wildcard route for 404 handling - should show a proper 404 page instead of redirecting
       {
         path: '**',

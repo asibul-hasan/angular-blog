@@ -36,9 +36,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return {
       'translate-y-0': !pastHero,
       '-translate-y-full': pastHero,
-      'bg-white/80 dark:bg-gray-900/90 backdrop-blur-xl shadow-lg': scrolled && !pastHero,
+      'bg-black/60 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-b border-white/[0.08]': scrolled && !pastHero,
       'bg-transparent': !scrolled && !pastHero,
-      'border-b border-white/10': scrolled && !pastHero,
     };
   });
 
@@ -86,6 +85,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           { path: '/about', label: this.langService.lang.about },
           { path: '/blog', label: this.langService.lang.blog },
           { path: '/service', label: this.langService.lang.services },
+          { path: '/internship/apply', label: 'Internship' },
           { path: '/contact', label: this.langService.lang.contact },
         ]);
       });

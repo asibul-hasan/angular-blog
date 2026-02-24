@@ -43,9 +43,24 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.isBrowser = isPlatformBrowser(this.platformId);
 
-        // Initialize all modules as collapsed
+        if (this.isBrowser) {
+            // Load saved state
+            const savedExpanded = localStorage.getItem('sidebar_expanded');
+            if (savedExpanded !== null) {
+                this.isSidebarExpanded = savedExpanded === 'true';
+            }
+            
+            const savedModules = localStorage.getItem('sidebar_modules');
+            if (savedModules !== null) {
+                try {
+                    this.expandedModules = JSON.parse(savedModules);
+                } catch(e) {}
+            }
+        }
+
+        // Initialize all modules as collapsed if not already in saved state
         this.menuItems.forEach(item => {
-            if (item.children) {
+            if (item.children && this.expandedModules[item.id] === undefined) {
                 this.expandedModules[item.id] = false;
             }
         });
@@ -89,6 +104,9 @@ export class SidebarComponent implements OnInit {
     toggleSidebar() {
         this.isSidebarExpanded = !this.isSidebarExpanded;
         this.isUserMenuOpen = false;
+        if (this.isBrowser) {
+            localStorage.setItem('sidebar_expanded', String(this.isSidebarExpanded));
+        }
     }
 
     toggleUserMenu() {
@@ -99,13 +117,24 @@ export class SidebarComponent implements OnInit {
     // Toggle module expansion
     toggleModule(moduleId: string) {
         this.expandedModules[moduleId] = !this.expandedModules[moduleId];
+        if (this.isBrowser) {
+            localStorage.setItem('sidebar_modules', JSON.stringify(this.expandedModules));
+        }
     }
 
     // Check if a module should be shown (admin-only modules hidden for non-admins)
     shouldShowItem(item: MenuItem): boolean {
-        if (item.requiresAdmin && !this.userContextService.isAdmin()) {
+        const isAdmin = this.userContextService.isAdmin();
+        const isIntern = this.userContextService.user().userRole === 'intern';
+
+        if (item.requiresAdmin && !isAdmin) {
             return false;
         }
+        
+        if (item.requiresIntern && !isIntern && !isAdmin) {
+            return false;
+        }
+
         return true;
     }
 }

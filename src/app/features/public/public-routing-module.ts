@@ -60,14 +60,18 @@ const routes: Routes = [
         path: 'image-converter',
         loadComponent: () => import('./products/image-converter/image-converter.component').then(c => c.ImageConverterComponent)
       },
-      // Internship routes
       {
-        path: 'internship/:id',
-        loadComponent: () => import('./internship/detail/internship-detail.component').then(c => c.InternshipDetailComponent)
+        path: 'json-to-ts',
+        loadComponent: () => import('./products/json-to-typescript-converter/json-to-typescript-converter.component').then(c => c.JsonToTsComponent)
       },
+      // Internship routes
       {
         path: 'internship/apply',
         loadComponent: () => import('./internship/apply/internship-apply.component').then(c => c.InternshipApplyComponent)
+      },
+      {
+        path: 'internship/:id',
+        loadComponent: () => import('./internship/detail/internship-detail.component').then(c => c.InternshipDetailComponent)
       },
     ],
   },
