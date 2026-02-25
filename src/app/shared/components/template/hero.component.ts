@@ -5,7 +5,7 @@ import {
   PLATFORM_ID,
   Inject,
 } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { LanguageService } from '../../services/language/lang.service';
 import {
   trigger,
@@ -19,7 +19,7 @@ import {
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgOptimizedImage],
   styles: [
     `
       @keyframes float {
@@ -130,8 +130,8 @@ import {
           
           <div class="relative rounded-[40px] overflow-hidden p-2"
                style="background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.1)">
-             <img src="https://res.cloudinary.com/dfcir8epp/image/upload/v1755598681/infoaidtech-hero-img_jfmruv.webp" 
-                  alt="InfoAidTech Hero" class="w-full h-auto rounded-[32px] object-cover" width="1200" height="800" fetchpriority="high" />
+             <img ngSrc="https://res.cloudinary.com/dfcir8epp/image/upload/v1755598681/infoaidtech-hero-img_jfmruv.webp" 
+                  alt="InfoAidTech Hero" class="w-full h-auto rounded-[32px] object-cover" width="1200" height="800" priority />
           </div>
 
           <!-- Floating abstract badges -->
