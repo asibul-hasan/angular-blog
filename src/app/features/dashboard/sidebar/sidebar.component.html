@@ -1,21 +1,20 @@
-<!-- Sidebar -->
 <aside
   [class]="
     'fixed top-0 left-0 z-40 h-screen transition-all duration-300 border-r bg-slate-950 border-slate-800 overflow-hidden shadow-2xl ' +
-    (isSidebarExpanded ? 'w-64' : 'w-20')
+    (layoutService.isSidebarExpanded() ? 'w-64' : 'w-20')
   "
 >
   <div class="h-full px-3 pt-6 bg-slate-950 flex flex-col">
     <!-- User Profile Section -->
     <div class="mb-6">
-      @if (isSidebarExpanded) {
+      @if (layoutService.isSidebarExpanded()) {
         <div
           class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-xl cursor-pointer hover:bg-white/10 transition-all user-menu-toggle"
           (click)="toggleUserMenu()"
         >
           <div class="relative">
             <div
-              class="w-12 h-12 rounded-xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-lg font-bold text-white shadow-lg"
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-lg font-bold text-white shadow-lg"
             >
               {{ userInitials }}
             </div>
@@ -34,11 +33,11 @@
         </div>
       }
 
-      @if (!isSidebarExpanded) {
+      @if (!layoutService.isSidebarExpanded()) {
         <div class="flex items-center justify-center">
           <button (click)="toggleUserMenu()" class="relative user-menu-toggle">
             <div
-              class="w-10 h-10 rounded-xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm font-bold text-white shadow-lg hover:scale-110 transition-transform"
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm font-bold text-white shadow-lg hover:scale-110 transition-transform"
             >
               {{ userInitials }}
             </div>
@@ -63,27 +62,29 @@
             </p>
           </div>
           <ul class="py-2">
-            <li>
-              <a
-                routerLink="/dashboard"
-                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 transition-colors"
-              >
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            @if (isAdmin) {
+              <li>
+                <a
+                  routerLink="/dashboard"
+                  class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 transition-colors"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  />
-                </svg>
-                Dashboard
-              </a>
-            </li>
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 12l2-2m0 0l7-7 7-7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                    />
+                  </svg>
+                  Dashboard
+                </a>
+              </li>
+            }
             <li>
               <a
                 routerLink="/dashboard/user-management/my-profile"
@@ -146,7 +147,7 @@
                   class="flex items-center justify-between p-3 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 cursor-pointer group transition-all"
                   [class.bg-slate-800]="expandedModules[item.id]"
                   [class.text-white]="expandedModules[item.id]"
-                  [title]="!isSidebarExpanded ? item.title : ''"
+                  [title]="!layoutService.isSidebarExpanded() ? item.title : ''"
                 >
                   <div class="flex items-center">
                     <i
@@ -156,13 +157,13 @@
                       "
                       [class.text-emerald-400]="expandedModules[item.id]"
                     ></i>
-                    @if (isSidebarExpanded) {
+                    @if (layoutService.isSidebarExpanded()) {
                       <span class="ms-3 font-medium whitespace-nowrap">
                         {{ item.title }}
                       </span>
                     }
                   </div>
-                  @if (isSidebarExpanded) {
+                  @if (layoutService.isSidebarExpanded()) {
                     <i
                       class="fa-solid fa-chevron-down w-4 h-4 transition-transform duration-300 opacity-60 group-hover:opacity-100"
                       [class.rotate-180]="expandedModules[item.id]"
@@ -171,7 +172,7 @@
                 </div>
 
                 <!-- Child Items (if any) -->
-                @if (expandedModules[item.id] && isSidebarExpanded) {
+                @if (expandedModules[item.id] && layoutService.isSidebarExpanded()) {
                   <ul class="mt-2 space-y-1 pl-5 border-l-2 border-slate-800 ml-3">
                     @for (child of item.children; track child.title) {
                       <li>
@@ -195,7 +196,7 @@
                   routerLinkActive="bg-emerald-500/10 text-emerald-400 font-semibold border-r-4 border-emerald-500"
                   [routerLinkActiveOptions]="{exact: true}"
                   class="flex items-center p-3 rounded-xl text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 group transition-all"
-                  [title]="!isSidebarExpanded ? item.title : ''"
+                  [title]="!layoutService.isSidebarExpanded() ? item.title : ''"
                 >
                   <i
                     [class]="
@@ -203,7 +204,7 @@
                       ' w-6 h-6 flex items-center justify-center transition-colors text-slate-500 group-hover:text-emerald-400'
                     "
                   ></i>
-                  @if (isSidebarExpanded) {
+                  @if (layoutService.isSidebarExpanded()) {
                     <span class="ms-3 font-medium whitespace-nowrap">
                       {{ item.title }}
                     </span>
@@ -221,11 +222,11 @@
       <button
         (click)="toggleSidebar()"
         class="flex items-center justify-center w-full p-3 rounded-xl hover:bg-slate-800 text-slate-500 hover:text-slate-300 group transition-colors"
-        [title]="isSidebarExpanded ? 'Minimize' : 'Expand'"
+        [title]="layoutService.isSidebarExpanded() ? 'Minimize' : 'Expand'"
       >
         <svg
           class="w-6 h-6 transition-transform duration-300"
-          [class.rotate-180]="!isSidebarExpanded"
+          [class.rotate-180]="!layoutService.isSidebarExpanded()"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -237,29 +238,10 @@
             d="M15 19l-7-7 7-7"
           ></path>
         </svg>
-        @if (isSidebarExpanded) {
+        @if (layoutService.isSidebarExpanded()) {
           <span class="ms-2 font-medium">Minimize</span>
         }
       </button>
     </div>
   </div>
 </aside>
-
-<!-- Main Content -->
-<div
-  [class]="
-    'transition-all duration-300 ' + (isSidebarExpanded ? 'ml-64' : 'ml-16')
-  "
->
-  <!-- Main content wrapper with relative positioning -->
-  <div class="relative min-h-screen overflow-hidden">
-    <!-- Scrollable page content -->
-    <div class="">
-      <div
-        class="p-2 bg-slate-950 shadow-lg border border-gray-700 min-h-screen"
-      >
-        <router-outlet></router-outlet>
-      </div>
-    </div>
-  </div>
-</div>

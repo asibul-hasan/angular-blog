@@ -1,6 +1,21 @@
-<!-- <div class="dashboard-container"> -->
-<app-sidebar></app-sidebar>
-<!-- <main class="dashboard-content">
-    <router-outlet></router-outlet>
-  </main> -->
-<!-- </div> -->
+<div class="bg-slate-950 min-h-screen">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content Wrapper -->
+  <main
+    [class]="'transition-all duration-300 min-h-screen ' + 
+             (layoutService.isSidebarExpanded() ? 'ml-64' : 'ml-20')"
+  >
+    <!-- Background Accents (Global) -->
+    <div class="pointer-events-none fixed inset-0 overflow-hidden">
+      <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-purple-500/5 rounded-full blur-[120px]"></div>
+      <div class="absolute bottom-[-5%] right-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]"></div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="relative z-10 p-4 lg:p-6">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

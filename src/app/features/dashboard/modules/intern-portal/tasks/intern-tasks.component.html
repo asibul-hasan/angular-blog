@@ -1,87 +1,162 @@
-<div class="p-6">
-  <div class="mb-8">
-    <h2 class="text-3xl font-bold text-white mb-2">My Internship Tasks</h2>
-    <p class="text-gray-400">Complete your assigned tasks linearly to progress through your internship program.</p>
+<div class="relative min-h-screen p-6 lg:p-8 overflow-hidden animate-in fade-in duration-700">
+  <!-- Dynamic Background Orbs -->
+  <div class="pointer-events-none absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]"></div>
+  <div class="pointer-events-none absolute bottom-[-5%] right-[-5%] w-[30%] h-[30%] bg-blue-500/10 rounded-full blur-[100px]"></div>
+
+  <!-- Page Header -->
+  <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+    <div class="space-y-2">
+      <h2 class="text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+        <i class="fa-solid fa-map-location-dot text-emerald-400"></i>
+        Mission Roadmap
+      </h2>
+      <p class="text-slate-400 max-w-xl">
+        Your sequenced training directives. Complete each milestone to unlock the next phase of your professional journey.
+      </p>
+    </div>
+    
+    <!-- Overall Progress Badge (Mockup) -->
+    <div class="flex items-center gap-4 bg-slate-900/50 border border-white/5 rounded-2xl p-4 backdrop-blur-md">
+      <div class="text-right">
+        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Hub Status</p>
+        <p class="text-sm font-bold text-emerald-400">Syncing Directives</p>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+        <i class="fa-solid fa-satellite animate-pulse"></i>
+      </div>
+    </div>
   </div>
 
   @if (isLoading()) {
-    <div class="flex justify-center py-12">
-      <div class="w-10 h-10 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin"></div>
+    <div class="relative z-10 flex flex-col justify-center items-center py-32 space-y-4">
+      <div class="w-16 h-16 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+      <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Downloading Milestones...</p>
     </div>
   } @else {
-    <div class="grid gap-6">
-      @for (task of tasks(); track task._id) {
-        <div class="bg-gray-800 border border-gray-700 rounded-xl p-6 relative overflow-hidden transition-all hover:bg-gray-800/80">
+    <div class="relative z-10 max-w-4xl mx-auto">
+      
+      <!-- Timeline Container -->
+      <div class="relative space-y-12 pb-12">
+        
+        <!-- Center Line -->
+        <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-emerald-500/50 via-slate-800 to-transparent"></div>
 
-          <!-- Status Left Bar -->
-          <div class="absolute top-0 left-0 w-1 h-full rounded-l-xl"
-               [class]="task.status === 'pending' ? 'bg-yellow-500' :
-                        task.status === 'submitted' ? 'bg-blue-500' :
-                        task.status === 'approved' ? 'bg-emerald-500' : 'bg-red-500'">
-          </div>
-
-          <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between ml-4">
-            <div class="flex-1">
-              <div class="flex items-center gap-3 mb-2">
-                <h3 class="text-xl font-bold text-white">{{ task.title }}</h3>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full uppercase tracking-wider"
-                      [class]="task.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' :
-                               task.status === 'submitted' ? 'bg-blue-500/20 text-blue-500' :
-                               task.status === 'approved' ? 'bg-emerald-500/20 text-emerald-500' :
-                               'bg-red-500/20 text-red-500'">
-                  {{ task.status }}
-                </span>
+        @for (task of tasks(); track task._id; let first = $first; let last = $last) {
+          <div class="relative flex flex-col md:flex-row items-center gap-8 md:gap-0">
+            
+            <!-- Milestone Indicator -->
+            <div class="absolute left-6 md:left-1/2 -translate-x-1/2 z-20">
+              <div class="w-12 h-12 rounded-2xl bg-slate-900 border-4 border-slate-950 flex items-center justify-center shadow-2xl transition-all duration-500 group"
+                   [class]="task.status === 'approved' ? 'bg-emerald-500 text-slate-950 border-emerald-500/50' : 
+                            task.status === 'rejected' ? 'bg-rose-500 text-white border-rose-500/50' :
+                            task.status === 'submitted' ? 'bg-blue-500 text-white border-blue-500/50' :
+                            'bg-slate-800 text-slate-400 border-white/5'">
+                @if (task.status === 'approved') {
+                  <i class="fa-solid fa-check-double text-lg"></i>
+                } @else if (task.status === 'rejected') {
+                  <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                } @else if (task.status === 'submitted') {
+                  <i class="fa-solid fa-hourglass-half text-lg animate-spin-slow"></i>
+                } @else {
+                  <span class="text-sm font-black">{{ $index + 1 }}</span>
+                }
               </div>
-              <p class="text-gray-400 text-sm leading-relaxed mb-4">
-                {{ task.description }}
-              </p>
-
-              @if (task.feedback) {
-                <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mt-4">
-                  <p class="text-sm text-red-400"><strong class="font-semibold text-red-500">Admin Feedback:</strong> {{ task.feedback }}</p>
-                </div>
-              }
             </div>
 
-            <!-- Submission Action Area -->
-            <div class="w-full md:w-auto min-w-[300px] shrink-0">
-              @if (task.status === 'pending' || task.status === 'rejected') {
-                <div class="space-y-3">
-                  <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider">Submission Link (GitHub, Drive, etc)</label>
-                  <div class="flex gap-2">
-                    <input type="url" #urlInput placeholder="https://"
-                           class="w-full bg-gray-900 border border-gray-700 text-white text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-2.5">
-                    <button (click)="submitTask(task._id, urlInput.value)"
-                            [disabled]="isSubmitting() === task._id"
-                            class="text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed focus:ring-4 focus:ring-emerald-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors whitespace-nowrap flex items-center gap-2">
-                      @if (isSubmitting() === task._id) {
-                        <span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                      } @else {
-                        Submit
-                      }
-                    </button>
+            <!-- Content Bridge -->
+            <div class="w-full pl-16 md:pl-0 md:w-1/2 flex items-center"
+                 [class]="($index % 2 === 0) ? 'md:pr-20 md:justify-end' : 'md:order-last md:pl-20 md:justify-start'">
+              
+              <div class="glass-card group w-full bg-white/[0.03] border border-white/5 rounded-3xl p-6 transition-all duration-500 hover:bg-white/[0.06] hover:border-white/10 hover:shadow-2xl hover:shadow-emerald-500/5">
+                
+                <!-- Card Header -->
+                <div class="flex items-start justify-between mb-4">
+                  <div class="space-y-1">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Milestone Phase</span>
+                    <h3 class="text-xl font-black text-white group-hover:text-emerald-400 transition-colors leading-tight">
+                      {{ task.title }}
+                    </h3>
                   </div>
+                  <span class="px-2.5 py-1 rounded-md text-[8px] font-black uppercase tracking-widest border"
+                        [class]="task.status === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                 task.status === 'submitted' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
+                                 task.status === 'approved' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
+                                 'bg-rose-500/10 text-rose-500 border-rose-500/20'">
+                    {{ task.status }}
+                  </span>
                 </div>
-              } @else {
-                 <div class="space-y-3">
-                   <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider">Submitted Link</label>
-                   <a [href]="task.submissionUrl" target="_blank" class="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors bg-gray-900/50 p-3 rounded-lg border border-gray-700">
-                     <i class="fa-solid fa-link"></i>
-                     <span class="truncate max-w-[200px] text-sm">{{ task.submissionUrl || 'View Submission' }}</span>
-                   </a>
-                 </div>
-              }
-            </div>
-          </div>
-        </div>
-      }
 
-      @if (tasks().length === 0) {
-        <div class="bg-gray-800 border border-gray-700 rounded-xl py-12 px-6 text-center text-gray-400">
-          <i class="fa-solid fa-list-check text-4xl mb-4 text-gray-600 block"></i>
-          <p>No tasks have been assigned to your domain yet.</p>
-        </div>
-      }
+                <!-- Description -->
+                <p class="text-sm text-slate-400 leading-relaxed mb-6 italic opacity-80">
+                  "{{ task.description }}"
+                </p>
+
+                <!-- Feedback Area -->
+                @if (task.feedback) {
+                  <div class="bg-rose-500/5 border border-rose-500/10 rounded-2xl p-4 mb-6 relative group overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent"></div>
+                    <div class="relative flex gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-500 shrink-0">
+                        <i class="fa-solid fa-comment-dots text-xs"></i>
+                      </div>
+                      <div class="space-y-1">
+                        <p class="text-[10px] font-black text-rose-400 uppercase tracking-widest">Correction Directive</p>
+                        <p class="text-xs text-rose-200 leading-relaxed">{{ task.feedback }}</p>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                <!-- Action Interface -->
+                <div class="space-y-4 pt-2">
+                  @if (task.status === 'pending' || task.status === 'rejected') {
+                    <div class="space-y-3">
+                      <div class="relative">
+                        <input type="url" #urlInput placeholder="Submission link (e.g. GitHub Repository)"
+                               class="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 text-xs text-white placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/50 transition-all font-mono">
+                      </div>
+                      <button (click)="submitTask(task._id, urlInput.value)"
+                              [disabled]="isSubmitting() === task._id"
+                              class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs uppercase tracking-[0.2em] rounded-2xl transition-all shadow-lg shadow-emerald-600/20 active:scale-95 disabled:opacity-50">
+                        @if (isSubmitting() === task._id) {
+                          <span class="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin"></span>
+                        } @else {
+                          Deploy Milestone
+                        }
+                      </button>
+                    </div>
+                  } @else {
+                    <a [href]="task.submissionUrl" target="_blank"
+                       class="flex items-center justify-between p-4 bg-slate-950/30 border border-white/5 rounded-2xl group/link hover:border-blue-500/50 transition-all">
+                      <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/link:bg-blue-500 group-hover/link:text-slate-950 transition-all">
+                          <i class="fa-solid fa-link text-[10px]"></i>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-500 group-hover/link:text-white transition-colors">Visual Analysis Link</span>
+                      </div>
+                      <i class="fa-solid fa-chevron-right text-[10px] text-slate-700 group-hover/link:text-blue-400 transition-colors"></i>
+                    </a>
+                  }
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Spacer for the other side -->
+            <div class="hidden md:block md:w-1/2"></div>
+
+          </div>
+        }
+
+        @if (tasks().length === 0) {
+          <div class="glass-card rounded-3xl border border-dashed border-white/10 p-24 text-center text-slate-600">
+            <i class="fa-solid fa-satellite-dish text-[80px] mb-8 opacity-10"></i>
+            <p class="text-2xl font-black text-slate-500">No signals found</p>
+            <p class="text-sm max-w-[300px] mx-auto opacity-60">There are no operational directives assigned to your specialization yet.</p>
+          </div>
+        }
+
+      </div>
     </div>
   }
 </div>

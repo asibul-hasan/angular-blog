@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SidebarComponent } from '../sidebar/sidebar.component'; // Corrected import path
+import { SidebarComponent } from '../sidebar/sidebar.component'; 
 import { CommonModule } from '@angular/common';
+import { LayoutService } from '../../../core/services/layout.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -10,4 +11,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterModule, SidebarComponent, CommonModule],
 })
-export class DashboardLayoutComponent {}
+export class DashboardLayoutComponent {
+  public layoutService = inject(LayoutService);
+}

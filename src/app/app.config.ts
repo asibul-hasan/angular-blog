@@ -21,10 +21,12 @@ import {
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
 import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
+    provideCharts(withDefaultRegisterables()),
     provideZoneChangeDetection({
       eventCoalescing: true,
       runCoalescing: true // Improved performance

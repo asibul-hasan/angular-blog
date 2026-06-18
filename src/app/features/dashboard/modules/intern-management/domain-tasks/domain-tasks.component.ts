@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, PLATFORM_ID, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SHARED_IMPORTS } from '../../../../../shared';
@@ -22,6 +22,23 @@ export class DomainTasksComponent implements OnInit {
   public isSubmitting = signal(false);
   public isLoading = signal(true);
   public domainTasks = signal<DomainTask[]>([]);
+
+  public groupedTasks = computed(() => {
+    const groups: Record<string, DomainTask[]> = {};
+    this.domainTasks().forEach(task => {
+      if (!groups[task.domain]) {
+        groups[task.domain] = [];
+      }
+      groups[task.domain].push(task);
+    });
+    // Sort tasks within each group by order
+    Object.keys(groups).forEach(domain => {
+      groups[domain].sort((a, b) => a.order - b.order);
+    });
+    return groups;
+  });
+
+  public assistantDomains = computed(() => Object.keys(this.groupedTasks()));
 
   public availableDomains = [
     'Web Development', 'Graphic Design', 'Data Science',

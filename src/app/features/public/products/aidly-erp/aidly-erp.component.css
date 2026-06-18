@@ -1,0 +1,204 @@
+/* ═══════════════════════════════════════════════════════════════
+   AidlyERP Product Page — Minimal Component CSS
+   Using Tailwind CSS for styling
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
+
+.erp-page {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.erp-page h1,
+.erp-page h2,
+.erp-page h3,
+.erp-page h4 {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #ff2d6b, #ff8c42);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e02660;
+}
+
+/* Module icon backgrounds */
+.ib-indigo {
+  background: rgba(61, 61, 112, 0.35);
+}
+.ib-green {
+  background: rgba(29, 69, 53, 0.35);
+}
+.ib-orange {
+  background: rgba(74, 42, 21, 0.35);
+}
+.ib-blue {
+  background: rgba(26, 45, 80, 0.35);
+}
+.ib-purple {
+  background: rgba(53, 34, 90, 0.35);
+}
+.ib-rose {
+  background: rgba(74, 26, 40, 0.35);
+}
+.ib-teal {
+  background: rgba(15, 53, 53, 0.35);
+}
+
+/* Module name colors */
+.c-indigo {
+  color: #9899f0;
+}
+.c-green {
+  color: #34d399;
+}
+.c-orange {
+  color: #fb923c;
+}
+.c-blue {
+  color: #60a5fa;
+}
+.c-purple {
+  color: #a78bfa;
+}
+.c-rose {
+  color: #f87171;
+}
+.c-teal {
+  color: #2dd4bf;
+}
+
+/* Module tag colors */
+.t-indigo {
+  background: rgba(61, 61, 112, 0.35);
+  color: #9899f0;
+}
+.t-green {
+  background: rgba(29, 69, 53, 0.35);
+  color: #34d399;
+}
+.t-orange {
+  background: rgba(74, 42, 21, 0.35);
+  color: #fb923c;
+}
+.t-blue {
+  background: rgba(26, 45, 80, 0.35);
+  color: #60a5fa;
+}
+.t-purple {
+  background: rgba(53, 34, 90, 0.35);
+  color: #a78bfa;
+}
+.t-rose {
+  background: rgba(74, 26, 40, 0.35);
+  color: #f87171;
+}
+.t-teal {
+  background: rgba(15, 53, 53, 0.35);
+  color: #2dd4bf;
+}
+
+/* Industry fit badges */
+.fit-best {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.2),
+    rgba(16, 185, 129, 0.1)
+  );
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.fit-strong {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.2),
+    rgba(245, 158, 11, 0.1)
+  );
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.fit-moderate {
+  background: linear-gradient(
+    135deg,
+    rgba(107, 114, 128, 0.2),
+    rgba(107, 114, 128, 0.1)
+  );
+  color: #9ca3af;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* Story icon gradients */
+.sg-blue {
+  background: linear-gradient(135deg, #0f52ba, #1a6fe8);
+}
+.sg-green {
+  background: linear-gradient(135deg, #059669, #10b981);
+}
+.sg-purple {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+}
+
+/* Table value colors */
+.val-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #34d399;
+}
+
+.val-green::before {
+  content: "✓";
+  font-weight: 700;
+}
+
+.val-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f87171;
+}
+
+.val-red::before {
+  content: "✗";
+  font-weight: 700;
+}
+
+.val-muted {
+  font-size: 14px;
+  color: #8888a0;
+}
+
+/* FAQ Animation */
+.faq-a {
+  opacity: 0;
+  transition: max-height 0.35s ease, padding-bottom 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.faq-item[aria-expanded="true"] .faq-a,
+.faq-item.open .faq-a {
+  opacity: 1;
+}

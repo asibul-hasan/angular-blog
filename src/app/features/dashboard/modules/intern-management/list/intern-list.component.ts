@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, PLATFORM_ID, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SHARED_IMPORTS } from '../../../../../shared';
 import { ToastService } from '../../../../../core/services';
@@ -20,6 +20,9 @@ export class InternListComponent implements OnInit {
 
   public interns = signal<InternProfile[]>([]);
   public isLoading = signal<boolean>(true);
+
+  public activeInterns = computed(() => this.interns().filter(i => i.status === 'active'));
+  public completedInterns = computed(() => this.interns().filter(i => i.status === 'completed'));
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {

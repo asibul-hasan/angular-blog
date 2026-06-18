@@ -10,5 +10,5 @@ export const environment: Environment = {
   SITE_URL: 'https://infoaidtech.net',
 
   // Hugging Face API Token (Used on backend to avoid CORS issues)
-  huggingFaceToken: ''
+  huggingFaceToken: '',
 };

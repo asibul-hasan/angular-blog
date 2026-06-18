@@ -17,7 +17,7 @@ export class CategoryService {
   ) { }
 
   getCategories(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-category-list`, { observe: 'response' }).pipe(
+    return this.http.get(`${this.apiUrl}/get-category-list`).pipe(
       // Handle potential issues with the API response
       catchError((error: any) => {
         console.error('Error fetching categories:', error);

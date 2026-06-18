@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { BlogApiService } from '../../shared/services/blog/blog.service';
 import { CategoryService } from '../../shared/services/category/category.service';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ToastService } from '../../shared/services/toast.service';
 
 @Injectable({
@@ -20,10 +20,9 @@ export class BlogStoreService {
     private readonly _categories = signal<any[]>([]);
     readonly categories = this._categories.asReadonly();
 
-    // 🔹 Observable for categories (for backward compatibility)
-    get categories$(): Observable<any[]> {
-        return of(this._categories());
-    }
+    // 🔹 Subject for category updates (reactive compatibility)
+    private readonly _categoriesSubject = new BehaviorSubject<any[]>([]);
+    readonly categories$ = this._categoriesSubject.asObservable();
 
     /**
      * Load blogs from API (sorted by date descending)
@@ -71,17 +70,17 @@ export class BlogStoreService {
     loadCategories(): void {
         this.CategoryApi.getCategories().subscribe({
             next: (res) => {
-                if (res && res.body && Array.isArray(res.body)) {
-                    this._categories.set(res.body);
-                } else {
-                    this._categories.set([]);
+                // The API returns { body: [...], message: "..." }
+                const categories = (res && res.body && Array.isArray(res.body)) ? res.body : [];
+                if (!Array.isArray(res.body)) {
+                    console.warn('Unexpected category response format:', res);
                 }
+                this._categories.set(categories);
+                this._categoriesSubject.next(categories);
             },
             error: (err) => {
                 console.error('Error loading categories:', err);
-                // Show user-friendly error message
                 this.toastService.error('Failed to load categories', 'Please check your connection and try again');
-                // Set empty array on error to prevent undefined issues
                 this._categories.set([]);
             },
         });

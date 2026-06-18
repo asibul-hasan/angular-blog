@@ -4,8 +4,9 @@ import {
   Inject,
   PLATFORM_ID,
   ChangeDetectionStrategy,
-  AfterViewInit,
   OnDestroy,
+  inject,
+  signal,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
@@ -38,7 +39,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
   imports: [
     ReactiveFormsModule,
     CommonModule,
-    CharCountInputComponent,
+    // CharCountInputComponent,
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
@@ -49,16 +50,26 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogCreateComponent implements OnInit, AfterViewInit, OnDestroy {
+export class BlogCreateComponent implements OnInit, OnDestroy {
+  private fb = inject(FormBuilder);
+  private blogApiService = inject(BlogApiService);
+  private blogStore = inject(BlogStoreService);
+  private categoryApiService = inject(CategoryService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private toast = inject(ToastService);
+  private platformId = inject(PLATFORM_ID);
+
   blogForm: FormGroup;
-  blogId?: string;
-  categories: any = [];
-  isBrowser = false;
+  blogId = signal<string | undefined>(undefined);
+  categories = signal<any[]>([]);
+  isBrowser = signal(isPlatformBrowser(this.platformId));
   private subscription = new Subscription();
 
   tinymceConfig = {
     plugins: 'lists link image table code help wordcount autoresize',
-    toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | removeformat code',
+    toolbar:
+      'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | removeformat code',
     toolbar_mode: 'sliding' as 'floating' | 'sliding' | 'scrolling' | 'wrap',
     min_height: 400,
     max_height: 600,
@@ -73,21 +84,11 @@ export class BlogCreateComponent implements OnInit, AfterViewInit, OnDestroy {
     paste_data_images: true,
     automatic_uploads: true,
     file_picker_types: 'image',
-    content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; font-size: 14px; line-height: 1.6; }',
-  }
+    content_style:
+      'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; font-size: 14px; line-height: 1.6; }',
+  };
 
-  constructor(
-    private fb: FormBuilder,
-    @Inject(BlogApiService) private blogApiService: BlogApiService,
-    private blogStore: BlogStoreService,
-    @Inject(CategoryService) private categoryApiService: CategoryService,
-    private router: Router,
-    private route: ActivatedRoute,
-    @Inject(ToastService) private toast: ToastService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-
+  constructor() {
     this.blogForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(150)]],
       description: [''],
@@ -100,7 +101,7 @@ export class BlogCreateComponent implements OnInit, AfterViewInit, OnDestroy {
         ],
       ],
       meta_description: ['', [Validators.maxLength(160)]],
-      category: [[], Validators.required],
+      category: [[], [Validators.required]],
       tags: [''],
       isPublished: [true],
       author: ['Asibul Hasan'],
@@ -109,72 +110,80 @@ export class BlogCreateComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.route.queryParams.subscribe((params) => {
-      this.blogId = params['id'];
+      this.blogId.set(params['id']);
     });
+
+    // Auto-generate slug from title
+    this.subscription.add(
+      this.blogForm.get('title')?.valueChanges.subscribe((value) => {
+        const slugControl = this.blogForm.get('slug');
+        if (slugControl && (!slugControl.value || slugControl.pristine)) {
+          const slug = value
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-');
+          slugControl.setValue(slug, { emitEvent: false });
+        }
+      }),
+    );
   }
 
   ngOnInit(): void {
     // Load categories from store and subscribe to updates
     this.blogStore.loadCategories();
-    
+
     // Subscribe to category changes from the store
     this.subscription.add(
-      this.blogStore.categories$.subscribe(categories => {
-        this.categories = categories;
-        console.log('Categories:', this.categories);
-        // If we have a blogId, load the existing blog after categories are loaded
-        if (this.blogId) {
+      this.blogStore.categories$.subscribe((categories) => {
+        this.categories.set(categories);
+
+        // Critical: Only load the blog AFTER categories are available to ensure select binding works
+        if (this.blogId() && categories.length > 0) {
           this.loadExistingBlog();
         }
-      })
+      }),
     );
-
-    // If no blogId, we don't need to load an existing blog
   }
 
-  ngAfterViewInit(): void {
-
-  }
+  ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
     // Unsubscribe to prevent memory leaks
     this.subscription.unsubscribe();
   }
 
-
   private loadExistingBlog() {
-    this.blogApiService.getBlogById(this.blogId!).subscribe((data) => {
+    this.blogApiService.getBlogById(this.blogId()!).subscribe((data) => {
       const blog = data.body[0];
+      if (!blog) return;
 
-      // Ensure category is always an array for mat-select multiple
-      let categoryArray: any[] = [];
-
+      // Ensure category is always an array of IDs for mat-select multiple
+      let categoryIds: string[] = [];
       if (blog.category) {
-        // Convert to array if it's not already
-        const blogCategories = Array.isArray(blog.category) ? blog.category : [blog.category];
-
-        // Extract just the IDs (if they're objects, get _id property)
-        categoryArray = blogCategories.map((cat: any) => {
-          if (typeof cat === 'object' && cat._id) {
-            return cat._id;
-          }
-          return cat;
-        }).filter(Boolean);
+        const categories = Array.isArray(blog.category)
+          ? blog.category
+          : [blog.category];
+        categoryIds = categories.map((cat: any) =>
+          typeof cat === 'object' ? cat._id : cat,
+        );
       }
 
-      this.blogForm.patchValue({
-        title: blog.title,
-        description: blog.description,
-        blog_content: blog.blog_content,
-        meta_description: blog.meta_description,
-        slug: blog.slug,
-        category: categoryArray, // Always an array of IDs
-        tags: (blog.tags || []).join(', '),
-        isPublished: blog.isPublished,
-        author: blog.author,
-        updatedAt: blog.updatedAt,
-        _id: blog._id,
-      });
+      this.blogForm.patchValue(
+        {
+          title: blog.title,
+          description: blog.description,
+          blog_content: blog.blog_content,
+          meta_description: blog.meta_description,
+          slug: blog.slug,
+          category: categoryIds,
+          tags: (blog.tags || []).join(', '),
+          isPublished: blog.isPublished,
+          author: blog.author,
+          updatedAt: blog.updatedAt,
+          _id: blog._id,
+        },
+        { emitEvent: false },
+      );
     });
   }
 
@@ -188,7 +197,9 @@ export class BlogCreateComponent implements OnInit, AfterViewInit, OnDestroy {
         tags: formValue.tags
           ? formValue.tags.split(',').map((t: string) => t.trim())
           : [],
-        category: Array.isArray(formValue.category) ? formValue.category : [formValue.category].filter(Boolean),
+        category: Array.isArray(formValue.category)
+          ? formValue.category
+          : [formValue.category].filter(Boolean),
       };
 
       // Remove _id from payload if creating new blog

@@ -50,15 +50,14 @@ export class Footer implements OnInit {
           { path: '/services', label: 'Service' },
           { path: '/contact', label: 'Contact' },
           { path: '/careers', label: 'Career' },
-          { path: '/internship/apply', label: 'Internship' }
-
+          { path: '/internship/apply', label: 'Internship' },
         ],
       },
       {
         heading: 'Quick Links',
         lists: [
           {
-            path: '/privacy-policy',                       
+            path: '/privacy-policy',
             label: 'Privacy Policy',
           },
           {
@@ -79,10 +78,15 @@ export class Footer implements OnInit {
             path: '/json-to-ts',
             label: 'JSON to TS',
           },
+          {
+            path: '/ghost-rewrite',
+            label: 'Ghost Rewrite',
+          },
+          { path: '/aidly-erp', label: 'Aidly ERP' },
         ],
       },
     ];
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

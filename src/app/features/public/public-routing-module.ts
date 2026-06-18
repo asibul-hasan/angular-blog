@@ -4,74 +4,125 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./public-layout/public-layout.component').then(c => c.PublicLayout),
+    loadComponent: () =>
+      import('./public-layout/public-layout.component').then(
+        (c) => c.PublicLayout
+      ),
     children: [
       {
         path: '',
-        loadComponent: () => import('./home/home.component').then(c => c.HomeComponent),
-        pathMatch: 'full'
+        loadComponent: () =>
+          import('./home/home.component').then((c) => c.HomeComponent),
+        pathMatch: 'full',
       },
       {
         path: 'home',
-        loadComponent: () => import('./home/home.component').then(c => c.HomeComponent)
+        loadComponent: () =>
+          import('./home/home.component').then((c) => c.HomeComponent),
       },
       {
         path: 'blog',
-        loadComponent: () => import('./blog-list/blog-list.component').then(c => c.BlogList)
+        loadComponent: () =>
+          import('./blog-list/blog-list.component').then((c) => c.BlogList),
       },
       {
         path: 'about',
-        loadComponent: () => import('./about/about.component').then(c => c.AboutComponent)
+        loadComponent: () =>
+          import('./about/about.component').then((c) => c.AboutComponent),
       },
       {
         path: 'blog/:id',
-        loadComponent: () => import('./blog-detail/blog-detail.component').then(c => c.BlogDetailComponent)
+        loadComponent: () =>
+          import('./blog-detail/blog-detail.component').then(
+            (c) => c.BlogDetailComponent
+          ),
       },
       {
         path: 'service',
-        loadComponent: () => import('./service/service.component').then(c => c.ServiceComponent)
+        loadComponent: () =>
+          import('./service/service.component').then((c) => c.ServiceComponent),
       },
       {
         path: 'contact',
-        loadComponent: () => import('./contact/contact.component').then(c => c.ContactComponent)
+        loadComponent: () =>
+          import('./contact/contact.component').then((c) => c.ContactComponent),
       },
       {
         path: 'terms-of-service',
-        loadComponent: () => import('./legal/terms-of-service.component').then(c => c.TermsOfServiceComponent)
+        loadComponent: () =>
+          import('./legal/terms-of-service.component').then(
+            (c) => c.TermsOfServiceComponent
+          ),
       },
       {
         path: 'privacy-policy',
-        loadComponent: () => import('./legal/privacy-policy.component').then(c => c.PrivacyPolicyComponent)
+        loadComponent: () =>
+          import('./legal/privacy-policy.component').then(
+            (c) => c.PrivacyPolicyComponent
+          ),
       },
       {
         path: 'disclaimer',
-        loadComponent: () => import('./legal/disclaimer.component').then(c => c.DisclaimerComponent)
+        loadComponent: () =>
+          import('./legal/disclaimer.component').then(
+            (c) => c.DisclaimerComponent
+          ),
       },
       {
         path: 'careers',
-        loadComponent: () => import('./careers/careers.component').then(c => c.CareersComponent)
+        loadComponent: () =>
+          import('./careers/careers.component').then((c) => c.CareersComponent),
       },
       {
         path: 'careers/:id',
-        loadComponent: () => import('./career-detail/career-detail.component').then(c => c.CareerDetailComponent)
+        loadComponent: () =>
+          import('./career-detail/career-detail.component').then(
+            (c) => c.CareerDetailComponent
+          ),
       },
       // products
       {
         path: 'image-converter',
-        loadComponent: () => import('./products/image-converter/image-converter.component').then(c => c.ImageConverterComponent)
+        loadComponent: () =>
+          import('./products/image-converter/image-converter.component').then(
+            (c) => c.ImageConverterComponent
+          ),
       },
       {
         path: 'json-to-ts',
-        loadComponent: () => import('./products/json-to-typescript-converter/json-to-typescript-converter.component').then(c => c.JsonToTsComponent)
+        loadComponent: () =>
+          import(
+            './products/json-to-typescript-converter/json-to-typescript-converter.component'
+          ).then((c) => c.JsonToTsComponent),
+      },
+      {
+        path: 'ghost-rewrite',
+        loadComponent: () =>
+          import('./products/ghost-rewrite/ghost-rewrite.component').then(
+            (c) => c.GhostRewriteComponent
+          ),
+      },
+      {
+        path: 'aidly-erp',
+        loadComponent: () =>
+          import('./products/aidly-erp/aidly-erp.component').then(
+            (c) => c.AidlyErpComponent
+          ),
       },
       // Internship routes
       {
         path: 'internship/apply',
-        loadComponent: () => import('./internship/apply/internship-apply.component').then(c => c.InternshipApplyComponent)
+        loadComponent: () =>
+          import('./internship/apply/internship-apply.component').then(
+            (c) => c.InternshipApplyComponent
+          ),
       },
       {
         path: 'internship/:id',
-        loadComponent: () => import('./internship/detail/internship-detail.component').then(c => c.InternshipDetailComponent)
+        loadComponent: () =>
+          import('./internship/detail/internship-detail.component').then(
+            (c) => c.InternshipDetailComponent
+          ),
       },
     ],
   },
@@ -81,8 +132,7 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PublicRoutingModule { }
-
+export class PublicRoutingModule {}
 
 // import { Routes } from '@angular/router';
 

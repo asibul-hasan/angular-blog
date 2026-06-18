@@ -1024,3 +1024,30 @@ body.loader-active {
   border-radius: 4px;
   padding: 10px;
 }
+
+/* ============================================
+   PREMIUM GLOBAL ANIMATIONS
+   ============================================ */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-from-bottom {
+  from { transform: translateY(1.5rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-in {
+  animation-duration: 700ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in { animation-name: fade-in; }
+.slide-in-from-bottom-2 { animation-name: slide-in-from-bottom; }
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }

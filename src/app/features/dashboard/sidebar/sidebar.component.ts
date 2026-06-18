@@ -14,6 +14,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Observable } from 'rxjs';
 import { MENU_ITEMS, MenuItem } from './menu.config';
 import { UserContextService } from '../../../core/services/user-context.service';
+import { LayoutService } from '../../../core/services/layout.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -23,7 +24,7 @@ import { UserContextService } from '../../../core/services/user-context.service'
     imports: [RouterModule, CommonModule],
 })
 export class SidebarComponent implements OnInit {
-    isSidebarExpanded = false;
+    public layoutService = inject(LayoutService);
     isUserMenuOpen = false;
 
     // Module expansion tracking
@@ -47,7 +48,7 @@ export class SidebarComponent implements OnInit {
             // Load saved state
             const savedExpanded = localStorage.getItem('sidebar_expanded');
             if (savedExpanded !== null) {
-                this.isSidebarExpanded = savedExpanded === 'true';
+                this.layoutService.setSidebar(savedExpanded === 'true');
             }
             
             const savedModules = localStorage.getItem('sidebar_modules');
@@ -102,11 +103,8 @@ export class SidebarComponent implements OnInit {
     }
 
     toggleSidebar() {
-        this.isSidebarExpanded = !this.isSidebarExpanded;
+        this.layoutService.toggleSidebar();
         this.isUserMenuOpen = false;
-        if (this.isBrowser) {
-            localStorage.setItem('sidebar_expanded', String(this.isSidebarExpanded));
-        }
     }
 
     toggleUserMenu() {
