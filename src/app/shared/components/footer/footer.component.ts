@@ -47,7 +47,7 @@ export class Footer implements OnInit {
           { path: '/', label: 'Home' },
           { path: '/about', label: 'About Us' },
           { path: '/blog', label: 'Blog' },
-          { path: '/services', label: 'Service' },
+          { path: '/service', label: 'Services' },
           { path: '/contact', label: 'Contact' },
           { path: '/careers', label: 'Career' },
           { path: '/internship/apply', label: 'Internship' },
@@ -62,14 +62,22 @@ export class Footer implements OnInit {
           },
           {
             path: '/terms-of-service',
-            label: 'Terms Of Service',
+            label: 'Terms of Service',
           },
-          { path: '/disclaimer', label: 'Disclimer' },
+          { path: '/disclaimer', label: 'Disclaimer' },
         ],
       },
       {
         heading: 'Products',
         lists: [
+          {
+            path: '/aidly-erp',
+            label: 'Aidly ERP (Pharma & Retail)',
+          },
+          {
+            path: '/conventional-commit-generator',
+            label: 'Conventional Commit Generator',
+          },
           {
             path: '/image-converter',
             label: 'Image Converter',
@@ -81,10 +89,6 @@ export class Footer implements OnInit {
           {
             path: '/ghost-rewrite',
             label: 'Ghost Rewrite',
-          },
-          {
-            path: '/conventional-commit-generator',
-            label: 'Commit Generator',
           },
         ],
       },

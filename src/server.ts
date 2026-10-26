@@ -27,8 +27,13 @@ export function app(): express.Express {
     throw new Error('Could not find index.html or index.csr.html');
   }
 
-  // ✅ SEO Optimization 1: Enforce Canonical URLs by 301-redirecting trailing slashes (except root)
+  // ✅ SEO Optimization 1: Enforce Canonical URLs by 301-redirecting trailing slashes and legacy routes
   server.use((req, res, next) => {
+    // 301 redirect /home to /
+    if (req.path === '/home') {
+      return res.redirect(301, '/');
+    }
+
     if (req.path.length > 1 && req.path.endsWith('/')) {
       const query = req.url.slice(req.path.length);
       const safePath = req.path.slice(0, -1);
@@ -57,50 +62,65 @@ export function app(): express.Express {
 
   // ✅ SEO Optimization 3: Dynamic, real-time Google-compliant sitemap.xml
   server.get('/sitemap.xml', async (req, res) => {
-    try {
-      // Fetch live articles from API
-      const apiRes = await fetch('http://localhost:3000/api/blog/get-blog-list');
-      if (apiRes.ok) {
-        const data: any = await apiRes.json();
-        const blogs = Array.isArray(data) ? data : (data.body || []);
+    const apiEndpoints = [
+      process.env['API_URL'] ? `${process.env['API_URL']}/blog/get-blog-list` : null,
+      'https://infoaidtech.vercel.app/api/blog/get-blog-list',
+      'http://localhost:3000/api/blog/get-blog-list',
+    ].filter(Boolean) as string[];
 
-        const staticRoutes = [
-          { loc: 'https://infoaidtech.net/', changefreq: 'weekly', priority: '1.0' },
-          { loc: 'https://infoaidtech.net/about', changefreq: 'monthly', priority: '0.8' },
-          { loc: 'https://infoaidtech.net/blog', changefreq: 'daily', priority: '0.9' },
-          { loc: 'https://infoaidtech.net/service', changefreq: 'monthly', priority: '0.8' },
-          { loc: 'https://infoaidtech.net/careers', changefreq: 'weekly', priority: '0.8' },
-          { loc: 'https://infoaidtech.net/contact', changefreq: 'monthly', priority: '0.7' },
-          { loc: 'https://infoaidtech.net/image-converter', changefreq: 'monthly', priority: '0.7' },
-          { loc: 'https://infoaidtech.net/json-to-ts', changefreq: 'monthly', priority: '0.7' },
-          { loc: 'https://infoaidtech.net/conventional-commit-generator', changefreq: 'monthly', priority: '0.7' },
-          { loc: 'https://infoaidtech.net/privacy-policy', changefreq: 'yearly', priority: '0.5' },
-          { loc: 'https://infoaidtech.net/terms-of-service', changefreq: 'yearly', priority: '0.5' },
-          { loc: 'https://infoaidtech.net/disclaimer', changefreq: 'yearly', priority: '0.5' },
-        ];
-
-        let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-        xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-
-        const today = new Date().toISOString().split('T')[0];
-
-        for (const route of staticRoutes) {
-          xml += `  <url>\n    <loc>${route.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${route.changefreq}</changefreq>\n    <priority>${route.priority}</priority>\n  </url>\n`;
+    let blogs: any[] = [];
+    for (const endpoint of apiEndpoints) {
+      try {
+        const apiRes = await fetch(endpoint, { signal: AbortSignal.timeout(4000) });
+        if (apiRes.ok) {
+          const data: any = await apiRes.json();
+          blogs = Array.isArray(data) ? data : (data.body || []);
+          if (blogs.length > 0) break;
         }
-
-        for (const blog of blogs) {
-          if (blog.isPublished !== false && blog.slug) {
-            const lastmod = blog.updatedAt ? new Date(blog.updatedAt).toISOString().split('T')[0] : today;
-            xml += `  <url>\n    <loc>https://infoaidtech.net/blog/${encodeURIComponent(blog.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
-          }
-        }
-
-        xml += '</urlset>';
-        res.type('application/xml');
-        return res.send(xml);
+      } catch {
+        // try next endpoint
       }
-    } catch (e) {
-      // Fallback below
+    }
+
+    if (blogs.length > 0) {
+      const staticRoutes = [
+        { loc: 'https://infoaidtech.net/', changefreq: 'weekly', priority: '1.0' },
+        { loc: 'https://infoaidtech.net/about', changefreq: 'monthly', priority: '0.8' },
+        { loc: 'https://infoaidtech.net/blog', changefreq: 'daily', priority: '0.9' },
+        { loc: 'https://infoaidtech.net/service', changefreq: 'monthly', priority: '0.8' },
+        { loc: 'https://infoaidtech.net/aidly-erp', changefreq: 'weekly', priority: '0.9' },
+        { loc: 'https://infoaidtech.net/careers', changefreq: 'weekly', priority: '0.8' },
+        { loc: 'https://infoaidtech.net/contact', changefreq: 'monthly', priority: '0.7' },
+        { loc: 'https://infoaidtech.net/image-converter', changefreq: 'monthly', priority: '0.7' },
+        { loc: 'https://infoaidtech.net/json-to-ts', changefreq: 'monthly', priority: '0.7' },
+        { loc: 'https://infoaidtech.net/conventional-commit-generator', changefreq: 'monthly', priority: '0.7' },
+        { loc: 'https://infoaidtech.net/privacy-policy', changefreq: 'yearly', priority: '0.5' },
+        { loc: 'https://infoaidtech.net/terms-of-service', changefreq: 'yearly', priority: '0.5' },
+        { loc: 'https://infoaidtech.net/disclaimer', changefreq: 'yearly', priority: '0.5' },
+      ];
+
+      let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+      xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+      const today = new Date().toISOString().split('T')[0];
+
+      for (const route of staticRoutes) {
+        xml += `  <url>\n    <loc>${route.loc}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${route.changefreq}</changefreq>\n    <priority>${route.priority}</priority>\n  </url>\n`;
+      }
+
+      const seenSlugs = new Set<string>();
+      for (const blog of blogs) {
+        if (blog.isPublished !== false && blog.slug && !seenSlugs.has(blog.slug)) {
+          seenSlugs.add(blog.slug);
+          const lastmod = blog.updatedAt ? new Date(blog.updatedAt).toISOString().split('T')[0] : today;
+          xml += `  <url>\n    <loc>https://infoaidtech.net/blog/${encodeURIComponent(blog.slug)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+        }
+      }
+
+      xml += '</urlset>';
+      res.type('application/xml');
+      res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600');
+      return res.send(xml);
     }
 
     const sitemapCandidates = [
@@ -111,6 +131,7 @@ export function app(): express.Express {
     for (const p of sitemapCandidates) {
       if (existsSync(p)) {
         res.type('application/xml');
+        res.setHeader('Cache-Control', 'public, max-age=1800, s-maxage=3600');
         return res.sendFile(p);
       }
     }
@@ -139,7 +160,10 @@ export function app(): express.Express {
         if (
           html.includes('app-404') ||
           html.includes('Page Not Found') ||
-          html.includes('404 - Page Not Found')
+          html.includes('404 - Page Not Found') ||
+          html.includes('Article Not Found') ||
+          html.includes('Something\'s missing') ||
+          html.includes('not-found-page')
         ) {
           res.status(404).send(html);
         } else {

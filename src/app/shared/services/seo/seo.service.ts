@@ -228,26 +228,37 @@ export class SeoService {
       this.doc.head.appendChild(script);
     }
 
-    script.textContent = JSON.stringify(schema);
+    const json = JSON.stringify(schema);
+    script.textContent = json;
+    script.text = json;
   }
 
   /** Helper: Update or create link tags */
   private updateLinkTag(rel: string, href: string, attrs: Record<string, string> = {}) {
     if (!this.doc || !this.doc.head) return;
 
-    let element: HTMLLinkElement | null = this.doc.querySelector(`link[rel='${rel}']`);
-
-    if (!element) {
-      element = this.doc.createElement('link');
-      element.setAttribute('rel', rel);
-      this.doc.head.appendChild(element);
+    const existingLinks = this.doc.querySelectorAll(`link[rel='${rel}']`);
+    if (existingLinks && existingLinks.length > 0) {
+      existingLinks.forEach((link, idx) => {
+        if (idx === 0) {
+          link.setAttribute('href', href);
+          Object.entries(attrs).forEach(([key, value]) => {
+            link.setAttribute(key, value);
+          });
+        } else {
+          link.remove();
+        }
+      });
+      return;
     }
 
+    const element = this.doc.createElement('link');
+    element.setAttribute('rel', rel);
     element.setAttribute('href', href);
-
     Object.entries(attrs).forEach(([key, value]) => {
-      element!.setAttribute(key, value);
+      element.setAttribute(key, value);
     });
+    this.doc.head.appendChild(element);
   }
 
   /** Add breadcrumb structured data */

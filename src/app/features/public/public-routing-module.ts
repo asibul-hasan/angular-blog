@@ -17,8 +17,8 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        loadComponent: () =>
-          import('./home/home.component').then((c) => c.HomeComponent),
+        redirectTo: '',
+        pathMatch: 'full',
       },
       {
         path: 'blog',
@@ -41,6 +41,11 @@ const routes: Routes = [
         path: 'service',
         loadComponent: () =>
           import('./service/service.component').then((c) => c.ServiceComponent),
+      },
+      {
+        path: 'services',
+        redirectTo: 'service',
+        pathMatch: 'full',
       },
       {
         path: 'contact',
@@ -110,6 +115,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'products/aidly-erp',
+        redirectTo: 'aidly-erp',
+        pathMatch: 'full',
+      },
+      {
         path: 'conventional-commit-generator',
         loadComponent: () =>
           import(
@@ -117,8 +127,23 @@ const routes: Routes = [
           ).then((c) => c.ConventionalCommitGeneratorComponent),
       },
       {
+        path: 'products/conventional-commit-generator',
+        redirectTo: 'conventional-commit-generator',
+        pathMatch: 'full',
+      },
+      {
         path: 'commit-generator',
         redirectTo: 'conventional-commit-generator',
+        pathMatch: 'full',
+      },
+      {
+        path: 'products/image-converter',
+        redirectTo: 'image-converter',
+        pathMatch: 'full',
+      },
+      {
+        path: 'products/json-to-ts',
+        redirectTo: 'json-to-ts',
         pathMatch: 'full',
       },
       // Internship routes

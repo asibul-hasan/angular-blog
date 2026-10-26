@@ -9,9 +9,11 @@ import { BlogCardComponent } from '../../../shared/components/template/blog-card
 import { BlogStoreService } from '../../../core/services/blog-store.service';
 import { fromEvent, Subscription, throttleTime } from 'rxjs';
 
+import { NotFoundComponent } from '../../../shared/components/404/404.component';
+
 @Component({
   selector: 'app-blog-detail',
-  imports: [CommonModule, BlogCardComponent, RouterLink],
+  imports: [CommonModule, BlogCardComponent, RouterLink, NotFoundComponent],
   templateUrl: './blog-detail.component.html',
   styleUrls: ['./blog-detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,12 +27,13 @@ export class BlogDetailComponent implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
 
   readonly blog = signal<any>(null);
+  readonly isNotFound = signal<boolean>(false);
   readonly readingProgress = signal<number>(0);
   readonly headings = signal<{id: string, text: string}[]>([]);
   
   private scrollSub?: Subscription;
 
-  // Featured / Related blogs
+  // Featured / Related blogs (hydrated on browser)
   readonly allBlogs = computed(() => this.blogStore.blogs());
   readonly relatedBlogs = computed(() => {
     const current = this.blog();
@@ -47,7 +50,11 @@ export class BlogDetailComponent implements AfterViewInit, OnDestroy {
         this.loadBlogData(id);
       }
     });
-    this.blogStore.loadBlogs();
+
+    // Only load full blog list on browser to prevent 700KB TransferState bloat on SSR
+    if (isPlatformBrowser(this.platformId)) {
+      this.blogStore.loadBlogs();
+    }
   }
 
   ngAfterViewInit() {
@@ -65,19 +72,37 @@ export class BlogDetailComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadBlogData(id: string) {
-    // Try cache first
+    // Try cache first if available
     const cached = this.allBlogs().find((b: any) => b.slug === id || b._id === id);
     if (cached) {
+      this.isNotFound.set(false);
       this.setBlog(cached);
       return;
     }
 
     this.apiService.getBlogBySlug(id).subscribe({
       next: (res: any) => {
-        if (res.body && res.body[0]) {
+        if (res && res.body && res.body[0]) {
+          this.isNotFound.set(false);
           this.setBlog(res.body[0]);
+        } else {
+          this.handleNotFound(id);
         }
+      },
+      error: () => {
+        this.handleNotFound(id);
       }
+    });
+  }
+
+  private handleNotFound(id: string) {
+    this.isNotFound.set(true);
+    this.blog.set(null);
+    this.seo.updateTags({
+      title: 'Article Not Found',
+      description: 'The requested blog article could not be found.',
+      url: `https://infoaidtech.net/blog/${id}`,
+      type: 'website'
     });
   }
 
