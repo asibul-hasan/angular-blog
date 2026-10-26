@@ -121,12 +121,35 @@ export class AboutComponent {
 
   constructor() {
     this.seo.updateTags({
-      title: 'About InfoAidTech — Innovative IT & Digital Solutions Agency',
-      description: 'InfoAidTech is a leading IT and digital agency providing custom software development, web & app solutions, and digital marketing services to help businesses grow.',
+      title: 'About InfoAidTech — Enterprise Software & SME Solutions',
+      description: 'Learn about InfoAidTech: our story, leadership, engineering culture, and commitment to delivering custom software, web applications, and SME ERP systems.',
       image: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
       url: 'https://infoaidtech.net/about',
       type: 'website',
-      keywords: 'about InfoAidTech, IT agency, digital agency Bangladesh, software development company',
+      keywords: 'about InfoAidTech, software company Bangladesh, enterprise engineering, Aidly ERP developers',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net/' },
+      { name: 'About Us', url: 'https://infoaidtech.net/about' }
+    ]);
+
+    this.seo.setJsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'AboutPage',
+      name: 'About InfoAidTech',
+      url: 'https://infoaidtech.net/about',
+      description: 'InfoAidTech is an enterprise software engineering firm providing custom software, web solutions, and SME ERP systems.',
+      mainEntity: {
+        '@type': 'Organization',
+        name: 'InfoAidTech',
+        url: 'https://infoaidtech.net',
+        foundingDate: '2019',
+        founder: {
+          '@type': 'Person',
+          name: 'Asibul Hasan'
+        }
+      }
+    }, 'about-page');
   }
 }

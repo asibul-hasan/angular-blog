@@ -65,13 +65,51 @@ export class ContactComponent {
 
   constructor() {
     this.seo.updateTags({
-      title: 'Contact InfoAidTech — Your IT & Digital Solutions Partner',
-      description: 'Get in touch with InfoAidTech for custom software, web solutions, and digital marketing strategies tailored to your business needs.',
+      title: 'Contact InfoAidTech — Custom Software & SME Solutions',
+      description: 'Get in touch with InfoAidTech for custom software engineering, SME ERP systems (Aidly PMS), web solutions, and digital strategy.',
       image: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
       url: 'https://infoaidtech.net/contact',
       type: 'website',
-      keywords: 'contact InfoAidTech, IT consultation, get in touch, software inquiry',
+      keywords: 'contact InfoAidTech, software consultation, get in touch, Aidly ERP inquiry',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net/' },
+      { name: 'Contact', url: 'https://infoaidtech.net/contact' }
+    ]);
+
+    this.seo.setJsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      name: 'Contact InfoAidTech',
+      url: 'https://infoaidtech.net/contact',
+      description: 'Get in touch with InfoAidTech for custom software engineering, web solutions, and SME ERP implementations.',
+      mainEntity: {
+        '@type': 'Organization',
+        name: 'InfoAidTech',
+        url: 'https://infoaidtech.net',
+        email: 'info@infoaidtech.net',
+        contactPoint: {
+          '@type': 'ContactPoint',
+          contactType: 'Customer Support & Sales',
+          email: 'info@infoaidtech.net',
+          availableLanguage: ['English', 'Bengali']
+        }
+      }
+    }, 'contact-page');
+
+    this.seo.setJsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: this.faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.a
+        }
+      }))
+    }, 'contact-faq');
   }
 
   onSubmit(): void {

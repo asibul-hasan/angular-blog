@@ -677,6 +677,34 @@ export class AidlyErpComponent implements OnInit {
       keywords: 'AidlyERP, ERP software Bangladesh, POS retail software, pharmacy inventory, accounting ERP Dhaka, NBR compliant ERP',
     });
 
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net/' },
+      { name: 'Products', url: 'https://infoaidtech.net/products/aidly-erp' },
+      { name: 'Aidly ERP', url: 'https://infoaidtech.net/aidly-erp' }
+    ]);
+
+    this.seo.setJsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Aidly ERP & PMS',
+      operatingSystem: 'Web-based Cloud & Offline Hybrid',
+      applicationCategory: 'BusinessApplication',
+      url: 'https://infoaidtech.net/aidly-erp',
+      description: 'Integrated Pharmacy Management System (PMS) and SME ERP designed for Bangladesh. Features bilingual POS, batch expiry tracking, FEFO costing, and double-entry general ledger accounting.',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'BDT',
+        availability: 'https://schema.org/InStock',
+        description: 'Free live demo and modular subscription tiers for retail, wholesale, and pharmacy businesses.'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'InfoAidTech',
+        url: 'https://infoaidtech.net'
+      }
+    }, 'software-application');
+
     // Only access localStorage in browser (not during SSR)
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       const saved = localStorage.getItem('aidly-theme');

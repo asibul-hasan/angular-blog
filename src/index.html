@@ -137,28 +137,57 @@
       });
     </script>
 
-    <!-- ✅ JSON-LD Structured Data -->
+    <!-- ✅ Structured Data Graph: Organization & WebSite -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "InfoAidTech",
-        "url": "https://infoaidtech.net",
-        "logo": "https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png",
-        "description": "Professional IT services, software development, cloud solutions, and digital marketing.",
-        "address": {
-          "@type": "PostalAddress",
-          "addressCountry": "US"
-        },
-        "sameAs": [
-          "https://twitter.com/InfoAidTech",
-          "https://linkedin.com/company/infoaidtech"
-        ],
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "contactType": "Customer Service",
-          "availableLanguage": ["English"]
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://infoaidtech.net/#organization",
+            "name": "InfoAidTech",
+            "url": "https://infoaidtech.net",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png",
+              "width": 512,
+              "height": 512
+            },
+            "description": "Enterprise software engineering firm specializing in custom web applications, cloud infrastructure, and specialized SME ERP systems (Aidly PMS).",
+            "foundingLocation": {
+              "@type": "Place",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "BD"
+              }
+            },
+            "sameAs": [
+              "https://github.com/asibul-hasan",
+              "https://linkedin.com/company/infoaidtech",
+              "https://twitter.com/InfoAidTech",
+              "https://facebook.com/infoaidtech"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "Technical Support & Sales",
+              "availableLanguage": ["English", "Bengali"]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://infoaidtech.net/#website",
+            "url": "https://infoaidtech.net",
+            "name": "InfoAidTech",
+            "publisher": {
+              "@id": "https://infoaidtech.net/#organization"
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://infoaidtech.net/blog?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
       }
     </script>
   </head>

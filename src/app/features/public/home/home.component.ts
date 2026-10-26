@@ -39,13 +39,14 @@ export class HomeComponent {
     }
 
     this.seo.updateTags({
-      title: 'Revolutionizing IT Services for a Digital Era',
+      title: 'Enterprise Software Development & SME ERP Solutions',
       description:
-        'Welcome to InfoAidTech – Your trusted IT partner. We specialize in digital transformation, cloud solutions, software development, and IT consulting. Where vision meets expertise, InfoAidTech delivers innovation and reliability.',
+        'InfoAidTech engineers custom software, scalable web applications, and specialized SME ERP systems (Aidly PMS) that automate business operations and drive commercial growth.',
       image:
         'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
       url: 'https://infoaidtech.net',
       type: 'website',
+      keywords: 'custom software development, SME ERP Bangladesh, pharmacy management software, web application development, mobile app development, cloud consulting, Aidly ERP, InfoAidTech',
     });
   }
 }

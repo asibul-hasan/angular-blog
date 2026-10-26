@@ -216,15 +216,15 @@ export class SeoService {
   }
 
   /** Insert or update JSON-LD <script> tag */
-  private setJsonLd(schema: any) {
+  setJsonLd(schema: any, schemaKey: string = 'main') {
     if (!this.doc || !this.doc.head) return;
 
-    let script: HTMLScriptElement | null = this.doc.querySelector('script[type="application/ld+json"][data-schema="main"]');
+    let script: HTMLScriptElement | null = this.doc.querySelector(`script[type="application/ld+json"][data-schema="${schemaKey}"]`);
 
     if (!script) {
       script = this.doc.createElement('script');
       script.type = 'application/ld+json';
-      script.setAttribute('data-schema', 'main');
+      script.setAttribute('data-schema', schemaKey);
       this.doc.head.appendChild(script);
     }
 

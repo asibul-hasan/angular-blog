@@ -27,18 +27,67 @@ export function app(): express.Express {
     throw new Error('Could not find index.html or index.csr.html');
   }
 
-  // ✅ SEO Optimization 1: Enforce Canonical URLs by 301-redirecting trailing slashes and legacy routes
+  // ✅ SEO Optimization 1: Enforce Canonical URLs and 301-redirect legacy WordPress & alternate URLs
   server.use((req, res, next) => {
-    // 301 redirect /home to /
-    if (req.path === '/home') {
-      return res.redirect(301, '/');
+    const rawPath = req.path;
+    let decodedPath = rawPath;
+    try {
+      decodedPath = decodeURIComponent(rawPath);
+    } catch {
+      // ignore malformed URI
     }
 
-    if (req.path.length > 1 && req.path.endsWith('/')) {
-      const query = req.url.slice(req.path.length);
-      const safePath = req.path.slice(0, -1);
+    // Exact path redirects map
+    const exactRedirects: Record<string, string> = {
+      '/home': '/',
+      '/services': '/service',
+      '/products/aidly-erp': '/aidly-erp',
+      '/products/conventional-commit-generator': '/conventional-commit-generator',
+      '/commit-generator': '/conventional-commit-generator',
+      '/products/image-converter': '/image-converter',
+      '/products/json-to-ts': '/json-to-ts',
+      '/blog/html-spacing-andamp;-whitespace-how-to-add-space-in-html-like-a-pro': '/blog/html-spacing-whitespace-guide',
+      '/blog/iot-standards-protocols': '/blog/iot-standards-protocols-guide',
+      '/blog/iot-standards-and-protocols': '/blog/iot-standards-protocols-guide',
+      '/blog/startup-incubators-catalysts-early-stage-business-success': '/blog/startup-incubators-early-stage-business-success',
+      '/blog/organic-social-media-marketing-2024-guide-authentic-connections': '/blog/organic-social-media-marketing-2026-guide-authentic-connections',
+      '/blog/on-page-seo-complete-guide-2026': '/blog/on-page-seo-complete-guide-2025',
+    };
+
+    const target = exactRedirects[rawPath] || exactRedirects[decodedPath];
+    if (target) {
+      return res.redirect(301, target);
+    }
+
+    // WordPress taxonomy and feed redirects
+    if (
+      rawPath === '/category' || rawPath.startsWith('/category/') ||
+      rawPath === '/tag' || rawPath.startsWith('/tag/') ||
+      rawPath === '/feed' || rawPath.startsWith('/feed/') ||
+      rawPath === '/rss' || rawPath.startsWith('/rss/')
+    ) {
+      return res.redirect(301, '/blog');
+    }
+
+    if (rawPath === '/author' || rawPath.startsWith('/author/')) {
+      return res.redirect(301, '/about');
+    }
+
+    if (rawPath.startsWith('/wp-content/') || rawPath.startsWith('/wp-includes/')) {
+      return res.status(410).send('Gone');
+    }
+
+    if (rawPath.endsWith('.php')) {
+      return res.status(404).send('Not Found');
+    }
+
+    // Trailing slash normalization: 301-redirect /path/ to /path
+    if (rawPath.length > 1 && rawPath.endsWith('/')) {
+      const query = req.url.slice(rawPath.length);
+      const safePath = rawPath.slice(0, -1);
       return res.redirect(301, safePath + query);
     }
+
     next();
   });
 

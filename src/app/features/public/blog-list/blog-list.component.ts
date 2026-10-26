@@ -70,6 +70,11 @@ export class BlogList implements OnInit, OnDestroy {
       type: 'website',
       keywords: 'tech blog, software development blog, IT articles, angular, web development tutorials',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net/' },
+      { name: 'Blog', url: 'https://infoaidtech.net/blog' }
+    ]);
   }
 
   ngOnInit() {

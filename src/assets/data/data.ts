@@ -87,85 +87,97 @@ export class DataService {
   private initializeOurServiceData(): any[] {
     return [
       {
-        icon: '',
+        icon: '💻',
         title: 'Web Development',
+        slug: 'web-development',
         description:
           'We craft scalable, high-performance websites using modern frameworks and clean code. From responsive landing pages to complex web applications, we build solutions that deliver fast performance, seamless UX, and long-term value for your business.',
         id: 1,
       },
       {
-        icon: '',
+        icon: '🎨',
         title: 'Website Design (UI/UX)',
+        slug: 'ui-ux-design',
         description:
           'We design clean, intuitive interfaces that enhance user experience and drive engagement. By blending creativity with usability, we deliver visually compelling and conversion-focused designs tailored to your brand.',
         id: 2,
       },
       {
-        icon: '',
+        icon: '⚡',
         title: 'WordPress Development',
+        slug: 'wordpress-development',
         description:
           "We build dynamic, easy-to-manage websites using WordPress and Elementor. Whether it's a corporate site or an online store, we create SEO-optimized, mobile-responsive WordPress solutions tailored to your business needs.",
         id: 3,
       },
       {
-        icon: '',
+        icon: '🛍️',
         title: 'eCommerce Development',
+        slug: 'ecommerce-development',
         description:
           'We develop secure, user-friendly eCommerce platforms that convert. From Shopify to WooCommerce or custom-built stores, we deliver scalable solutions with seamless checkout, payment integration, and inventory management.',
         id: 4,
       },
       {
-        icon: '',
+        icon: '📈',
         title: 'Search Engine Optimization (SEO)',
+        slug: 'seo-services',
         description:
           'We boost your online visibility with data-driven SEO strategies. From keyword research to technical SEO and content optimization, we help you rank higher, drive organic traffic, and grow your customer base.',
         id: 5,
       },
       {
-        icon: '',
+        icon: '🎯',
         title: 'Digital Marketing',
+        slug: 'digital-marketing',
         description:
           'We create results-driven digital marketing campaigns that amplify your online presence. Using PPC, content marketing, email, and analytics, we help you attract, engage, and convert your target audience efficiently.',
         id: 6,
       },
       {
-        icon: '',
+        icon: '📱',
         title: 'Mobile App Development',
+        slug: 'mobile-app-development',
         description:
           'We build high-performance mobile apps for iOS and Android using native and cross-platform technologies. Our apps are designed for usability, speed, and scalability — delivering seamless experiences to your users.',
         id: 7,
       },
       {
-        icon: '',
+        icon: '🌐',
         title: 'Social Media Management (SMM)',
+        slug: 'social-media-management',
         description:
           'We manage and grow your social presence through strategy, content, and engagement. From content planning to analytics, we help build your brand and connect with your audience across all major platforms.',
         id: 8,
       },
       {
-        icon: '',
+        icon: '⚙️',
         title: 'Custom Software Development',
+        slug: 'custom-software-development',
         description:
           'We deliver tailored software solutions that solve real business problems. Whether it’s a CRM, dashboard, or automation tool, we build secure, scalable products aligned with your workflow and goals.',
         id: 9,
       },
       {
-        icon: '',
+        icon: '🔗',
         title: 'API Development & Integration',
+        slug: 'api-development-integration',
         description:
           'We develop and integrate robust APIs that connect your systems and streamline operations. From third-party services to custom back-end integrations, we ensure secure, efficient, and scalable communication between apps.',
         id: 10,
       },
       {
-        icon: '',
+        icon: '🛡️',
         title: 'Cybersecurity Services',
+        slug: 'cybersecurity-services',
         description:
           'We protect your digital assets with end-to-end cybersecurity solutions. From penetration testing to data encryption and threat monitoring, we help secure your systems and build customer trust.',
         id: 11,
       },
       {
-        icon: '',
+        icon: '☁️',
         title: 'Cloud Services & DevOps',
+        slug: 'cloud-services-devops',
         description:
           'We deploy, scale, and manage cloud infrastructure using AWS, Azure, and Google Cloud. Our DevOps experts implement CI/CD pipelines and automation for fast, secure, and reliable software delivery.',
         id: 12,
