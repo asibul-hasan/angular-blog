@@ -71,10 +71,6 @@ export class Footer implements OnInit {
         heading: 'Products',
         lists: [
           {
-            path: '/aidly-erp',
-            label: 'Aidly ERP (Pharma & Retail)',
-          },
-          {
             path: '/conventional-commit-generator',
             label: 'Conventional Commit Generator',
           },

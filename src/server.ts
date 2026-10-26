@@ -41,7 +41,7 @@ export function app(): express.Express {
     const exactRedirects: Record<string, string> = {
       '/home': '/',
       '/services': '/service',
-      '/products/aidly-erp': '/aidly-erp',
+
       '/products/conventional-commit-generator': '/conventional-commit-generator',
       '/commit-generator': '/conventional-commit-generator',
       '/products/image-converter': '/image-converter',
@@ -137,7 +137,7 @@ export function app(): express.Express {
         { loc: 'https://infoaidtech.net/about', changefreq: 'monthly', priority: '0.8' },
         { loc: 'https://infoaidtech.net/blog', changefreq: 'daily', priority: '0.9' },
         { loc: 'https://infoaidtech.net/service', changefreq: 'monthly', priority: '0.8' },
-        { loc: 'https://infoaidtech.net/aidly-erp', changefreq: 'weekly', priority: '0.9' },
+
         { loc: 'https://infoaidtech.net/careers', changefreq: 'weekly', priority: '0.8' },
         { loc: 'https://infoaidtech.net/contact', changefreq: 'monthly', priority: '0.7' },
         { loc: 'https://infoaidtech.net/image-converter', changefreq: 'monthly', priority: '0.7' },

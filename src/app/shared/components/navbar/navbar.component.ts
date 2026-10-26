@@ -84,7 +84,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           { path: '/', label: this.langService.lang.home || 'Home' },
           { path: '/about', label: this.langService.lang.about || 'About' },
           { path: '/service', label: this.langService.lang.services || 'Services' },
-          { path: '/aidly-erp', label: 'Aidly ERP' },
           { path: '/blog', label: this.langService.lang.blog || 'Blog' },
           { path: '/internship/apply', label: 'Internship' },
           { path: '/contact', label: this.langService.lang.contact || 'Contact' },

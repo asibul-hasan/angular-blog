@@ -112,18 +112,18 @@ const routes: Routes = [
             (c) => c.GhostRewriteComponent
           ),
       },
-      {
-        path: 'aidly-erp',
-        loadComponent: () =>
-          import('./products/aidly-erp/aidly-erp.component').then(
-            (c) => c.AidlyErpComponent
-          ),
-      },
-      {
-        path: 'products/aidly-erp',
-        redirectTo: 'aidly-erp',
-        pathMatch: 'full',
-      },
+      // {
+      //   path: 'aidly-erp',
+      //   loadComponent: () =>
+      //     import('./products/aidly-erp/aidly-erp.component').then(
+      //       (c) => c.AidlyErpComponent
+      //     ),
+      // },
+      // {
+      //   path: 'products/aidly-erp',
+      //   redirectTo: 'aidly-erp',
+      //   pathMatch: 'full',
+      // },
       {
         path: 'conventional-commit-generator',
         loadComponent: () =>

@@ -91,7 +91,7 @@ function getPublicStaticRoutes() {
     { route: "/blog", priority: "0.9", changefreq: "daily" },
     { route: "/about", priority: "0.8", changefreq: "monthly" },
     { route: "/service", priority: "0.8", changefreq: "monthly" },
-    { route: "/aidly-erp", priority: "0.9", changefreq: "weekly" },
+
     { route: "/careers", priority: "0.8", changefreq: "weekly" },
     { route: "/contact", priority: "0.7", changefreq: "monthly" },
     { route: "/image-converter", priority: "0.7", changefreq: "monthly" },
