@@ -85,7 +85,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/infoAidTech/browser/
+          local-dir: ./dist/infoAidTech/
           server-dir: ./
 
       - name: Clear GitHub Actions caches & artifacts
