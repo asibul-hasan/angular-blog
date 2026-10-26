@@ -1,0 +1,10 @@
+{
+  "/robots.txt": {
+    "target": "http://localhost:3000",
+    "secure": false
+  },
+  "/sitemap.xml": {
+    "target": "http://localhost:3000",
+    "secure": false
+  }
+}

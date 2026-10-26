@@ -1,9 +1,10 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { JobService } from '../../../../shared/services/job/job.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { SocialLinksService } from '../../../../shared/services/social-links/social-links.service';
+import { SeoService } from '../../../../shared/services/seo/seo.service';
 
 @Component({
     selector: 'app-internship-detail',
@@ -13,6 +14,7 @@ import { SocialLinksService } from '../../../../shared/services/social-links/soc
     styleUrls: ['./internship-detail.component.css'],
 })
 export class InternshipDetailComponent implements OnInit {
+    private readonly seo = inject(SeoService);
     job: any = null;
     loading = true;
     isBrowser = false;
@@ -47,6 +49,7 @@ export class InternshipDetailComponent implements OnInit {
                 next: (response) => {
                     this.job = response.body;
                     this.loading = false;
+                    this.updateSeo(jobIdOrSlug);
                 },
                 error: (err) => {
                     console.error('Error loading job:', err);
@@ -59,6 +62,7 @@ export class InternshipDetailComponent implements OnInit {
                 next: (response) => {
                     this.job = response.body;
                     this.loading = false;
+                    this.updateSeo(jobIdOrSlug);
                 },
                 error: (err) => {
                     console.error('Error loading job:', err);
@@ -66,6 +70,20 @@ export class InternshipDetailComponent implements OnInit {
                 },
             });
         }
+    }
+
+    private updateSeo(jobIdOrSlug: string): void {
+        if (!this.job) return;
+        const title = this.job.title ? `${this.job.title} — Internship Program | InfoAidTech` : 'Internship Program — InfoAidTech';
+        const rawDesc = this.job.short_desc || this.job.description || 'Apply for an internship opportunity at InfoAidTech.';
+        const cleanDesc = rawDesc.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+        this.seo.updateTags({
+            title,
+            description: cleanDesc,
+            url: `https://infoaidtech.net/internship/${this.job.slug || jobIdOrSlug}`,
+            type: 'article',
+            keywords: `${this.job.title || ''}, internship, tech internship, InfoAidTech internship`,
+        });
     }
 
     applyForJob(): void {

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { JobService } from '../../../shared/services/job/job.service';
+import { SeoService } from '../../../shared/services/seo/seo.service';
 
 @Component({
   selector: 'app-careers',
@@ -12,6 +13,9 @@ import { JobService } from '../../../shared/services/job/job.service';
   styleUrls: ['./careers.component.css'],
 })
 export class CareersComponent implements OnInit {
+  private readonly jobService = inject(JobService);
+  private readonly seo = inject(SeoService);
+
   jobs: any[] = [];
   filteredJobs: any[] = [];
   loading = true;
@@ -22,9 +26,14 @@ export class CareersComponent implements OnInit {
   departments: string[] = [];
   locations: string[] = [];
 
-  constructor(private jobService: JobService) { }
-
   ngOnInit(): void {
+    this.seo.updateTags({
+      title: 'Careers & Opportunities — Join Our Team',
+      description: 'Explore exciting career opportunities, software engineering roles, and internships at InfoAidTech. Build modern web, mobile, and cloud solutions with us.',
+      url: 'https://infoaidtech.net/careers',
+      type: 'website',
+      keywords: 'careers, jobs, software engineer jobs, web developer careers, tech internships, InfoAidTech hiring',
+    });
     this.loadJobs();
   }
 

@@ -64,13 +64,13 @@ export class ContactComponent {
   ];
 
   constructor() {
-    const origin = isPlatformBrowser(this.platformId) ? window.location.origin : '';
     this.seo.updateTags({
       title: 'Contact InfoAidTech — Your IT & Digital Solutions Partner',
       description: 'Get in touch with InfoAidTech for custom software, web solutions, and digital marketing strategies tailored to your business needs.',
       image: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: origin,
+      url: 'https://infoaidtech.net/contact',
       type: 'website',
+      keywords: 'contact InfoAidTech, IT consultation, get in touch, software inquiry',
     });
   }
 

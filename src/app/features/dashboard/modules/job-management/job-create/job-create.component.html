@@ -1,161 +1,234 @@
-<!-- Modern 3D Job Create -->
-<div class="w-full space-y-6">
-  <!-- Hero Header -->
-  <div
-    class="relative overflow-hidden rounded-3xl bg-linear-to-br from-emerald-500/10 via-teal-500/10 to-cyan-500/10 backdrop-blur-xl border border-white/10 p-8"
-  >
-    <h1
-      class="text-4xl font-bold bg-linear-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent mb-2"
-    >
-      {{ jobId ? "Edit Job Posting" : "Create New Job Posting" }}
-    </h1>
-    <p class="text-gray-400">Post opportunities and grow your team</p>
+<!-- Job Opening Creation Studio -->
+<div class="space-y-6 w-full animate-in fade-in duration-300">
+  <!-- Header Bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+    <div class="flex items-center gap-4">
+      <a
+        routerLink="/dashboard/job-management/jobs"
+        class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 flex items-center justify-center transition-all cursor-pointer shadow-sm"
+      >
+        <i class="fa-solid fa-arrow-left text-xs"></i>
+      </a>
+      <div>
+        <div class="flex items-center gap-2.5">
+          <h1 class="text-xl font-black text-white tracking-tight">
+            {{ jobId ? "Refine Role Specification" : "Architect Job Opening" }}
+          </h1>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
+            {{ jobId ? 'Live Revision' : 'New Listing' }}
+          </span>
+        </div>
+        <p class="text-xs text-slate-400 mt-0.5">
+          Configure hiring parameters, candidate qualifications, and employment details.
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="flex items-center gap-3">
+      <a
+        routerLink="/dashboard/job-management/jobs"
+        class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-bold transition-all"
+      >
+        Cancel
+      </a>
+      <button
+        type="button"
+        (click)="saveJob()"
+        [disabled]="jobForm.invalid"
+        class="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-lg shadow-emerald-900/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer inline-flex items-center gap-2"
+      >
+        <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+        {{ jobId ? "Save Changes" : "Publish Opening" }}
+      </button>
+    </div>
   </div>
 
   <form [formGroup]="jobForm" (ngSubmit)="saveJob()" class="space-y-6">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Main Form Section -->
-      <div class="lg:col-span-2 space-y-6">
-        <!-- Job Title -->
-        <div
-          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6"
-        >
-          <label
-            class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3"
-          >
-            Job Title
-          </label>
-          <input
-            type="text"
-            formControlName="title"
-            placeholder="e.g., Senior Full Stack Developer"
-            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-xl font-semibold placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-          />
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Main Content Spec (8 cols) -->
+      <div class="lg:col-span-8 space-y-6">
+        <!-- Title & Slug Card -->
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-lg shadow-black/20 space-y-4">
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              Opening Title <span class="text-rose-400">*</span>
+            </label>
+            <input
+              type="text"
+              formControlName="title"
+              placeholder="e.g. Senior Cloud Architect & Infrastructure Lead"
+              class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm font-semibold placeholder-slate-600 focus:outline-none focus:border-emerald-500/50 transition-colors"
+            />
+            <p *ngIf="jobForm.get('title')?.touched && jobForm.get('title')?.invalid" class="text-[10px] text-rose-400 mt-1 font-semibold">
+              Opening title is required (max 150 characters).
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              URL Handle / Slug
+            </label>
+            <div class="flex items-center">
+              <span class="px-3 py-2.5 rounded-l-xl bg-slate-950 border border-r-0 border-slate-800 text-slate-500 text-xs font-mono">
+                /careers/
+              </span>
+              <input
+                type="text"
+                formControlName="slug"
+                placeholder="senior-cloud-architect"
+                class="flex-1 px-3 py-2.5 rounded-r-xl bg-slate-950/80 border border-slate-800 text-slate-300 text-xs font-mono focus:outline-none focus:border-emerald-500/50 transition-colors"
+              />
+            </div>
+            <span class="text-[10px] text-slate-500 mt-1 block">
+              Auto-generated clean URL slug.
+            </span>
+          </div>
         </div>
 
-        <!-- Job Slug -->
-        <div
-          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6"
-        >
-          <label
-            class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3"
-          >
-            URL Slug
-          </label>
-          <input
-            type="text"
-            formControlName="slug"
-            placeholder="e.g., senior-full-stack-developer"
-            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-          />
-          <p class="mt-2 text-sm text-gray-500">
-            This will be used in the job URL. Automatically generated from
-            title.
-          </p>
-        </div>
-
-        <!-- Job Description -->
-        <div
-          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6"
-        >
-          <label
-            class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3"
-          >
-            Job Description
+        <!-- Role Description Card -->
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-lg shadow-black/20 space-y-2">
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            Role Summary & Objectives <span class="text-rose-400">*</span>
           </label>
           <textarea
             formControlName="description"
             rows="6"
-            placeholder="Describe the role, responsibilities, and requirements..."
-            class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all resize-none"
+            placeholder="Outline the core purpose, technical environment, and expectations for this team member..."
+            class="w-full p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-xs leading-relaxed placeholder-slate-600 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none"
           ></textarea>
+          <p *ngIf="jobForm.get('description')?.touched && jobForm.get('description')?.invalid" class="text-[10px] text-rose-400 font-semibold">
+            Role description is required.
+          </p>
         </div>
 
-        <!-- Additional Descriptions -->
-        <div
-          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 space-y-4"
-        >
-          <h3 class="text-lg font-semibold text-white mb-4">
-            Additional Requirements
-          </h3>
-          <div>
-            <input
-              type="text"
-              formControlName="des1"
-              placeholder="Requirement 1"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-            />
+        <!-- Pillar Requirements / Directives -->
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-lg shadow-black/20 space-y-4">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-emerald-400 text-xs"></i>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">
+              Specific Directives & Qualifications
+            </h3>
           </div>
-          <div>
-            <input
-              type="text"
-              formControlName="des2"
-              placeholder="Requirement 2"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              formControlName="des3"
-              placeholder="Requirement 3"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-            />
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                Core Responsibility 1
+              </label>
+              <input
+                type="text"
+                formControlName="des1"
+                placeholder="e.g. Architect and scale distributed cloud services on Kubernetes and GCP"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                Required Technical Proficiency 2
+              </label>
+              <input
+                type="text"
+                formControlName="des2"
+                placeholder="e.g. 5+ years building production microservices in Go, Python, or TypeScript"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
+              />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                Benefits & Perks 3
+              </label>
+              <input
+                type="text"
+                formControlName="des3"
+                placeholder="e.g. Comprehensive health coverage, equity grants, annual learning stipend"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Settings Sidebar -->
-      <div class="lg:col-span-1 space-y-6">
-        <div
-          class="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 sticky top-4 space-y-5"
-        >
-          <h2
-            class="text-xl font-bold text-white mb-6 pb-3 border-b border-white/10"
-          >
-            Job Details
-          </h2>
+      <!-- Settings Sidebar (4 cols) -->
+      <div class="lg:col-span-4 space-y-6">
+        <!-- Publishing Control -->
+        <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-lg shadow-black/20 space-y-4">
+          <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center justify-between">
+            <span>Visibility State</span>
+            <span class="w-2 h-2 rounded-full" [ngClass]="jobForm.get('isPublished')?.value ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'"></span>
+          </h3>
 
-          <!-- Department -->
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+            <div>
+              <div class="text-xs font-bold text-white">
+                {{ jobForm.get('isPublished')?.value ? 'Published To Public' : 'Draft / Staged' }}
+              </div>
+              <div class="text-[10px] text-slate-400">
+                {{ jobForm.get('isPublished')?.value ? 'Active candidates can apply' : 'Hidden from career board' }}
+              </div>
+            </div>
+
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" formControlName="isPublished" class="sr-only peer" />
+              <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+            </label>
+          </div>
+
+          <!-- Expiry Date -->
           <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Department
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              Application Deadline
+            </label>
+            <input
+              type="date"
+              formControlName="expired"
+              class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
+            />
+          </div>
+        </div>
+
+        <!-- Department & Compensation -->
+        <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-lg shadow-black/20 space-y-4">
+          <h3 class="text-xs font-bold text-white uppercase tracking-wider">
+            Logistics & Compensation
+          </h3>
+
+          <!-- Department / Domain -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              Discipline / Department <span class="text-rose-400">*</span>
             </label>
             <input
               type="text"
               formControlName="job"
-              placeholder="e.g., Engineering"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+              placeholder="e.g. Engineering, AI Research, Design"
+              class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
             />
           </div>
 
           <!-- Location -->
           <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Location
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              Geographic Location <span class="text-rose-400">*</span>
             </label>
             <input
               type="text"
               formControlName="location"
-              placeholder="e.g., New York, NY"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+              placeholder="e.g. San Francisco, CA / London / Remote"
+              class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
             />
           </div>
 
-          <!-- Employment Type -->
+          <!-- Employment Status -->
           <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Employment Type
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              Employment Modality
             </label>
             <select
               formControlName="employmentStatus"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+              class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
             >
               <option *ngFor="let type of employmentTypes" [value]="type.value">
                 {{ type.label }}
@@ -163,16 +236,14 @@
             </select>
           </div>
 
-          <!-- Workplace -->
+          <!-- Workplace Arrangement -->
           <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Workplace
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+              Workplace Model
             </label>
             <select
               formControlName="workplace"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+              class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors"
             >
               <option *ngFor="let type of workplaceTypes" [value]="type.value">
                 {{ type.label }}
@@ -180,102 +251,33 @@
             </select>
           </div>
 
-          <!-- Vacancy -->
-          <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Number of Vacancies
-            </label>
-            <input
-              type="number"
-              formControlName="vacancy"
-              min="1"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-            />
-          </div>
-
-          <!-- Salary -->
-          <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Salary Range
-            </label>
-            <input
-              type="text"
-              formControlName="salary"
-              placeholder="e.g., $80,000 - $120,000"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-            />
-          </div>
-
-          <!-- Published Status -->
-          <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Published Status
-            </label>
-            <div class="flex items-center">
-              <label class="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  formControlName="isPublished"
-                  class="sr-only"
-                />
-                <div
-                  class="w-14 h-7 flex items-center bg-gray-600 rounded-full p-1 duration-300 ease-in-out"
-                  [class.bg-emerald-500]="jobForm.get('isPublished')?.value"
-                >
-                  <div
-                    class="bg-white w-5 h-5 rounded-full shadow-md transform duration-300 ease-in-out"
-                    [class.translate-x-7]="jobForm.get('isPublished')?.value"
-                  ></div>
-                </div>
-                <span class="ml-3 text-white font-medium">
-                  {{
-                    jobForm.get("isPublished")?.value ? "Published" : "Draft"
-                  }}
-                </span>
+          <!-- Salary & Vacancies -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                Headcount <span class="text-rose-400">*</span>
               </label>
+              <input
+                type="number"
+                formControlName="vacancy"
+                min="1"
+                class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors font-mono"
+              />
             </div>
-          </div>
-
-          <!-- Expiry Date -->
-          <div>
-            <label
-              class="block text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2"
-            >
-              Expiry Date
-            </label>
-            <input
-              type="date"
-              formControlName="expired"
-              class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
-            />
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                Compensation <span class="text-rose-400">*</span>
+              </label>
+              <input
+                type="text"
+                formControlName="salary"
+                placeholder="$120k - $160k"
+                class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50 transition-colors font-mono"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="flex items-center justify-between pt-6">
-      <button
-        type="button"
-        routerLink="/dashboard/jobs"
-        class="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-gray-400 hover:text-white font-semibold transition-all duration-300 hover:scale-105"
-      >
-        Cancel
-      </button>
-
-      <button
-        type="submit"
-        [disabled]="jobForm.invalid"
-        class="group relative px-8 py-3 bg-linear-to-r from-emerald-500 to-teal-500 rounded-xl font-bold text-white text-lg shadow-lg shadow-emerald-500/50 hover:shadow-emerald-500/70 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-      >
-        {{ jobId ? "Update Job" : "Post Job" }}
-      </button>
     </div>
   </form>
 </div>

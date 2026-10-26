@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { AsyncPipe } from '@angular/common';
 import { UpperSectionComponent } from '../../../shared/components/template/cards/page-upper-section.component';
 import { DataService } from '../../../../assets/data/data';
+import { SeoService } from '../../../shared/services/seo/seo.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,6 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class ServiceComponent implements OnInit {
   private readonly dataService = inject(DataService);
+  private readonly seo = inject(SeoService);
 
   services$!: Observable<any[]>;
 
@@ -30,6 +32,13 @@ export class ServiceComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.seo.updateTags({
+      title: 'Enterprise IT Services & Custom Software Solutions',
+      description: 'InfoAidTech delivers end-to-end IT services: custom web and mobile app development, cloud infrastructure, AI integration, and digital consulting.',
+      url: 'https://infoaidtech.net/service',
+      type: 'website',
+      keywords: 'IT services, software development, web development, mobile app development, cloud devops, AI consulting, InfoAidTech services',
+    });
     this.services$ = this.dataService.getOurServiceData();
   }
 }

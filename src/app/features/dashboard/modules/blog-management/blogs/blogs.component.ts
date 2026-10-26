@@ -19,12 +19,16 @@ export class BlogsComponent implements OnInit {
   error: string | null = null;
   editingBlog: { [key: string]: any } = {};
 
+  searchQuery = '';
+  selectedStatus: 'all' | 'published' | 'draft' = 'all';
+  selectedCategory = 'all';
+
   constructor(
     @Inject(BlogApiService) private apiService: BlogApiService,
     private blogStore: BlogStoreService,
     @Inject(ToastService) private toast: ToastService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadBlogs();
@@ -34,10 +38,7 @@ export class BlogsComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    // Use BlogStoreService instead of direct API call
     this.blogStore.loadBlogs();
-
-    // Subscribe to the signal-based store
     this.blogs = this.blogStore.blogs();
     this.loading = false;
 
@@ -45,82 +46,89 @@ export class BlogsComponent implements OnInit {
       this.toast.success('Success', 'Blogs loaded successfully');
     }
   }
+
+  get publishedCount(): number {
+    return this.blogs.filter((b) => b.isPublished !== false).length;
+  }
+
+  get draftCount(): number {
+    return this.blogs.filter((b) => b.isPublished === false).length;
+  }
+
+  get categoriesList(): string[] {
+    const set = new Set<string>();
+    this.blogs.forEach((b) => {
+      const cat = (Array.isArray(b.category) && b.category[0]?.name) || b.category?.name || (typeof b.category === 'string' ? b.category : '');
+      if (cat) set.add(cat);
+    });
+    return Array.from(set);
+  }
+
+  get filteredBlogs(): any[] {
+    return this.blogs.filter((b) => {
+      const q = this.searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        (b.title && b.title.toLowerCase().includes(q)) ||
+        (b.slug && b.slug.toLowerCase().includes(q)) ||
+        (b.description && b.description.toLowerCase().includes(q));
+
+      const matchesStatus =
+        this.selectedStatus === 'all' ||
+        (this.selectedStatus === 'published' && b.isPublished !== false) ||
+        (this.selectedStatus === 'draft' && b.isPublished === false);
+
+      const catName = ((Array.isArray(b.category) && b.category[0]?.name) || b.category?.name || (typeof b.category === 'string' ? b.category : '')).toLowerCase();
+      const matchesCategory =
+        this.selectedCategory === 'all' || catName === this.selectedCategory.toLowerCase();
+
+      return matchesSearch && matchesStatus && matchesCategory;
+    });
+  }
+
   togglePublishStatus(blog: any): void {
-    // 1. Immediately update the local state for a fast UI response
     blog.isPublished = !blog.isPublished;
 
-    // 2. Send the update to the backend API
-    this.apiService
-      .updateBlog(blog._id, { isPublished: blog.isPublished })
-      .subscribe({
-        next: (response) => {
-          console.log('Publish status updated successfully', response);
-          this.toast.success('Success', 'Publish status updated successfully');
-          // The local 'blog' object is already updated, so no further change is needed unless
-          // the backend returns a canonical version you need to replace it with.
-        },
-        error: (err) => {
-          // IMPORTANT: If the API fails, revert the local change
-          blog.isPublished = !blog.isPublished;
-          this.toast.error('Error', 'Failed to update publish status');
-          console.error('Failed to update publish status on the server:', err);
-          // You might want to show a user notification here
-        },
-      });
-  }
-  onFileSelected(event: any, blog: any): void {
-    const file: File = event.target.files[0];
-    this.apiService.uploadImage(file).subscribe({
-      next: (response) => {
-        console.log('Image uploaded successfully', response);
-        let image = response.secure_url;
-        this.apiService.updateBlog(blog._id, { image: image }).subscribe({
-          next: (response) => {
-            // Refresh blogs from store after update
-            this.blogStore.refreshBlogs();
-            this.blogs = this.blogStore.blogs();
-            console.log('Image URL updated successfully', response);
-            this.toast.success('Success', 'Image URL updated successfully');
-          },
-          error: (err) => {
-            console.error('Failed to update image URL on the server:', err);
-            this.toast.error('Error', 'Failed to update image URL');
-          },
-        });
+    this.apiService.updateBlog(blog._id, { isPublished: blog.isPublished }).subscribe({
+      next: () => {
+        this.toast.success('Success', `Article is now ${blog.isPublished ? 'Published Live' : 'Draft'}`);
       },
       error: (err) => {
-        console.error('Failed to upload image:', err);
-        this.toast.error('Error', 'Failed to upload image');
+        blog.isPublished = !blog.isPublished;
+        this.toast.error('Error', 'Failed to update publish status');
+        console.error('Failed to update publish status on the server:', err);
       },
     });
   }
 
-  uploadImage(blog: any): void {
-    // 1. Immediately update the local state for a fast UI response
+  onFileSelected(event: any, blog: any): void {
+    const file: File = event.target.files[0];
+    if (!file) return;
 
-    // 2. Send the update to the backend API
-    this.apiService
-      .updateBlog(blog._id, { image: blog.isPublished })
-      .subscribe({
-        next: (response) => {
-          console.log('Publish status updated successfully', response);
-          // The local 'blog' object is already updated, so no further change is needed unless
-          // the backend returns a canonical version you need to replace it with.
-        },
-        error: (err) => {
-          // IMPORTANT: If the API fails, revert the local change
-          blog.isPublished = !blog.isPublished;
-          console.error('Failed to update publish status on the server:', err);
-          // You might want to show a user notification here
-        },
-      });
+    this.apiService.uploadImage(file).subscribe({
+      next: (response) => {
+        const image = response.secure_url;
+        this.apiService.updateBlog(blog._id, { image }).subscribe({
+          next: () => {
+            blog.image = image;
+            this.blogStore.refreshBlogs();
+            this.toast.success('Success', 'Cover image updated successfully');
+          },
+          error: () => {
+            this.toast.error('Error', 'Failed to update image URL');
+          },
+        });
+      },
+      error: () => {
+        this.toast.error('Error', 'Failed to upload image file');
+      },
+    });
   }
 
   deleteBlog(id: string): void {
-    if (confirm('Are you sure you want to delete this blog?')) {
+    if (confirm('Are you sure you want to permanently delete this article?')) {
       this.apiService.deleteBlog(id).subscribe({
         next: () => {
-          // Refresh blogs from store after delete
           this.blogStore.refreshBlogs();
           this.blogs = this.blogStore.blogs();
           this.toast.success('Success', 'Blog deleted successfully');
@@ -133,13 +141,13 @@ export class BlogsComponent implements OnInit {
     }
   }
 
-  editBlog(slug: string): void {
-    this.router.navigate(['/dashboard/blog/create'], {
-      queryParams: { id: slug },
+  editBlog(id: string): void {
+    this.router.navigate(['/dashboard/blog-management/blog/create'], {
+      queryParams: { id },
     });
   }
 
-  // Quick edit methods
+  // Quick inline edit methods
   startEditing(blogId: string, field: string, currentValue: string): void {
     if (!this.editingBlog[blogId]) {
       this.editingBlog[blogId] = {};

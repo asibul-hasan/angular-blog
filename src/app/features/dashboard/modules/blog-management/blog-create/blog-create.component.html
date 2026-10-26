@@ -1,164 +1,540 @@
-<div class="relative min-h-screen bg-slate-950 p-0 lg:p-0 overflow-visible animate-in fade-in duration-1000">
+<div class="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased">
   
-  <!-- Sticky Premium Header -->
-  <header class="sticky top-0 z-50 w-full backdrop-blur-3xl bg-slate-950/80 border-b border-white/5 px-6 py-4 flex items-center justify-between shadow-2xl">
-    <div class="flex items-center gap-6">
-      <button type="button" routerLink="/dashboard/blogs" 
-        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:border-white/20 transition-all hover:scale-105 active:scale-95">
-        <i class="fa-solid fa-arrow-left"></i>
-      </button>
-      <div>
-        <h1 class="text-sm font-black text-white uppercase tracking-[0.2em] leading-none mb-1">
-          {{ blogId() ? 'Refine Masterpiece' : 'New Creation' }}
-        </h1>
+  <!-- ========================================================================= -->
+  <!-- Layer 1: Professional Editorial Studio Header (58px Slim Navigation)     -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-950/90 border-b border-slate-800/80 px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-lg shadow-black/20">
+    
+    <!-- Left: Navigation & Document Status -->
+    <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+      <a
+        routerLink="/dashboard/blog-management/blogs"
+        class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 hover:bg-slate-800 transition-all cursor-pointer flex-shrink-0"
+        title="Back to Articles Directory"
+      >
+        <i class="fa-solid fa-arrow-left text-xs"></i>
+      </a>
+
+      <div class="min-w-0">
         <div class="flex items-center gap-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Workspace Active</p>
+          <span class="text-xs font-semibold text-slate-400 truncate hidden sm:inline">Articles</span>
+          <span class="text-slate-600 text-xs hidden sm:inline">/</span>
+          <h1 class="text-xs sm:text-sm font-bold text-white truncate">
+            {{ blogId() ? 'Edit Article' : 'New Story' }}
+          </h1>
+          
+          <!-- Publication Status Pill -->
+          @if (blogForm.get('isPublished')?.value) {
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live
+            </span>
+          } @else {
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+              Draft
+            </span>
+          }
         </div>
+        
+        <!-- Live telemetry subtitle -->
+        <p class="text-[11px] text-slate-500 font-medium truncate flex items-center gap-2 mt-0.5">
+          <span>{{ wordCount() }} words</span>
+          <span>•</span>
+          <span>~{{ readingTime() }} min read</span>
+          <span>•</span>
+          <span class="text-indigo-400 font-semibold">{{ readinessScore() }}% Ready</span>
+        </p>
       </div>
     </div>
 
-    <div class="flex items-center gap-4">
-      <div class="hidden md:flex items-center gap-8 mr-4 px-6 py-2 border-r border-white/5">
-        <label class="flex items-center gap-3 cursor-pointer group">
-          <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest group-hover:text-violet-400 transition-colors">Visible to Public</span>
-          <div class="relative">
-            <input type="checkbox" [formControl]="$any(blogForm.get('isPublished'))" class="sr-only peer" />
-            <div class="w-10 h-5 bg-white/5 border border-white/10 rounded-full peer peer-checked:bg-emerald-500/20 peer-checked:border-emerald-500/40 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-slate-400 peer-checked:after:bg-emerald-400 after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-5"></div>
-          </div>
-        </label>
-      </div>
+    <!-- Center: View Mode Switcher (Desktop) -->
+    <div class="hidden md:flex items-center p-1 rounded-xl bg-slate-900/90 border border-slate-800/80 shadow-inner">
+      <button
+        type="button"
+        (click)="activeTab.set('editor')"
+        [class]="activeTab() === 'editor'
+          ? 'bg-indigo-600 text-white shadow-sm'
+          : 'text-slate-400 hover:text-slate-200'"
+        class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+      >
+        <i class="fa-solid fa-pen-nib text-[10px]"></i>
+        <span>Write</span>
+      </button>
 
       <button
-        type="submit"
-        (click)="createBlog()"
-        [disabled]="blogForm.invalid"
-        class="relative group overflow-hidden rounded-xl bg-violet-600 px-8 py-3 font-black text-white text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-violet-900/20 transition-all hover:bg-violet-500 hover:scale-[1.02] active:scale-95 disabled:opacity-30 disabled:grayscale"
+        type="button"
+        (click)="activeTab.set('preview')"
+        [class]="activeTab() === 'preview'
+          ? 'bg-indigo-600 text-white shadow-sm'
+          : 'text-slate-400 hover:text-slate-200'"
+        class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
       >
-        <span class="relative z-10 flex items-center gap-2">
-          {{ blogId() ? 'Sync Updates' : 'Publish Story' }}
-        </span>
+        <i class="fa-solid fa-eye text-[10px]"></i>
+        <span>Live Preview</span>
+      </button>
+    </div>
+
+    <!-- Right: Publishing Actions -->
+    <div class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+      <!-- Public Visibility Switch -->
+      <label class="hidden sm:flex items-center gap-2.5 cursor-pointer px-3 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors">
+        <span class="text-xs font-semibold text-slate-300">Public</span>
+        <div class="relative inline-flex items-center">
+          <input
+            type="checkbox"
+            [formControl]="$any(blogForm.get('isPublished'))"
+            class="sr-only peer"
+          />
+          <div class="w-8 h-4 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-400 peer-checked:after:bg-emerald-400 after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500/25"></div>
+        </div>
+      </label>
+
+      <!-- Primary Save/Publish Button -->
+      <button
+        type="button"
+        (click)="createBlog()"
+        [disabled]="blogForm.invalid || isSaving()"
+        class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs tracking-wide shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/35 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-40 disabled:grayscale disabled:hover:scale-100 cursor-pointer"
+      >
+        @if (isSaving()) {
+          <i class="fa-solid fa-circle-notch animate-spin text-xs"></i>
+          <span>Synchronizing...</span>
+        } @else {
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+          <span>{{ blogId() ? 'Update Article' : 'Publish Story' }}</span>
+        }
       </button>
     </div>
   </header>
 
-  <div class="max-w-7xl mx-auto px-6 py-12">
-    <form [formGroup]="blogForm" class="grid grid-cols-1 xl:grid-cols-12 gap-16">
+  <!-- ========================================================================= -->
+  <!-- Layer 2: Studio Workspace Body (Canvas + Meta Inspector)                 -->
+  <!-- ========================================================================= -->
+  <div class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8">
+    <form [formGroup]="blogForm" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
       
-      <!-- Writing Canvas (Center) -->
-      <main class="xl:col-span-8 space-y-12">
-        <!-- Title & Meta Synopsis -->
-        <article class="space-y-8">
-          <textarea
-            id="title"
-            formControlName="title"
-            placeholder="Your Captivating Title..."
-            rows="2"
-            class="w-full bg-transparent border-none text-white text-5xl lg:text-7xl font-black placeholder-slate-800 focus:outline-none focus:ring-0 transition-all duration-500 resize-none leading-[1.1] tracking-tighter"
-          ></textarea>
-          
-          <div class="h-px bg-gradient-to-r from-violet-500/50 to-transparent w-32"></div>
-
-          <textarea
-            formControlName="meta_description"
-            placeholder="Briefly entice your audience (SEO Synopsis)..."
-            rows="2"
-            class="w-full bg-transparent border-none text-slate-400 text-lg lg:text-xl font-medium placeholder-slate-800 focus:outline-none focus:ring-0 transition-all duration-500 resize-none leading-relaxed"
-          ></textarea>
-        </article>
-
-        <!-- The Editor -->
-        <section class="relative animate-in slide-in-from-bottom-4 duration-700">
-          <div class="glass-card rounded-[2rem] overflow-hidden border border-white/5 bg-white/[0.02] shadow-2xl">
-            @if (isBrowser()) {
-              <editor
-                formControlName="blog_content"
-                [init]="tinymceConfig"
-              ></editor>
-            } @else {
-              <div class="h-96 flex flex-col items-center justify-center text-slate-600 font-bold gap-4 italic">
-                <div class="w-12 h-12 rounded-full border-2 border-slate-800 border-t-violet-500 animate-spin"></div>
-                Initializing Creative Engine...
+      <!-- =================================================================== -->
+      <!-- Left Column: Editorial Writing Canvas (8 Cols)                      -->
+      <!-- =================================================================== -->
+      <main class="lg:col-span-8 space-y-6">
+        
+        <!-- Tab 1: Editor Canvas -->
+        @if (activeTab() === 'editor') {
+          <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+            
+            <!-- Featured Cover Image Banner Preview -->
+            @if (blogForm.get('image')?.value) {
+              <div class="relative group rounded-xl overflow-hidden border border-slate-800 max-h-[360px] bg-slate-950">
+                <img
+                  [src]="blogForm.get('image')?.value"
+                  alt="Cover Image"
+                  class="w-full h-full object-cover max-h-[360px] transition-transform duration-300 group-hover:scale-[1.01]"
+                  (error)="clearCoverImage()"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-4">
+                  <span class="text-xs font-semibold text-slate-200 bg-black/60 px-3 py-1 rounded-lg backdrop-blur-sm">
+                    Featured Cover Photo
+                  </span>
+                  <button
+                    type="button"
+                    (click)="clearCoverImage()"
+                    class="px-3 py-1.5 rounded-lg bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-bold shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+                  >
+                    <i class="fa-solid fa-trash-can text-xs"></i>
+                    <span>Remove</span>
+                  </button>
+                </div>
               </div>
             }
+
+            <!-- Title & Subtitle Area -->
+            <div class="space-y-4">
+              <!-- Article Title -->
+              <div>
+                <textarea
+                  id="title"
+                  formControlName="title"
+                  placeholder="Enter a compelling, headline title..."
+                  rows="2"
+                  class="w-full bg-transparent border-0 border-b border-transparent focus:border-indigo-500/40 text-white text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight placeholder:text-slate-600 focus:outline-none focus:ring-0 resize-none leading-tight transition-all duration-200"
+                ></textarea>
+                <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                  <span>Headline (H1 title)</span>
+                  <span [class.text-amber-400]="(blogForm.get('title')?.value?.length || 0) > 130">
+                    {{ blogForm.get('title')?.value?.length || 0 }} / 150
+                  </span>
+                </div>
+              </div>
+
+              <!-- SEO Excerpt / Synopsis -->
+              <div class="pt-2 border-t border-slate-800/60">
+                <textarea
+                  formControlName="meta_description"
+                  placeholder="Write a clear, enticing story synopsis and meta description for search engines and social cards..."
+                  rows="2"
+                  class="w-full bg-transparent border-0 text-slate-300 text-sm sm:text-base font-normal placeholder:text-slate-600 focus:outline-none focus:ring-0 resize-none leading-relaxed"
+                ></textarea>
+                <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                  <span class="flex items-center gap-1.5">
+                    <i class="fa-brands fa-google text-slate-500"></i>
+                    <span>Search engine snippet & card description</span>
+                  </span>
+                  <span [class.text-amber-400]="(blogForm.get('meta_description')?.value?.length || 0) > 150">
+                    {{ blogForm.get('meta_description')?.value?.length || 0 }} / 160
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- WYSIWYG Content Canvas (TinyMCE) -->
+            <div class="pt-4 border-t border-slate-800/80">
+              <div class="flex items-center justify-between pb-3">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                  <i class="fa-solid fa-align-left text-indigo-400"></i>
+                  <span>Article Narrative & Body</span>
+                </label>
+                <span class="text-xs font-semibold text-slate-500">
+                  {{ wordCount() }} words
+                </span>
+              </div>
+
+              <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950/70 shadow-inner">
+                @if (isBrowser()) {
+                  <editor
+                    formControlName="blog_content"
+                    [init]="tinymceConfig"
+                  ></editor>
+                } @else {
+                  <div class="h-96 flex flex-col items-center justify-center text-slate-500 gap-3">
+                    <i class="fa-solid fa-circle-notch animate-spin text-2xl text-indigo-500"></i>
+                    <p class="text-xs font-semibold">Initializing Editorial Engine...</p>
+                  </div>
+                }
+              </div>
+            </div>
+
           </div>
-        </section>
+        }
+
+        <!-- Tab 2: Live Article Reader Preview -->
+        @if (activeTab() === 'preview') {
+          <article class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-6 sm:p-10 shadow-xl space-y-8 animate-in fade-in duration-200">
+            <!-- Reader Preview Header Badge -->
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                <i class="fa-solid fa-eye text-xs"></i>
+                Public Reader View Simulator
+              </span>
+              <button
+                type="button"
+                (click)="activeTab.set('editor')"
+                class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-pen text-xs"></i>
+                <span>Back to Editor</span>
+              </button>
+            </div>
+
+            <!-- Cover Image Preview -->
+            @if (blogForm.get('image')?.value) {
+              <div class="rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+                <img [src]="blogForm.get('image')?.value" alt="Preview Banner" class="w-full max-h-[420px] object-cover" />
+              </div>
+            }
+
+            <!-- Category Badges -->
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                {{ getCategoryNames() }}
+              </span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight">
+              {{ blogForm.get('title')?.value || 'Untitled Story' }}
+            </h1>
+
+            <!-- Meta Synopsis -->
+            @if (blogForm.get('meta_description')?.value) {
+              <p class="text-lg text-slate-300 leading-relaxed italic border-l-4 border-indigo-500 pl-4 py-1">
+                {{ blogForm.get('meta_description')?.value }}
+              </p>
+            }
+
+            <!-- Author byline -->
+            <div class="flex items-center gap-3 pt-4 border-t border-slate-800/80">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-sm font-black text-white shadow-md">
+                AH
+              </div>
+              <div>
+                <p class="text-xs font-bold text-white">{{ blogForm.get('author')?.value || 'Asibul Hasan' }}</p>
+                <p class="text-[11px] text-slate-400">
+                  Published on {{ blogForm.get('updatedAt')?.value | date:'mediumDate' }} • {{ readingTime() }} min read
+                </p>
+              </div>
+            </div>
+
+            <!-- Rendered Content -->
+            <div
+              class="prose prose-invert prose-indigo max-w-none pt-6 border-t border-slate-800/60 leading-relaxed text-slate-300"
+              [innerHTML]="blogForm.get('blog_content')?.value"
+            ></div>
+
+            <!-- Tag Chips -->
+            @if (tagsList().length > 0) {
+              <div class="pt-8 border-t border-slate-800 flex flex-wrap gap-2">
+                @for (tag of tagsList(); track tag) {
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                    #{{ tag }}
+                  </span>
+                }
+              </div>
+            }
+          </article>
+        }
       </main>
 
-      <!-- Configuration Sidebar -->
-      <aside class="xl:col-span-4 space-y-10">
-        <section class="glass-card rounded-[2.5rem] bg-white/[0.01] border border-white/5 p-8 shadow-2xl xl:sticky xl:top-32">
-          
-          <h2 class="text-xs font-black text-slate-500 mb-10 flex items-center justify-between uppercase tracking-[0.3em]">
-            Configuration
-            <i class="fa-solid fa-gear text-[10px] animate-spin-slow"></i>
-          </h2>
+      <!-- =================================================================== -->
+      <!-- Right Column: Publishing & SEO Inspector (4 Cols)                  -->
+      <!-- =================================================================== -->
+      <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-20">
+        
+        <!-- Card 1: Taxonomy & Categorization -->
+        <section class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-5">
+          <header class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <i class="fa-solid fa-folder-tree text-indigo-400"></i>
+              <span>Taxonomy & Topics</span>
+            </h2>
+            <span class="text-[10px] font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
+              Required
+            </span>
+          </header>
 
-          <div class="space-y-10">
-            <!-- Topics / Categories -->
-            <div class="space-y-4">
-              <label class="block text-[10px] font-black text-white uppercase tracking-widest ml-1">Primary Topics</label>
-              <div class="premium-select-wrapper">
-                <mat-form-field appearance="fill" class="w-full">
-                  <mat-select
-                    formControlName="category"
-                    multiple
-                    placeholder="Choose topics"
-                    class="studio-select"
+          <!-- Primary Categories (Material Select) -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-slate-300">
+              Primary Categories <span class="text-rose-400">*</span>
+            </label>
+            <div class="w-full">
+              <mat-form-field appearance="fill" class="w-full custom-mat-field">
+                <mat-select
+                  formControlName="category"
+                  multiple
+                  placeholder="Select topics..."
+                  class="text-xs"
+                >
+                  @for (cat of categories(); track cat._id) {
+                    <mat-option [value]="cat._id">
+                      {{ cat.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <p class="text-[11px] text-slate-500">Categorize your story for topic discovery and archives.</p>
+          </div>
+
+          <!-- Interactive Tag Pills Builder -->
+          <div class="space-y-3 pt-3 border-t border-slate-800/60">
+            <label class="block text-xs font-semibold text-slate-300">
+              Indexing Tags
+            </label>
+            
+            <!-- Existing tags as removable chips -->
+            <div class="flex flex-wrap gap-1.5 min-h-[32px] p-2 rounded-xl bg-slate-950/80 border border-slate-800/80">
+              @for (tag of tagsList(); track tag) {
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                  <span>#{{ tag }}</span>
+                  <button
+                    type="button"
+                    (click)="removeTag(tag)"
+                    class="text-indigo-400 hover:text-white transition-colors cursor-pointer"
+                    title="Remove tag"
                   >
-                    @for (cat of categories(); track cat._id) {
-                      <mat-option [value]="cat._id" class="studio-option">
-                        {{ cat.name }}
-                      </mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <p class="text-[10px] text-slate-600 font-medium ml-1">Select up to 3 relevant categories</p>
+                    <i class="fa-solid fa-xmark text-[10px]"></i>
+                  </button>
+                </span>
+              } @empty {
+                <span class="text-xs text-slate-500 italic p-1">No tags added yet</span>
+              }
             </div>
 
-            <!-- Custom URL / Slug -->
-            <div class="space-y-4">
-              <label class="block text-[10px] font-black text-white uppercase tracking-widest ml-1">Semantic URL</label>
-              <div class="relative group">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <span class="text-slate-700 text-xs font-mono">/</span>
-                </div>
+            <!-- Tag input box -->
+            <div class="flex items-center gap-2">
+              <div class="relative flex-1">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-bold">#</span>
                 <input
                   type="text"
-                  formControlName="slug"
-                  placeholder="custom-slug"
-                  class="w-full bg-slate-900/50 border border-white/5 rounded-2xl pl-8 pr-5 py-4 text-xs text-white font-mono placeholder:text-slate-800 focus:outline-none focus:ring-1 focus:ring-violet-500/30 transition-all"
+                  [ngModel]="currentTagInput()"
+                  (ngModelChange)="currentTagInput.set($event)"
+                  (keydown)="onTagKeydown($event)"
+                  [ngModelOptions]="{standalone: true}"
+                  placeholder="Add tag (press Enter)..."
+                  class="w-full pl-7 pr-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/60 transition-all font-mono"
                 />
               </div>
-            </div>
-
-            <!-- Indexing Tags -->
-            <div class="space-y-4">
-              <label class="block text-[10px] font-black text-white uppercase tracking-widest ml-1">Indexing Tags</label>
-              <div class="relative">
-                <input
-                  type="text"
-                  formControlName="tags"
-                  placeholder="Comma separated (tech, future, design)"
-                  class="w-full bg-slate-900/50 border border-white/5 rounded-2xl px-5 py-4 text-xs text-white placeholder:text-slate-800 focus:outline-none focus:ring-1 focus:ring-pink-500/30 transition-all font-mono"
-                />
-              </div>
-            </div>
-
-            <div class="pt-10 border-t border-white/5">
-              <div class="flex items-center gap-4 p-4 rounded-2xl bg-violet-600/5 border border-violet-500/10">
-                <div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
-                  <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
-                </div>
-                <div>
-                  <p class="text-[10px] font-black text-white uppercase tracking-widest mb-0.5">Studio Assist</p>
-                  <p class="text-[9px] text-slate-500 leading-tight">Sync changes across all distributed networks.</p>
-                </div>
-              </div>
+              <button
+                type="button"
+                (click)="addTag()"
+                class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-colors cursor-pointer"
+              >
+                Add
+              </button>
             </div>
           </div>
         </section>
+
+        <!-- Card 2: Featured Cover Photo -->
+        <section class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+          <header class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <i class="fa-solid fa-image text-indigo-400"></i>
+              <span>Featured Cover Photo</span>
+            </h2>
+            <span class="text-[10px] text-slate-500">Optional</span>
+          </header>
+
+          <div class="space-y-3">
+            <label class="block text-xs font-semibold text-slate-300">Image Web URL</label>
+            <div class="relative">
+              <input
+                type="url"
+                formControlName="image"
+                placeholder="https://images.unsplash.com/photo-..."
+                class="w-full px-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/60 transition-all font-mono"
+              />
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Direct CDN or image URL. Displays in social preview cards, article header, and listing feed.
+            </p>
+          </div>
+        </section>
+
+        <!-- Card 3: SEO & Google Search Snippet Preview -->
+        <section class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+          <header class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <i class="fa-brands fa-google text-indigo-400"></i>
+              <span>Search Engine Optimization</span>
+            </h2>
+            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              SERP Preview
+            </span>
+          </header>
+
+          <!-- Canonical Permalink / Slug -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-300">
+                Canonical URL Slug <span class="text-rose-400">*</span>
+              </label>
+              @if (!isAutoSlug()) {
+                <button
+                  type="button"
+                  (click)="resetAutoSlug()"
+                  class="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer"
+                  title="Sync slug with article title"
+                >
+                  Sync with Title
+                </button>
+              }
+            </div>
+
+            <div class="relative flex items-center">
+              <span class="absolute left-3 text-slate-500 text-xs font-mono select-none">/blog/</span>
+              <input
+                type="text"
+                formControlName="slug"
+                (input)="onManualSlugEdit()"
+                placeholder="clean-article-slug"
+                class="w-full pl-14 pr-3 py-2 bg-slate-950/80 border border-slate-800 rounded-xl text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/60 font-mono transition-all"
+              />
+            </div>
+            <p class="text-[11px] text-slate-500">
+              Full link: <span class="text-indigo-400 font-mono">infoaidtech.com/blog/{{ blogForm.get('slug')?.value || 'article-slug' }}</span>
+            </p>
+          </div>
+
+          <!-- Realistic Google SERP Card Preview -->
+          <div class="pt-3 border-t border-slate-800/80 space-y-2">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+              Google SERP Appearance
+            </span>
+            
+            <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 shadow-inner space-y-1.5 text-left font-sans">
+              <!-- Site header & Favicon -->
+              <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-[9px] font-black text-black">
+                  IA
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-medium text-slate-300 leading-none">InfoAidTech Editorial</span>
+                  <span class="text-[10px] text-slate-500 font-mono leading-none truncate max-w-[240px]">
+                    https://infoaidtech.com › blog › {{ blogForm.get('slug')?.value || 'article' }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Clickable Title -->
+              <h3 class="text-sm font-semibold text-blue-400 hover:underline leading-snug line-clamp-2 pt-0.5">
+                {{ blogForm.get('title')?.value || 'Headline Title will appear here in Google Search' }}
+              </h3>
+
+              <!-- Snippet Description -->
+              <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                {{ blogForm.get('meta_description')?.value || 'Provide a compelling synopsis so readers discovering your post on Google Search, LinkedIn, and social networks click through...' }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card 4: Publication Readiness Checklist -->
+        <section class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+          <header class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-indigo-400"></i>
+              <span>Publish Readiness</span>
+            </h2>
+            <span class="text-xs font-extrabold" [class.text-emerald-400]="readinessScore() === 100" [class.text-amber-400]="readinessScore() < 100">
+              {{ readinessScore() }}%
+            </span>
+          </header>
+
+          <!-- Readiness Bar -->
+          <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
+            <div
+              class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-indigo-500 to-emerald-400"
+              [style.width.%]="readinessScore()"
+            ></div>
+          </div>
+
+          <!-- Itemized checklist -->
+          <ul class="space-y-2 text-xs">
+            <li class="flex items-center gap-2.5" [class.text-emerald-400]="isTitleValid()" [class.text-slate-500]="!isTitleValid()">
+              <i [class]="isTitleValid() ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-regular fa-circle text-slate-600'"></i>
+              <span>Engaging headline title added</span>
+            </li>
+            <li class="flex items-center gap-2.5" [class.text-emerald-400]="isContentValid()" [class.text-slate-500]="!isContentValid()">
+              <i [class]="isContentValid() ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-regular fa-circle text-slate-600'"></i>
+              <span>Article narrative body drafted (> 50 words)</span>
+            </li>
+            <li class="flex items-center gap-2.5" [class.text-emerald-400]="isCategoryValid()" [class.text-slate-500]="!isCategoryValid()">
+              <i [class]="isCategoryValid() ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-regular fa-circle text-slate-600'"></i>
+              <span>Primary categories mapped</span>
+            </li>
+            <li class="flex items-center gap-2.5" [class.text-emerald-400]="isSlugValid()" [class.text-slate-500]="!isSlugValid()">
+              <i [class]="isSlugValid() ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-regular fa-circle text-slate-600'"></i>
+              <span>Canonical SEO slug defined</span>
+            </li>
+            <li class="flex items-center gap-2.5" [class.text-emerald-400]="isSeoValid()" [class.text-slate-500]="!isSeoValid()">
+              <i [class]="isSeoValid() ? 'fa-solid fa-circle-check text-emerald-400' : 'fa-regular fa-circle text-slate-600'"></i>
+              <span>Search engine synopsis provided</span>
+            </li>
+          </ul>
+        </section>
+
       </aside>
 
     </form>

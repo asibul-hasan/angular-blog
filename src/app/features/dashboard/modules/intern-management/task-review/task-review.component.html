@@ -1,185 +1,232 @@
-<div class="relative min-h-screen p-6 lg:p-8 overflow-hidden animate-in fade-in duration-700">
-  <!-- Dynamic Background Accents -->
-  <div class="pointer-events-none absolute top-40 -right-20 w-96 h-96 bg-rose-500/10 rounded-full blur-[100px]"></div>
-  <div class="pointer-events-none absolute top-0 -left-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[80px]"></div>
-
-  <!-- Page Header -->
-  <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
-    <div class="space-y-1">
-      <h2 class="text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
-        <i class="fa-solid fa-stamp text-rose-400"></i>
-        Review Studio
-      </h2>
-      <p class="text-slate-400 max-w-2xl">
-        Analyze intern submissions, provide actionable feedback, and certify task completion.
+<!-- Enterprise Technical Review Studio -->
+<div class="space-y-6 w-full animate-in fade-in duration-300">
+  <!-- Layer 1: Enterprise Header -->
+  <header class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-6 border-b border-slate-800/80">
+    <div>
+      <div class="flex items-center gap-3 mb-1">
+        <h1 class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+          Directive <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">Review Studio</span>
+        </h1>
+        <span
+          class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+          [ngClass]="submissions().length > 0 ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'"
+        >
+          <span class="w-1.5 h-1.5 rounded-full" [ngClass]="submissions().length > 0 ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'"></span>
+          {{ submissions().length > 0 ? submissions().length + ' Pending Evaluation' : 'Review Queue Clear' }}
+        </span>
+      </div>
+      <p class="text-slate-400 text-sm flex items-center gap-2">
+        <span>Inspect submitted deliverables, verify acceptance criteria, and issue evaluations</span>
+        <span class="text-slate-600 hidden sm:inline">•</span>
+        <span class="text-slate-400 hidden sm:inline">16 Intern Roster</span>
       </p>
     </div>
 
-    <div class="flex items-center gap-4">
-      <span class="px-4 py-2 rounded-xl bg-rose-500/10 text-rose-400 text-[10px] font-black uppercase tracking-[0.2em] border border-rose-500/20">
-        {{ submissions().length }} Pending Reviews
-      </span>
+    <!-- Actions & Roster Link -->
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        (click)="fetchPendingSubmissions()"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-semibold transition-all cursor-pointer"
+        [disabled]="isLoading()"
+      >
+        <i class="fa-solid fa-rotate text-xs" [class.animate-spin]="isLoading()"></i>
+        <span>Sync Queue</span>
+      </button>
+
+      <a
+        routerLink="/dashboard/intern-management/list"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-emerald-400 text-xs font-semibold transition-all cursor-pointer"
+      >
+        <i class="fa-solid fa-users text-xs"></i>
+        <span>Intern Roster</span>
+      </a>
     </div>
+  </header>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex flex-col items-center justify-center py-24 space-y-4">
+    <div class="w-12 h-12 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin"></div>
+    <p class="text-xs text-slate-400 animate-pulse">Scanning submission queues in MongoDB Atlas...</p>
   </div>
 
-  @if (isLoading()) {
-    <div class="relative z-10 flex flex-col justify-center items-center py-32 space-y-4">
-      <div class="w-16 h-16 border-4 border-rose-500/20 border-t-rose-500 rounded-full animate-spin"></div>
-      <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Evaluating submissions...</p>
-    </div>
-  } @else {
-    <div class="relative z-10 grid grid-cols-1 xl:grid-cols-12 gap-10">
-
-      <!-- ============================
-           QUEUE (LEFT/TOP)
-           ============================ -->
-      <div class="xl:col-span-6 space-y-6">
-        @if (submissions().length === 0) {
-          <div class="glass-card rounded-3xl border border-dashed border-white/10 p-24 text-center text-slate-600">
-            <i class="fa-solid fa-check-double text-6xl mb-6 opacity-20 block"></i>
-            <p class="text-xl font-bold text-slate-500">All queues clear</p>
-            <p class="text-sm">There are no pending submissions for evaluation at this time.</p>
-          </div>
-        } @else {
-          <div class="grid grid-cols-1 gap-4">
-            @for (sub of submissions(); track sub._id) {
-              <div
-                class="glass-card group p-6 rounded-2xl border transition-all duration-300 cursor-pointer"
-                [class]="selectedSubmission()?._id === sub._id
-                  ? 'border-rose-500/50 bg-rose-500/[0.03] shadow-lg shadow-rose-500/10'
-                  : 'border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10'"
-                (click)="selectSubmission(sub)">
-                
-                <div class="flex items-start justify-between">
-                  <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-white/5 flex items-center justify-center text-xl text-rose-400 font-bold">
-                      {{ (sub.internId.userId.name || 'U').charAt(0) }}
-                    </div>
-                    <div>
-                      <h4 class="text-white font-bold group-hover:text-rose-400 transition-colors leading-tight">
-                        {{ sub.internId.userId.name }}
-                      </h4>
-                      <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider mt-0.5">
-                        {{ sub.domainTaskId.domain }}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="text-right">
-                    <span class="text-[10px] text-slate-500 font-mono tracking-tighter block mb-1">
-                      {{ sub.updatedAt | date: 'HH:mm • MMM d' }}
-                    </span>
-                    <span class="px-2 py-0.5 rounded-md bg-yellow-500/10 text-yellow-500 text-[8px] font-black uppercase tracking-widest border border-yellow-500/20">
-                      Phase {{ sub.domainTaskId.order }}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="mt-6 flex items-center gap-2">
-                  <div class="h-[1px] flex-grow bg-white/5"></div>
-                  <p class="text-xs text-slate-400 font-bold truncate">
-                    Directive: {{ sub.domainTaskId.title }}
-                  </p>
-                  <div class="h-[1px] flex-grow bg-white/5"></div>
-                </div>
-              </div>
-            }
-          </div>
-        }
+  <!-- Content Split-Pane -->
+  <div *ngIf="!isLoading()" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+    <!-- Left Pane: Review Queue List -->
+    <div class="xl:col-span-6 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800/80">
+        <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Awaiting Evaluation</h2>
+        <span class="text-xs font-mono text-slate-500">{{ submissions().length }} items</span>
       </div>
 
-      <!-- ============================
-           EVALUATION SUITE (RIGHT)
-           ============================ -->
-      <div class="xl:col-span-6">
-        <div class="xl:sticky xl:top-6">
-          @if (!selectedSubmission()) {
-            <div class="glass-card rounded-3xl border border-dashed border-white/10 p-20 text-center text-slate-700 flex flex-col items-center justify-center min-h-[400px]">
-              <i class="fa-solid fa-microscope text-5xl mb-6 opacity-10"></i>
-              <p class="text-lg font-bold">Awaiting Analysis Selection</p>
-              <p class="text-xs max-w-[250px] mx-auto mt-2 leading-relaxed opacity-60">
-                Choose a submission transcript from the queue to initiate the technical evaluation protocol.
-              </p>
-            </div>
-          } @else {
-            <div class="glass-card rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-3xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-right-4 duration-500">
-              
-              <!-- Suite Header -->
-              <div class="p-8 border-b border-white/5 bg-white/[0.02]">
-                <div class="flex items-start justify-between">
-                  <div class="space-y-2">
-                    <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 text-[10px] font-black uppercase tracking-widest border border-rose-500/20">
-                      In Review
-                    </span>
-                    <h3 class="text-2xl font-black text-white">Technical Synopsis</h3>
-                  </div>
-                  <button (click)="closeEditor()"
-                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 border border-white/5 text-slate-500 hover:text-white hover:border-white/20 transition-all">
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
-                </div>
+      <!-- Empty State -->
+      <div *ngIf="submissions().length === 0" class="rounded-2xl bg-slate-900/80 border border-slate-800 p-12 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4 text-xl">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 class="text-sm font-bold text-white mb-1">Queue is 100% Evaluated</h3>
+        <p class="text-xs text-slate-400 max-w-sm mx-auto mb-4">
+          All task submissions from enrolled interns have been reviewed and scored. New submissions will trigger alerts here in real-time.
+        </p>
+        <a
+          routerLink="/dashboard/intern-management/list"
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition-colors"
+        >
+          <i class="fa-solid fa-users text-xs text-emerald-400"></i>
+          <span>Browse Active Interns</span>
+        </a>
+      </div>
+
+      <!-- Submission Cards List -->
+      <div *ngIf="submissions().length > 0" class="space-y-3">
+        <div
+          *ngFor="let sub of submissions(); track sub._id"
+          (click)="selectSubmission(sub)"
+          class="p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between"
+          [ngClass]="selectedSubmission()?._id === sub._id
+            ? 'bg-amber-500/5 border-amber-500/40 shadow-lg shadow-amber-500/10'
+            : 'bg-slate-900/80 border-slate-800 hover:border-slate-700 hover:bg-slate-900'"
+        >
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center font-bold text-slate-950 text-sm shadow-sm flex-shrink-0">
+                {{ (sub.internId.userId.name || 'I').charAt(0) }}
               </div>
-
-              <div class="p-8 space-y-8">
-                <!-- Info Section -->
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="space-y-1 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                    <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Candidate</p>
-                    <p class="text-sm font-bold text-white">{{ selectedSubmission()!.internId.userId.name }}</p>
-                  </div>
-                  <div class="space-y-1 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                    <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Directive Phase</p>
-                    <p class="text-sm font-bold text-rose-400">Step #{{ selectedSubmission()!.domainTaskId.order }}</p>
-                  </div>
-                </div>
-
-                <!-- Submission Asset -->
-                <div class="space-y-3">
-                  <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Directive Payload</label>
-                  <a [href]="selectedSubmission()!.submissionUrl" target="_blank"
-                    class="flex items-center justify-between p-5 bg-slate-900 border border-slate-800 rounded-2xl group hover:border-blue-500/50 transition-all">
-                    <div class="flex items-center gap-4">
-                      <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
-                        <i class="fa-solid fa-link"></i>
-                      </div>
-                      <div class="max-w-[200px] sm:max-w-md">
-                        <p class="text-sm font-bold text-white truncate">{{ selectedSubmission()!.submissionUrl }}</p>
-                        <p class="text-[10px] text-slate-600 font-medium">External Deployment Link</p>
-                      </div>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-600 group-hover:text-blue-400 transition-colors"></i>
-                  </a>
-                </div>
-
-                <!-- Feedback Lab -->
-                <div class="space-y-3">
-                  <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Feedback Log</label>
-                  <textarea
-                    [value]="feedbackText()"
-                    (input)="feedbackText.set($any($event.target).value)"
-                    rows="5"
-                    placeholder="Document your technical feedback and suggestions for the candidate..."
-                    class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-5 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500/40 focus:border-rose-500/50 transition-all resize-none placeholder:text-slate-700">
-                  </textarea>
-                </div>
-
-                <!-- Action Protocols -->
-                <div class="grid grid-cols-2 gap-4 pt-4">
-                  <button (click)="reviewSubmission('approved')"
-                    class="relative overflow-hidden group py-4 bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95">
-                    <span class="relative z-10">Approve</span>
-                  </button>
-                  <button (click)="reviewSubmission('rejected')"
-                   class="relative overflow-hidden group py-4 bg-rose-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all hover:bg-rose-500 hover:shadow-lg hover:shadow-rose-500/20 active:scale-95">
-                    <span class="relative z-10">Reject</span>
-                  </button>
-                </div>
+              <div>
+                <h3 class="font-bold text-white text-xs hover:text-amber-300 transition-colors">
+                  {{ sub.internId.userId.name || 'Intern Candidate' }}
+                </h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 mt-0.5 inline-block">
+                  {{ sub.domainTaskId.domain || 'Technical Track' }}
+                </span>
               </div>
-
             </div>
-          }
+
+            <span class="text-[10px] text-slate-500 font-mono">
+              {{ sub.updatedAt | date : 'MMM d • HH:mm' }}
+            </span>
+          </div>
+
+          <div class="text-xs text-slate-300 font-medium bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80">
+            <span class="text-slate-500 text-[10px] uppercase font-bold block mb-0.5">Directive Assignment</span>
+            <span class="truncate block">{{ sub.domainTaskId.title || 'Technical Milestone' }}</span>
+          </div>
         </div>
       </div>
-
     </div>
-  }
+
+    <!-- Right Pane: Evaluation Suite -->
+    <div class="xl:col-span-6">
+      <div class="xl:sticky xl:top-6">
+        <!-- Awaiting Selection State -->
+        <div *ngIf="!selectedSubmission()" class="rounded-2xl bg-slate-900/80 border border-slate-800 p-12 text-center flex flex-col items-center justify-center min-h-[360px]">
+          <div class="w-12 h-12 rounded-2xl bg-slate-800 text-slate-500 flex items-center justify-center mb-3 text-lg">
+            <i class="fa-solid fa-microscope"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-300 mb-1">Awaiting Submission Selection</h3>
+          <p class="text-xs text-slate-500 max-w-xs mx-auto">
+            Select a candidate from the review queue on the left to inspect deliverables and document feedback.
+          </p>
+        </div>
+
+        <!-- Active Evaluation Form -->
+        <div *ngIf="selectedSubmission()" class="rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl overflow-hidden animate-in fade-in duration-200">
+          <!-- Suite Header -->
+          <div class="p-5 border-b border-slate-800 bg-slate-950/50 flex items-center justify-between">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                Evaluation Protocol
+              </span>
+              <h3 class="text-base font-bold text-white mt-1">
+                {{ selectedSubmission()!.internId.userId.name }}
+              </h3>
+            </div>
+
+            <button
+              type="button"
+              (click)="closeEditor()"
+              class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-xmark text-xs"></i>
+            </button>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <!-- Candidate & Task Details Strip -->
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                <span class="text-[10px] text-slate-500 font-semibold uppercase">Track</span>
+                <div class="font-bold text-white mt-0.5">{{ selectedSubmission()!.domainTaskId.domain }}</div>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                <span class="text-[10px] text-slate-500 font-semibold uppercase">Directive Title</span>
+                <div class="font-bold text-amber-400 mt-0.5 truncate">{{ selectedSubmission()!.domainTaskId.title }}</div>
+              </div>
+            </div>
+
+            <!-- Deliverable Payload Link -->
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                Submitted Deliverable URL
+              </label>
+              <a
+                [href]="selectedSubmission()!.submissionUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-between p-3.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-sky-500/40 transition-all group"
+              >
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-xs font-bold text-white group-hover:text-sky-300 truncate transition-colors">
+                      {{ selectedSubmission()!.submissionUrl }}
+                    </div>
+                    <div class="text-[10px] text-slate-500">Inspect external repository or preview link</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-[10px] text-slate-600 group-hover:text-sky-400 transition-colors"></i>
+              </a>
+            </div>
+
+            <!-- Feedback Log Textarea -->
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                Evaluation Notes & Feedback
+              </label>
+              <textarea
+                [value]="feedbackText()"
+                (input)="feedbackText.set($any($event.target).value)"
+                rows="4"
+                placeholder="Provide constructive code feedback or suggestions for the candidate..."
+                class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition-all resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Approve & Reject Action Buttons -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <button
+                type="button"
+                (click)="reviewSubmission('approved')"
+                class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-md shadow-emerald-500/20 cursor-pointer"
+              >
+                <i class="fa-solid fa-check"></i>
+                <span>Approve Directive</span>
+              </button>
+
+              <button
+                type="button"
+                (click)="reviewSubmission('rejected')"
+                class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 font-bold text-xs transition-all cursor-pointer"
+              >
+                <i class="fa-solid fa-xmark"></i>
+                <span>Reject & Revise</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

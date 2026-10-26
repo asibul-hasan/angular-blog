@@ -145,7 +145,7 @@ export class TermsOfServiceComponent {
       keywords: 'terms of service, terms and conditions, user agreement, website terms, service terms, legal terms, InfoaidTech terms, usage policy, terms of use',
       image:
         'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: `${origin}/terms-of-service`,
+      url: 'https://infoaidtech.net/terms-of-service',
       type: 'website',
     });
   }

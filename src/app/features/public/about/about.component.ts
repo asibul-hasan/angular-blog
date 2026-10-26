@@ -120,13 +120,13 @@ export class AboutComponent {
   ];
 
   constructor() {
-    const origin = isPlatformBrowser(this.platformId) ? window.location.origin : '';
     this.seo.updateTags({
       title: 'About InfoAidTech — Innovative IT & Digital Solutions Agency',
       description: 'InfoAidTech is a leading IT and digital agency providing custom software development, web & app solutions, and digital marketing services to help businesses grow.',
       image: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: origin,
+      url: 'https://infoaidtech.net/about',
       type: 'website',
+      keywords: 'about InfoAidTech, IT agency, digital agency Bangladesh, software development company',
     });
   }
 }

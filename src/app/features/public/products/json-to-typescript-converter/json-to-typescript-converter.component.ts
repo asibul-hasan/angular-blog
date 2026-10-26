@@ -1,6 +1,7 @@
-import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SeoService } from '../../../../shared/services/seo/seo.service';
 
 // ─── Type inference helpers ────────────────────────────────────────────────
 
@@ -287,7 +288,8 @@ function syntaxHighlight(code: string): string {
     </div>
   `
 })
-export class JsonToTsComponent {
+export class JsonToTsComponent implements OnInit {
+  private readonly seo = inject(SeoService);
 
   inputJson = "{}";
   className = 'EnterYourClassName';
@@ -296,6 +298,16 @@ export class JsonToTsComponent {
   output = signal('');
   error  = signal('');
   copied = signal(false);
+
+  ngOnInit(): void {
+    this.seo.updateTags({
+      title: 'JSON to TypeScript Class & Interface Converter — Free Dev Tool',
+      description: 'Convert JSON payloads into clean, strongly typed TypeScript classes and interfaces with automated date detection, type inference, and inheritance options.',
+      url: 'https://infoaidtech.net/json-to-ts',
+      type: 'website',
+      keywords: 'json to typescript, json to ts converter, json to interface generator, typescript class generator, developer tools infoaidtech',
+    });
+  }
 
   inputLineCount    = computed(() => Math.max(this.inputJson.split('\n').length, 1));
   outputLineCount   = computed(() => this.output() ? this.output().split('\n').length : 0);

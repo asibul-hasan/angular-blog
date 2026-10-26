@@ -1,5 +1,6 @@
-import { Component, OnInit, signal, HostListener } from '@angular/core';
+import { Component, OnInit, signal, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SeoService } from '../../../../shared/services/seo/seo.service';
 
 export type Lang = 'en' | 'bn';
 
@@ -652,6 +653,8 @@ const TRANSLATIONS = {
   styleUrls: ['./aidly-erp.component.css'],
 })
 export class AidlyErpComponent implements OnInit {
+  private readonly seo = inject(SeoService);
+
   // ── State ──────────────────────────────────────────────────────────────────
   lang = signal<Lang>('en');
   isDark = signal<boolean>(true);
@@ -666,6 +669,14 @@ export class AidlyErpComponent implements OnInit {
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
   ngOnInit(): void {
+    this.seo.updateTags({
+      title: 'AidlyERP — Complete Business ERP for Retail, Wholesale & Pharmacies in Bangladesh',
+      description: 'Streamline your operations with AidlyERP: POS, inventory management, HR & payroll, double-entry accounts, and NBR VAT compliance in English & Bengali.',
+      url: 'https://infoaidtech.net/aidly-erp',
+      type: 'website',
+      keywords: 'AidlyERP, ERP software Bangladesh, POS retail software, pharmacy inventory, accounting ERP Dhaka, NBR compliant ERP',
+    });
+
     // Only access localStorage in browser (not during SSR)
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       const saved = localStorage.getItem('aidly-theme');

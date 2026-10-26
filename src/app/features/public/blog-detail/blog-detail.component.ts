@@ -91,26 +91,47 @@ export class BlogDetailComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateSeo(data: any) {
+    const rawDesc = data.meta_description || data.description || data.short_desc || '';
+    const cleanDesc = rawDesc.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+
     this.seo.updateTags({
       title: data.title,
-      description: data.meta_description || data.short_desc,
+      description: cleanDesc,
       image: data.image,
       slug: data.slug,
       type: 'article',
-      author: data.author,
-      publishedDate: data.publishedAt
+      author: data.author || 'InfoAidTech Team',
+      publishedDate: data.createdAt || data.publishedAt,
+      modifiedDate: data.updatedAt || data.publishedDate || data.createdAt,
+      tags: data.tags || []
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net/' },
+      { name: 'Blog', url: 'https://infoaidtech.net/blog' },
+      { name: data.title, url: `https://infoaidtech.net/blog/${data.slug}` }
+    ]);
   }
 
   private extractHeadings(content: string) {
-    // Simple mock logic for TOC
-    const headings = [
-      { id: 'intro', text: 'Introduction' },
-      { id: 'key-concepts', text: 'Key Concepts' },
-      { id: 'strategy', text: 'Future Strategy' },
-      { id: 'conclusion', text: 'Conclusion' }
-    ];
-    this.headings.set(headings);
+    if (!content) {
+      this.headings.set([]);
+      return;
+    }
+    const regex = /<h([2-3])[^>]*>(.*?)<\/h\1>/gi;
+    const items: { id: string; text: string }[] = [];
+    let match: RegExpExecArray | null;
+    while ((match = regex.exec(content)) !== null) {
+      const text = match[2].replace(/<[^>]*>/g, '').trim();
+      if (text) {
+        const id = text
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-');
+        items.push({ id, text });
+      }
+    }
+    this.headings.set(items.slice(0, 10));
   }
 
   private calculateProgress() {

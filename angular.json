@@ -19,8 +19,20 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets",
+              "src/robots.txt",
+              "src/sitemap.xml",
               "src/assets/robots.txt",
               "src/assets/favicon.ico",
+              {
+                "glob": "robots.txt",
+                "input": "src/assets",
+                "output": "/"
+              },
+              {
+                "glob": "sitemap.xml",
+                "input": "src/assets",
+                "output": "/"
+              },
               {
                 "glob": "**/*",
                 "input": "node_modules/tinymce",
@@ -30,15 +42,9 @@
                 "glob": "**/*",
                 "input": "node_modules/primeng/resources",
                 "output": "/primeng/resources/"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/primeicons",
-                "output": "/primeicons/"
               }
             ],
             "styles": [
-              "node_modules/primeicons/primeicons.css",
               "src/styles.css"
             ],
             "scripts": [],
@@ -97,7 +103,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "port": 4000
+            "port": 4000,
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

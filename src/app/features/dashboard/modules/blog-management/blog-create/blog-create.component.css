@@ -1,127 +1,125 @@
-/* Writing Studio Aesthetics */
-.glass-card {
-  background: rgba(255, 255, 255, 0.015);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* ========================================================================= */
+/* Editorial Studio - Component Styles                                      */
+/* ========================================================================= */
+
+:host {
+  display: block;
 }
 
-.animate-spin-slow {
-  animation: spin 8s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Typography Polish */
-textarea#title {
-  height: auto;
-  min-height: 120px;
-  overflow: hidden;
-}
-
-textarea#title::placeholder {
-  background: linear-gradient(to bottom right, #475569, #1e293b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Material Select Studio Customization */
-:host ::v-deep .mat-mdc-form-field {
-  margin-top: -16px; /* Offset material's natural padding */
-}
-
-:host ::v-deep .mat-mdc-text-field-wrapper {
-  background: rgba(15, 23, 42, 0.6) !important;
-  border-radius: 1rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.05) !important;
-  padding: 0.75rem 1rem !important;
-}
-
-:host ::v-deep .mat-mdc-form-field-flex {
-  align-items: center !important;
-}
-
-:host ::v-deep .mat-mdc-select-value {
-  color: #f1f5f9 !important;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-:host ::v-deep .mat-mdc-select-placeholder {
-  color: #475569 !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-:host ::v-deep .mat-mdc-select-arrow {
-  color: #6366f1 !important;
-}
-
-/* Option List Styling */
-::ng-deep .mat-mdc-select-panel {
-  background-color: rgba(2, 6, 23, 0.98) !important;
-  backdrop-filter: blur(40px) !important;
+/* Material Select Field Polish */
+:host ::ng-deep .custom-mat-field .mat-mdc-text-field-wrapper {
+  background-color: rgba(2, 6, 23, 0.85) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 1.5rem !important;
-  padding: 8px !important;
-  box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.7) !important;
-}
-
-::ng-deep .mat-mdc-option {
   border-radius: 0.75rem !important;
-  margin-bottom: 2px !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  padding: 0.25rem 0.75rem !important;
+  min-height: 42px !important;
+  transition: all 0.2s ease;
 }
 
-::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.02em !important;
-  color: #94a3b8 !important;
+:host ::ng-deep .custom-mat-field .mat-mdc-text-field-wrapper:hover {
+  border-color: rgba(99, 102, 241, 0.35) !important;
 }
 
-::ng-deep .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
-  background: rgba(99, 102, 241, 0.1) !important;
+:host ::ng-deep .custom-mat-field.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: rgba(99, 102, 241, 0.6) !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15) !important;
 }
 
-::ng-deep .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
-  background: rgba(99, 102, 241, 0.2) !important;
+:host ::ng-deep .custom-mat-field .mat-mdc-form-field-focus-overlay {
+  background: transparent !important;
 }
 
-::ng-deep .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+:host ::ng-deep .custom-mat-field .mat-mdc-form-field-underline,
+:host ::ng-deep .custom-mat-field .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-mat-field .mat-mdc-select-value-text,
+:host ::ng-deep .custom-mat-field .mat-mdc-select-placeholder {
+  color: #cbd5e1 !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+}
+
+:host ::ng-deep .custom-mat-field .mat-mdc-select-placeholder {
+  color: #64748b !important;
+}
+
+:host ::ng-deep .custom-mat-field .mat-mdc-select-arrow {
   color: #818cf8 !important;
 }
 
-/* TinyMCE Mirror Focus */
-:host ::v-deep .tox-tinymce {
+/* Material Option Overlay Panel */
+::ng-deep .mat-mdc-select-panel {
+  background-color: #0b1120 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
+  padding: 6px !important;
+}
+
+::ng-deep .mat-mdc-option {
+  border-radius: 0.5rem !important;
+  color: #cbd5e1 !important;
+  font-size: 0.8125rem !important;
+  margin-bottom: 2px !important;
+  transition: all 0.15s ease !important;
+}
+
+::ng-deep .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+  background-color: rgba(99, 102, 241, 0.12) !important;
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+  background-color: rgba(99, 102, 241, 0.22) !important;
+  color: #a5b4fc !important;
+}
+
+::ng-deep .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+  color: #818cf8 !important;
+  font-weight: 600 !important;
+}
+
+/* TinyMCE Dark Frame Integration */
+:host ::ng-deep .tox-tinymce {
   border: none !important;
-  background: transparent !important;
-  transition: all 0.5s ease;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  background-color: #0b1120 !important;
 }
 
-:host ::v-deep .tox .tox-toolbar,
-:host ::v-deep .tox .tox-toolbar__primary {
-  background-color: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+:host ::ng-deep .tox .tox-toolbar-overlord,
+:host ::ng-deep .tox .tox-toolbar,
+:host ::ng-deep .tox .tox-toolbar__primary {
+  background-color: #0f172a !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
-:host ::v-deep .tox .tox-menubar {
-  background-color: transparent !important;
-  border-bottom: none !important;
+:host ::ng-deep .tox .tox-statusbar {
+  background-color: #0f172a !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #64748b !important;
+  font-size: 11px !important;
 }
 
-/* Inputs Polish */
-input:focus, textarea:focus {
-  outline: none;
+:host ::ng-deep .tox .tox-tbtn svg {
+  fill: #94a3b8 !important;
 }
 
-.studio-input-focus {
-  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4);
+:host ::ng-deep .tox .tox-tbtn:hover svg {
+  fill: #ffffff !important;
+}
+
+:host ::ng-deep .tox .tox-tbtn:hover {
+  background-color: rgba(99, 102, 241, 0.15) !important;
+}
+
+:host ::ng-deep .tox .tox-tbtn--enabled,
+:host ::ng-deep .tox .tox-tbtn--enabled:hover {
+  background-color: rgba(99, 102, 241, 0.25) !important;
+}
+
+:host ::ng-deep .tox .tox-tbtn--enabled svg {
+  fill: #818cf8 !important;
 }

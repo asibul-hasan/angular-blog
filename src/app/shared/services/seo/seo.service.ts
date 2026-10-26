@@ -1,12 +1,14 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
 export interface SeoData {
   title?: string;
   description?: string;
   image?: string;
   imageAlt?: string;
+  url?: string;
   slug?: string;
   type?: 'article' | 'website';
   author?: string;
@@ -27,6 +29,7 @@ export class SeoService {
   private siteUrl = 'https://infoaidtech.net';
   private twitterHandle = '@InfoAidTech';
   private defaultImage = `${this.siteUrl}/assets/default-og.png`;
+  private router = inject(Router);
 
   constructor(
     private title: Title,
@@ -38,7 +41,35 @@ export class SeoService {
   /** Main method to update SEO tags dynamically */
   updateTags(data: SeoData) {
     const fullTitle = data.title ? `${data.title} | ${this.siteName}` : this.siteName;
-    const url = data.slug ? `${this.siteUrl}/blog/${data.slug}` : this.siteUrl;
+
+    let url = this.siteUrl;
+    if (data.url) {
+      url = data.url.startsWith('http')
+        ? data.url
+        : `${this.siteUrl}${data.url.startsWith('/') ? '' : '/'}${data.url}`;
+    } else if (data.slug && data.slug.trim()) {
+      const trimmedSlug = data.slug.trim();
+      if (trimmedSlug.startsWith('http')) {
+        try {
+          const parsed = new URL(trimmedSlug);
+          url = parsed.pathname && parsed.pathname !== '/'
+            ? `${this.siteUrl}${parsed.pathname}`
+            : this.siteUrl;
+        } catch {
+          url = this.siteUrl;
+        }
+      } else if (data.type === 'article') {
+        const cleanSlug = trimmedSlug.replace(/^\/+/, '').replace(/^blog\/+/, '');
+        url = `${this.siteUrl}/blog/${cleanSlug}`;
+      } else {
+        const cleanSlug = trimmedSlug.replace(/^\/+/, '');
+        url = cleanSlug ? `${this.siteUrl}/${cleanSlug}` : this.siteUrl;
+      }
+    } else {
+      // Fallback to current route path
+      const currentPath = this.router.url ? this.router.url.split('?')[0].replace(/\/+$/, '') : '';
+      url = currentPath ? `${this.siteUrl}${currentPath}` : this.siteUrl;
+    }
     const description = data.description || 'Professional IT services, software development, and cloud solutions by InfoAidTech.';
     const image = data.image || this.defaultImage;
     const locale = data.locale || 'en_US';
@@ -68,10 +99,8 @@ export class SeoService {
     this.meta.updateTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' });
     this.meta.updateTag({ name: 'theme-color', content: '#1a202c' });
 
-    // ✅ Canonical (only in browser)
-    if (isPlatformBrowser(this.platformId)) {
-      this.updateLinkTag('canonical', url);
-    }
+    // ✅ Canonical link tag (SSR & Browser)
+    this.updateLinkTag('canonical', url);
 
     // ✅ Open Graph
     this.meta.updateTag({ property: 'og:type', content: data.type || 'website' });
@@ -129,10 +158,8 @@ export class SeoService {
       this.meta.updateTag({ name: 'twitter:data1', content: data.readingTime });
     }
 
-    // ✅ JSON-LD Structured Data
-    if (isPlatformBrowser(this.platformId)) {
-      this.setJsonLd(this.generateStructuredData(data, fullTitle, url, description, image, locale));
-    }
+    // ✅ JSON-LD Structured Data (SSR & Browser)
+    this.setJsonLd(this.generateStructuredData(data, fullTitle, url, description, image, locale));
   }
 
   /** Generate JSON-LD structured data */
@@ -190,13 +217,14 @@ export class SeoService {
 
   /** Insert or update JSON-LD <script> tag */
   private setJsonLd(schema: any) {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.doc || !this.doc.head) return;
 
-    let script: HTMLScriptElement | null = this.doc.querySelector('script[type="application/ld+json"]:not([data-schema])');
+    let script: HTMLScriptElement | null = this.doc.querySelector('script[type="application/ld+json"][data-schema="main"]');
 
     if (!script) {
       script = this.doc.createElement('script');
       script.type = 'application/ld+json';
+      script.setAttribute('data-schema', 'main');
       this.doc.head.appendChild(script);
     }
 
@@ -205,7 +233,7 @@ export class SeoService {
 
   /** Helper: Update or create link tags */
   private updateLinkTag(rel: string, href: string, attrs: Record<string, string> = {}) {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.doc || !this.doc.head) return;
 
     let element: HTMLLinkElement | null = this.doc.querySelector(`link[rel='${rel}']`);
 
@@ -224,7 +252,7 @@ export class SeoService {
 
   /** Add breadcrumb structured data */
   addBreadcrumbs(items: Array<{ name: string; url: string }>) {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.doc || !this.doc.head) return;
 
     const breadcrumbSchema = {
       '@context': 'https://schema.org',

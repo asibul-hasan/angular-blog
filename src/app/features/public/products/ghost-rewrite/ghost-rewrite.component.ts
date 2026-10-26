@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, ElementRef, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, signal, ViewChild, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
+import { SeoService } from '../../../../shared/services/seo/seo.service';
 
 @Component({
   selector: 'app-ghost-rewrite',
@@ -9,11 +10,23 @@ import { environment } from '../../../../../environments/environment';
   styleUrls: ['./ghost-rewrite.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GhostRewriteComponent {
+export class GhostRewriteComponent implements OnInit {
+  private readonly seo = inject(SeoService);
+
   public inputText = signal<string>('');
   public outputText = signal<string>('');
   public isLoading = signal<boolean>(false);
   public errorMessage = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.seo.updateTags({
+      title: 'Ghost Rewrite — Free AI Text Humanizer & Detector',
+      description: 'Transform AI-generated text from ChatGPT and Claude into authentic, human-sounding writing that bypasses AI detectors with high natural readability.',
+      url: 'https://infoaidtech.net/ghost-rewrite',
+      type: 'website',
+      keywords: 'ghost rewrite, ai text humanizer, ai detector bypass, humanize ai text, paraphrase ai content',
+    });
+  }
 
   // New State for AI Checker
   public isCheckingAI = signal<boolean>(false);

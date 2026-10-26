@@ -214,11 +214,11 @@ export class PrivacyPolicyComponent {
       title: 'Privacy Policy - InfoaidTech | Data Protection & Privacy',
       description:
         'Read InfoaidTech\'s Privacy Policy to understand how we collect, use, and protect your personal information. Learn about our data protection practices, GDPR & CCPA compliance, and your privacy rights.',
-      // keywords: 'privacy policy, data protection, GDPR, CCPA, personal information, cookies policy, InfoaidTech privacy, data security, user privacy rights',
       image:
         'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: `${origin}/privacy-policy`,
+      url: 'https://infoaidtech.net/privacy-policy',
       type: 'website',
+      keywords: 'privacy policy, data protection, GDPR, CCPA, personal information, cookies policy, InfoaidTech privacy, data security, user privacy rights',
     });
   }
 }

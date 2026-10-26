@@ -21,7 +21,6 @@ export class LoaderService {
     this.loadingCount++;
     if (this.loadingCount === 1) {
       this.isLoading$.next(true);
-      this.renderer.addClass(this.document.body, 'loader-active');
     }
   }
 
@@ -30,7 +29,6 @@ export class LoaderService {
     if (this.loadingCount <= 0) {
       this.loadingCount = 0; // Prevent negative values
       this.isLoading$.next(false);
-      this.renderer.removeClass(this.document.body, 'loader-active');
     }
   }
 }

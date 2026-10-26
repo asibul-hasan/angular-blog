@@ -38,14 +38,13 @@ export class HomeComponent {
       origin = window.location.origin;
     }
 
-    // use meta services
     this.seo.updateTags({
       title: 'Revolutionizing IT Services for a Digital Era',
       description:
         'Welcome to InfoAidTech – Your trusted IT partner. We specialize in digital transformation, cloud solutions, software development, and IT consulting. Where vision meets expertise, InfoAidTech delivers innovation and reliability.',
       image:
         'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: origin, // ✅ safe to pass (empty on server)
+      url: 'https://infoaidtech.net',
       type: 'website',
     });
   }

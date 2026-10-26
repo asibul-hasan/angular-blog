@@ -62,13 +62,13 @@ export class BlogList implements OnInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
 
   constructor() {
-    const origin = isPlatformBrowser(this.platformId) ? window.location.origin : '';
     this.seo.updateTags({
       title: 'Insights on IT, Software & Digital Marketing Trends',
       description: 'Stay updated with the latest insights, trends, and tips in software development, IT solutions, digital marketing, and tech innovations on the InfoAidTech blog.',
       image: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: origin,
+      url: 'https://infoaidtech.net/blog',
       type: 'website',
+      keywords: 'tech blog, software development blog, IT articles, angular, web development tutorials',
     });
   }
 

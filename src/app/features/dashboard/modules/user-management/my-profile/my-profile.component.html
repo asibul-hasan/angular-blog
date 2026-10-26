@@ -1,151 +1,240 @@
-<!-- My Profile -->
-<div class="w-full space-y-6">
-  <!-- Hero Header -->
-  <div
-    class="relative overflow-hidden rounded-3xl bg-linear-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-xl border border-white/10 p-8"
-  >
-    <div class="flex items-center gap-6">
-      <div
-        class="w-20 h-20 rounded-2xl bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-3xl font-bold text-white shadow-2xl"
-      >
+<!-- User Account & Profile Administration -->
+<div class="space-y-6 w-full max-w-4xl mx-auto animate-in fade-in duration-300">
+  <!-- Profile Identity Card -->
+  <div class="rounded-2xl bg-slate-900/80 border border-slate-800 p-6 shadow-lg shadow-black/20 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+    <div class="relative">
+      <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 text-slate-950 font-black text-2xl flex items-center justify-center shadow-lg shadow-sky-950/30">
         {{ userInitials }}
       </div>
-      <div>
-        <h1
-          class="text-4xl font-bold bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2"
-        >
-          My Profile
+      <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center">
+        <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 ring-2 ring-slate-900 animate-pulse"></span>
+      </span>
+    </div>
+
+    <div class="flex-1 text-center sm:text-left space-y-1">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+        <h1 class="text-xl font-black text-white tracking-tight">
+          {{ currentUser?.userName || 'Platform Operator' }}
         </h1>
-        <p class="text-gray-400">Manage your personal information</p>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 uppercase tracking-wider inline-flex items-center gap-1.5 self-center sm:self-auto">
+          <i class="fa-solid fa-shield-halved text-[9px]"></i>
+          {{ userContextService.user().userRole || 'Admin' }}
+        </span>
+      </div>
+      <p class="text-xs text-slate-400 font-mono">
+        {{ currentUser?.email || 'admin@infoaidtech.com' }}
+      </p>
+      <div class="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3 text-[11px] text-slate-500 font-mono">
+        <span class="inline-flex items-center gap-1">
+          <i class="fa-solid fa-circle-check text-emerald-400 text-[10px]"></i>
+          Session Verified
+        </span>
+        <span>•</span>
+        <span>ID: {{ currentUser?.userId ? (currentUser?.userId | slice: -8) : 'Root' }}</span>
       </div>
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="flex gap-4 border-b border-white/10">
+  <!-- Tab Selection Navigation -->
+  <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 w-fit">
     <button
+      type="button"
       (click)="activeTab = 'profile'"
-      [class.border-blue-500]="activeTab === 'profile'"
-      [class.text-white]="activeTab === 'profile'"
-      [class.text-gray-400]="activeTab !== 'profile'"
-      class="px-6 py-3 font-semibold border-b-2 border-transparent hover:text-white transition-all"
+      [class]="activeTab === 'profile' 
+        ? 'bg-slate-800 text-white shadow-sm' 
+        : 'text-slate-400 hover:text-slate-200'"
+      class="px-4 py-2 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-2 cursor-pointer"
     >
-      Profile Information
+      <i class="fa-solid fa-user-pen text-[11px]" [class.text-sky-400]="activeTab === 'profile'"></i>
+      Account Credentials
     </button>
     <button
+      type="button"
       (click)="activeTab = 'password'"
-      [class.border-blue-500]="activeTab === 'password'"
-      [class.text-white]="activeTab === 'password'"
-      [class.text-gray-400]="activeTab !== 'password'"
-      class="px-6 py-3 font-semibold border-b-2 border-transparent hover:text-white transition-all"
+      [class]="activeTab === 'password' 
+        ? 'bg-slate-800 text-white shadow-sm' 
+        : 'text-slate-400 hover:text-slate-200'"
+      class="px-4 py-2 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-2 cursor-pointer"
     >
-      Change Password
+      <i class="fa-solid fa-lock text-[11px]" [class.text-purple-400]="activeTab === 'password'"></i>
+      Security & Password
     </button>
   </div>
 
-  <!-- Profile Tab -->
+  <!-- Profile Information Panel -->
   <div
     *ngIf="activeTab === 'profile'"
-    class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8"
+    class="rounded-2xl bg-slate-900/80 border border-slate-800 p-6 shadow-lg shadow-black/20"
   >
+    <div class="mb-5 pb-3 border-b border-slate-800/80 flex items-center justify-between">
+      <div>
+        <h2 class="text-sm font-bold text-white uppercase tracking-wider">
+          Profile Credentials
+        </h2>
+        <p class="text-xs text-slate-400 mt-0.5">
+          Update your public identity details and contact email address.
+        </p>
+      </div>
+    </div>
+
     <form
       [formGroup]="profileForm"
       (ngSubmit)="updateProfile()"
-      class="space-y-6"
+      class="space-y-4"
     >
       <div>
-        <label class="block text-sm font-semibold text-white mb-2">Name</label>
-        <input
-          type="text"
-          formControlName="name"
-          class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Your name"
-        />
+        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+          Full Display Name <span class="text-rose-400">*</span>
+        </label>
+        <div class="relative">
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <input
+            type="text"
+            formControlName="name"
+            class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs focus:outline-none focus:border-sky-500/50 transition-colors"
+            placeholder="Your full name"
+          />
+        </div>
       </div>
 
       <div>
-        <label class="block text-sm font-semibold text-white mb-2">Email</label>
-        <input
-          type="email"
-          formControlName="email"
-          class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="your@email.com"
-        />
+        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+          Operational Email Address <span class="text-rose-400">*</span>
+        </label>
+        <div class="relative">
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <input
+            type="email"
+            formControlName="email"
+            class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs font-mono focus:outline-none focus:border-sky-500/50 transition-colors"
+            placeholder="admin@infoaidtech.com"
+          />
+        </div>
       </div>
 
       <div>
-        <label class="block text-sm font-semibold text-white mb-2">Role</label>
-        <input
-          type="text"
-          [value]="userContextService.user().userRole"
-          disabled
-          class="w-full px-4 py-3 bg-gray-900/30 border border-gray-700 rounded-xl text-gray-400 cursor-not-allowed"
-        />
+        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+          Security Role (Fixed Authorization)
+        </label>
+        <div class="relative">
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+            <i class="fa-solid fa-shield"></i>
+          </div>
+          <input
+            type="text"
+            [value]="userContextService.user().userRole || 'Administrator'"
+            disabled
+            class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/40 border border-slate-800/60 text-slate-500 text-xs font-mono cursor-not-allowed uppercase"
+          />
+        </div>
+        <span class="text-[10px] text-slate-500 mt-1 block">
+          Role assignments are governed by the corporate access policy.
+        </span>
       </div>
 
-      <button
-        type="submit"
-        [disabled]="profileForm.invalid || loading"
-        class="w-full px-6 py-3 bg-linear-to-r from-blue-500 to-purple-500 rounded-xl font-semibold text-white shadow-lg hover:shadow-blue-500/50 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {{ loading ? "Updating..." : "Update Profile" }}
-      </button>
+      <div class="pt-3 flex justify-end">
+        <button
+          type="submit"
+          [disabled]="profileForm.invalid || loading"
+          class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-sky-900/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer inline-flex items-center gap-2"
+        >
+          <div *ngIf="loading" class="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+          <i *ngIf="!loading" class="fa-solid fa-floppy-disk text-xs"></i>
+          {{ loading ? "Synchronizing..." : "Update Profile Credentials" }}
+        </button>
+      </div>
     </form>
   </div>
 
-  <!-- Password Tab -->
+  <!-- Security & Password Tab Panel -->
   <div
     *ngIf="activeTab === 'password'"
-    class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8"
+    class="rounded-2xl bg-slate-900/80 border border-slate-800 p-6 shadow-lg shadow-black/20"
   >
+    <div class="mb-5 pb-3 border-b border-slate-800/80 flex items-center justify-between">
+      <div>
+        <h2 class="text-sm font-bold text-white uppercase tracking-wider">
+          Security Keyphrase
+        </h2>
+        <p class="text-xs text-slate-400 mt-0.5">
+          Rotate your account password regularly to protect administrator access.
+        </p>
+      </div>
+    </div>
+
     <form
       [formGroup]="passwordForm"
       (ngSubmit)="changePassword()"
-      class="space-y-6"
+      class="space-y-4"
     >
       <div>
-        <label class="block text-sm font-semibold text-white mb-2"
-          >Current Password</label
-        >
-        <input
-          type="password"
-          formControlName="currentPassword"
-          class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter current password"
-        />
+        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+          Current Password <span class="text-rose-400">*</span>
+        </label>
+        <div class="relative">
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <input
+            type="password"
+            formControlName="currentPassword"
+            class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs focus:outline-none focus:border-purple-500/50 transition-colors"
+            placeholder="Enter your active password"
+          />
+        </div>
       </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-white mb-2"
-          >New Password</label
-        >
-        <input
-          type="password"
-          formControlName="newPassword"
-          class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter new password (min 6 characters)"
-        />
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+            New Password <span class="text-rose-400">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <input
+              type="password"
+              formControlName="newPassword"
+              class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs focus:outline-none focus:border-purple-500/50 transition-colors"
+              placeholder="Minimum 6 characters"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+            Confirm New Password <span class="text-rose-400">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+              <i class="fa-solid fa-lock-open"></i>
+            </div>
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs focus:outline-none focus:border-purple-500/50 transition-colors"
+              placeholder="Re-type new password"
+            />
+          </div>
+        </div>
       </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-white mb-2"
-          >Confirm Password</label
+      <div class="pt-3 flex justify-end">
+        <button
+          type="submit"
+          [disabled]="passwordForm.invalid || loading"
+          class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-purple-900/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer inline-flex items-center gap-2"
         >
-        <input
-          type="password"
-          formControlName="confirmPassword"
-          class="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Confirm new password"
-        />
+          <div *ngIf="loading" class="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+          <i *ngIf="!loading" class="fa-solid fa-shield-halved text-xs"></i>
+          {{ loading ? "Securing Account..." : "Rotate Account Keyphrase" }}
+        </button>
       </div>
-
-      <button
-        type="submit"
-        [disabled]="passwordForm.invalid || loading"
-        class="w-full px-6 py-3 bg-linear-to-r from-blue-500 to-purple-500 rounded-xl font-semibold text-white shadow-lg hover:shadow-blue-500/50 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {{ loading ? "Updating..." : "Update Profile" }}
-      </button>
     </form>
   </div>
 </div>

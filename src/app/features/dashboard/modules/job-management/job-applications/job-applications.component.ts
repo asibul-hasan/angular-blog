@@ -328,17 +328,17 @@ export class JobApplicationsComponent implements OnInit {
 
     getStatusBadgeClass(status: string): string {
         const statusMap: { [key: string]: string } = {
-            'applied': 'bg-blue-500/20 text-blue-400 border border-blue-500/50',
-            'shortlisted': 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50',
-            'interviewed': 'bg-purple-500/20 text-purple-400 border border-purple-500/50',
-            'selected': 'bg-green-500/20 text-green-400 border border-green-500/50',
-            'rejected': 'bg-red-500/20 text-red-400 border border-red-500/50',
-            'offered': 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50',
-            'withdrawn': 'bg-gray-500/20 text-gray-400 border border-gray-500/50',
-            'on-hold': 'bg-orange-500/20 text-orange-400 border border-orange-500/50'
+            'applied': 'bg-sky-500/10 text-sky-400 border border-sky-500/20',
+            'shortlisted': 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+            'interviewed': 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
+            'selected': 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+            'rejected': 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
+            'offered': 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
+            'withdrawn': 'bg-slate-800 text-slate-400 border border-slate-700',
+            'on-hold': 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
         };
 
-        return statusMap[status] || 'bg-gray-500/20 text-gray-400 border border-gray-500/50';
+        return statusMap[status] || 'bg-slate-800 text-slate-400 border border-slate-700';
     }
 
     resetFilters(): void {

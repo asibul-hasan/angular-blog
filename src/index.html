@@ -23,7 +23,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-adsense-account" content="ca-pub-4500577675018061" />
     <meta name="theme-color" content="#1a202c" />
-    <link rel="canonical" href="https://infoaidtech.net/" />
 
     <!-- ✅ Open Graph Meta Tags -->
     <meta property="og:type" content="website" />
@@ -67,24 +66,17 @@
     <link rel="manifest" href="assets/manifest.json" />
     <link rel="apple-touch-icon" href="assets/icon-192x192.png" />
 
-    <!-- ✅ Preconnects (top priority for FCP/LCP) -->
+    <!-- ✅ Preconnects (top priority origins only, max 2-3) -->
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
-    <link rel="preconnect" href="https://infoaidtech.vercel.app" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-    <link rel="dns-prefetch" href="https://infoaidtech.vercel.app" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- ✅ Fonts (optimized for performance) -->
+    <!-- ✅ Fonts (optimized with font-display: swap) -->
     <link
       rel="preload"
       as="style"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <noscript>
       <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
@@ -92,31 +84,7 @@
       />
     </noscript>
 
-    <!-- ✅ Material Icons (defer loading) -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all';this.onload=null;"
-    />
-
-    <!-- ✅ Icon Libraries (lazy load) -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.lineicons.com/5.0/lineicons.css"
-      media="print"
-      onload="this.media='all';this.onload=null;"
-    />
-
-    <!-- ✅ Bootstrap Icons (lazy load) -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-      media="print"
-      onload="this.media='all';this.onload=null;"
-    />
-
-    <!-- ✅ Font Awesome (lazy load) -->
+    <!-- ✅ Font Awesome (deferred for non-blocking render) -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -154,11 +122,19 @@
       }
 
       // Load on interaction to pass PageSpeed checks
-      ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(evt) {
+      ['scroll', 'mousemove', 'touchstart', 'click', 'keydown'].forEach(function(evt) {
         window.addEventListener(evt, loadThirdPartyScripts, { once: true, passive: true });
       });
-      // Fallback loader
-      setTimeout(loadThirdPartyScripts, 5000);
+      // Fallback loader on idle after page is completely interactive
+      window.addEventListener('load', function() {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function() {
+            setTimeout(loadThirdPartyScripts, 8000);
+          }, { timeout: 12000 });
+        } else {
+          setTimeout(loadThirdPartyScripts, 10000);
+        }
+      });
     </script>
 
     <!-- ✅ JSON-LD Structured Data -->
@@ -185,168 +161,9 @@
         }
       }
     </script>
-
-    <!-- ✅ Instant CSS Loader (shows immediately before Angular loads) -->
-    <style>
-      #instant-loader {
-        position: fixed; /* stays within the relative parent */
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 1);
-        backdrop-filter: blur(5px);
-
-        z-index: 50;
-      }
-
-      #instant-loader.loaded {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease-out; /* Faster transition */
-      }
-
-      .pl {
-        width: 3em; /* Reduced size for faster rendering */
-        height: 3em;
-      }
-
-      .pl__ring {
-        animation: ringA 1.5s linear infinite; /* Faster animation */
-      }
-
-      .pl__ring--a {
-        stroke: #f42f25;
-      }
-
-      .pl__ring--b {
-        animation-name: ringB;
-        stroke: #f49725;
-      }
-
-      .pl__ring--c {
-        animation-name: ringC;
-        stroke: #255ff4;
-      }
-
-      .pl__ring--d {
-        animation-name: ringD;
-        stroke: #f42582;
-      }
-
-      /* Simplified animations for better performance */
-      @keyframes ringA {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes ringB {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes ringC {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes ringD {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
   </head>
 
   <body>
-    <!-- Instant Loader (hidden when Angular is ready) -->
-    <div id="instant-loader">
-      <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
-        <circle
-          class="pl__ring pl__ring--a"
-          cx="120"
-          cy="120"
-          r="105"
-          fill="none"
-          stroke="#000"
-          stroke-width="20"
-          stroke-dasharray="0 660"
-          stroke-dashoffset="-330"
-          stroke-linecap="round"
-        ></circle>
-        <circle
-          class="pl__ring pl__ring--b"
-          cx="120"
-          cy="120"
-          r="35"
-          fill="none"
-          stroke="#000"
-          stroke-width="20"
-          stroke-dasharray="0 220"
-          stroke-dashoffset="-110"
-          stroke-linecap="round"
-        ></circle>
-        <circle
-          class="pl__ring pl__ring--c"
-          cx="85"
-          cy="120"
-          r="70"
-          fill="none"
-          stroke="#000"
-          stroke-width="20"
-          stroke-dasharray="0 440"
-          stroke-linecap="round"
-        ></circle>
-        <circle
-          class="pl__ring pl__ring--d"
-          cx="155"
-          cy="120"
-          r="70"
-          fill="none"
-          stroke="#000"
-          stroke-width="20"
-          stroke-dasharray="0 440"
-          stroke-linecap="round"
-        ></circle>
-      </svg>
-    </div>
-
     <app-root></app-root>
-
-    <!-- Hide instant loader when Angular is ready -->
-    <script>
-      // Hide loader after Angular bootstrap or after a short delay
-      window.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-          var loader = document.getElementById("instant-loader");
-          if (loader) {
-            loader.classList.add("loaded");
-            // Remove from DOM after transition
-            setTimeout(function () {
-              loader.remove();
-            }, 300);
-          }
-        }, 500); // Adjust timing as needed
-      });
-    </script>
   </body>
 </html>

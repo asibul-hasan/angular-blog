@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Title, Meta } from '@angular/platform-browser';
 import JSZip from 'jszip';
 import { HttpClient } from '@angular/common/http';
+import { SeoService } from '../../../../shared/services/seo/seo.service';
 
 // --- Interfaces ---
 interface ImageFile {
@@ -58,6 +59,7 @@ export class ImageConverterComponent implements OnInit {
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
   private readonly http = inject(HttpClient);
+  private readonly seo = inject(SeoService);
 
   // --- Signals ---
   readonly files = signal<ImageFile[]>([]);
@@ -111,11 +113,13 @@ export class ImageConverterComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.titleService.setTitle('Free Image Converter Pro - Convert & Compress Locally');
-    this.metaService.addTags([
-      { name: 'description', content: 'Convert JPG, PNG, WebP, AVIF, BMP, ICO, TIFF, GIF images locally in your browser. Free, secure, fast.' },
-      { name: 'keywords', content: 'image converter, jpg to png, webp to jpg, avif converter, ico converter, bmp converter' }
-    ]);
+    this.seo.updateTags({
+      title: 'Free Image Converter Pro — Convert & Compress JPG, PNG, WebP, AVIF Locally',
+      description: 'Convert and compress JPG, PNG, WebP, AVIF, BMP, ICO, TIFF, and GIF images locally in your browser. 100% private, instant, and secure batch conversion.',
+      url: 'https://infoaidtech.net/image-converter',
+      type: 'website',
+      keywords: 'image converter, jpg to png, webp to jpg, avif converter, ico converter, bmp converter, local image compressor, client-side converter',
+    });
     this.http.get<PageData>('/assets/data/image-converter-data.json').subscribe({
       next: (data) => this.pageData.set(data),
       error: (error) => console.error('Error loading page data:', error)

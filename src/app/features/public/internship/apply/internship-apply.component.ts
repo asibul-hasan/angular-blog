@@ -38,13 +38,14 @@ export class InternshipApplyComponent {
 
         // SEO tags
         this.seo.updateTags({
-            title: 'Apply for Internship',
+            title: 'Apply for Internship — Kickstart Your Tech Career',
             description:
-                'Apply for an internship at InfoAidTech and kickstart your career in technology.',
+                'Apply for an internship at InfoAidTech. Gain real-world software engineering, web development, and digital technology experience.',
             image:
                 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-            slug: origin,
+            url: 'https://infoaidtech.net/internship/apply',
             type: 'website',
+            keywords: 'internship apply, tech internship, software intern, web developer internship, InfoAidTech internship',
         });
 
         // Initialize form

@@ -82,7 +82,10 @@ export class Footer implements OnInit {
             path: '/ghost-rewrite',
             label: 'Ghost Rewrite',
           },
-          { path: '/aidly-erp', label: 'Aidly ERP' },
+          {
+            path: '/conventional-commit-generator',
+            label: 'Commit Generator',
+          },
         ],
       },
     ];

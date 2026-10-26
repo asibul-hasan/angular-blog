@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '../../core/guards/admin.guard';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
+    providers: [provideCharts(withDefaultRegisterables())],
     loadComponent: () => import('./dashboard-layout/dashboard-layout.component').then(c => c.DashboardLayoutComponent),
     children: [
       {

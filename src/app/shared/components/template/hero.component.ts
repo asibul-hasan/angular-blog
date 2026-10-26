@@ -7,14 +7,6 @@ import {
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { LanguageService } from '../../services/language/lang.service';
-import {
-  trigger,
-  style,
-  transition,
-  animate,
-  query,
-  stagger,
-} from '@angular/animations';
 
 @Component({
   selector: 'app-hero-section',
@@ -78,7 +70,7 @@ import {
 
       <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 grid lg:grid-cols-12 gap-12 items-center">
         <!-- Content Column -->
-        <div class="lg:col-span-6" [@staggerText]>
+        <div class="lg:col-span-6">
           <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold tracking-widest uppercase text-[#f76179] mb-8">
             <span class="w-2 h-2 rounded-full bg-[#f76179] animate-pulse inline-block"></span>
             {{ langService.lang.welcomeToInfoAidTech || 'Welcome to InfoAidTech' }}
@@ -124,13 +116,14 @@ import {
         </div>
 
         <!-- Image Column -->
-        <div class="lg:col-span-6 relative" [@fadeIn]>
+        <div class="lg:col-span-6 relative">
           <!-- Glow behind image -->
           <div class="absolute inset-0 bg-[#f76179]/20 blur-[100px] rounded-full"></div>
           
           <div class="relative rounded-[40px] overflow-hidden p-2"
                style="background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.1)">
-             <img ngSrc="https://res.cloudinary.com/dfcir8epp/image/upload/v1755598681/infoaidtech-hero-img_jfmruv.webp" 
+             <img ngSrc="v1755598681/infoaidtech-hero-img_jfmruv.webp" 
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   alt="InfoAidTech Hero" class="w-full h-auto rounded-[32px] object-cover" width="1200" height="800" priority />
           </div>
 
@@ -157,25 +150,7 @@ import {
         </div>
       </div>
     </section>
-  `,
-  animations: [
-    trigger('staggerText', [
-      transition(':enter', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'translateY(20px)' }),
-          stagger('150ms', [
-            animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-          ])
-        ], { optional: true })
-      ])
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0.95)' }),
-        animate('800ms 300ms cubic-bezier(0.2, 0.8, 0.2, 1)', style({ opacity: 1, transform: 'scale(1)' }))
-      ])
-    ])
-  ]
+  `
 })
 export class HeroComponent {
   mouseX: number = 50;

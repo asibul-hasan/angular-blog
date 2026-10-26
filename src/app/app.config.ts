@@ -21,12 +21,12 @@ import {
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
 import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideCloudinaryLoader } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideCharts(withDefaultRegisterables()),
+    provideCloudinaryLoader('https://res.cloudinary.com/dfcir8epp'),
     provideZoneChangeDetection({
       eventCoalescing: true,
       runCoalescing: true // Improved performance

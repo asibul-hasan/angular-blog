@@ -1,101 +1,52 @@
-<!-- Modern 3D Dashboard -->
-<div class="dashboard-3d-container">
-  <!-- Hero Section with 3D Title -->
-  <div class="hero-section">
-    <h1 class="title-3d">
-      <span class="text-gradient">Dashboard</span>
-      <span class="title-subtitle">Analytics & Insights</span>
-    </h1>
-    <div class="floating-particles">
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-    </div>
-  </div>
+<!-- Enterprise Dashboard Container -->
+<div class="space-y-6 w-full animate-in fade-in duration-300">
+  <!-- Layer 1: Enterprise Header -->
+  <app-dashboard-header
+    [userName]="userName()"
+    [userRole]="userRole()"
+    [currentTimeframe]="currentTimeframe()"
+    (timeframeChange)="onTimeframeChange($event)"
+  ></app-dashboard-header>
 
-  <!-- KPI Cards with 3D Effect -->
-  <section class="kpi-section">
-    <app-kpi-dashboard></app-kpi-dashboard>
+  <!-- Layer 2: Tier 1 High-Density KPI Cards (5 Cards) -->
+  <section aria-label="Key Performance Indicators">
+    <app-dashboard-stat-cards
+      [metrics]="metrics()"
+    ></app-dashboard-stat-cards>
   </section>
 
-  <!-- Charts Grid with Glass Effect -->
-  <section class="charts-grid">
-    <!-- Traffic & Engagement -->
-    <div class="glass-card chart-card">
-      <div class="card-header">
-        <h3 class="card-title">Traffic & Engagement</h3>
-        <div class="card-icon">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <path d="M3 3v18h18" stroke-width="2" stroke-linecap="round" />
-            <path
-              d="M7 16l4-4 4 4 6-6"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
-      </div>
-      <app-traffic-engagement></app-traffic-engagement>
-    </div>
-
-    <!-- Impressions by Category -->
-    <div class="glass-card chart-card">
-      <div class="card-header">
-        <h3 class="card-title">Impressions by Category</h3>
-        <div class="card-icon">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <circle cx="12" cy="12" r="10" stroke-width="2" />
-            <path d="M12 2v10l6 6" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </div>
-      </div>
-      <app-impressions-category></app-impressions-category>
-    </div>
-
-    <!-- Category Distribution -->
-    <div class="glass-card chart-card">
-      <div class="card-header">
-        <h3 class="card-title">Category Distribution</h3>
-        <div class="card-icon">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <rect x="3" y="3" width="7" height="7" stroke-width="2" rx="1" />
-            <rect x="14" y="3" width="7" height="7" stroke-width="2" rx="1" />
-            <rect x="3" y="14" width="7" height="7" stroke-width="2" rx="1" />
-            <rect x="14" y="14" width="7" height="7" stroke-width="2" rx="1" />
-          </svg>
-        </div>
-      </div>
-      <app-category-distribution></app-category-distribution>
-    </div>
+  <!-- Layer 3: Visual Analytics Grid (8-col Velocity | 4-col Domain Breakdown) -->
+  <section aria-label="Visual Analytics & Velocity">
+    <app-dashboard-charts
+      [domainData]="domainDistribution()"
+      [blogCount]="metrics().publishedBlogs"
+      [internCount]="metrics().activeInterns"
+      [applicationsCount]="metrics().totalApplications"
+      [gaDailyTrajectory]="gaDailyTrajectory()"
+      [gaTotalViews]="metrics().totalViews"
+      [gaActiveUsers]="gaActiveUsers()"
+      [gaEngagementRate]="metrics().engagementRate"
+      [gaStatus]="gaStatus()"
+    ></app-dashboard-charts>
   </section>
 
-  <!-- Trending Blogs Table with Glass Effect -->
-  <section class="trending-section">
-    <div class="glass-card table-card">
-      <div class="card-header">
-        <h3 class="card-title">Trending Blog Posts</h3>
-        <div class="badge-3d">Last 7 Days</div>
-      </div>
-      <app-trending-blogs-table></app-trending-blogs-table>
-    </div>
+  <!-- Layer 4: Operational Review Queue & Quick Actions Pad (8-col Queue | 4-col Actions) -->
+  <section aria-label="Operational Action Queue and Shortcuts">
+    <app-dashboard-queue
+      [pendingTasks]="pendingTasks()"
+      [jobApplications]="jobApplications()"
+      [editorialDrafts]="editorialDrafts()"
+    ></app-dashboard-queue>
+  </section>
+
+  <!-- Layer 5: Content Intelligence & Security Telemetry (6-col Trending | 6-col Sessions) -->
+  <section aria-label="Content Performance and Security Sessions">
+    <app-dashboard-telemetry
+      [topPages]="topPages()"
+      [trafficSources]="trafficSources()"
+      [trendingArticles]="trendingArticles()"
+      [sessions]="sessions()"
+    ></app-dashboard-telemetry>
   </section>
 </div>
+

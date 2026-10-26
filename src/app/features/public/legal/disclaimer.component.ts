@@ -144,7 +144,7 @@ export class DisclaimerComponent {
         'disclaimer, infoaidtech disclaimer, legal notice, liability statement, website disclaimer, accuracy disclaimer, IT service disclaimer, terms of use, legal responsibility',
       image:
         'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
-      slug: `${origin}/disclaimer`,
+      url: 'https://infoaidtech.net/disclaimer',
       type: 'website',
     });
   }

@@ -1,131 +1,173 @@
-<div class="company-management-container">
-  <div class="header-section">
-    <h1 class="page-title">Company Management</h1>
-    <div class="actions">
-      <button class="btn btn-primary" (click)="openCreateModal()">
-        <i class="fa-solid fa-plus"></i> Create Company
-      </button>
+<!-- Corporate Organizations & Entities -->
+<div class="space-y-6 w-full animate-in fade-in duration-300">
+  <!-- Page Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2.5">
+        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">
+          Company & Entity Management
+        </h1>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+          {{ companies.length }} Corporate Profiles
+        </span>
+      </div>
+      <p class="text-slate-400 text-xs sm:text-sm mt-1">
+        Maintain corporate entities, legal registrations, and corporate contact profiles.
+      </p>
     </div>
+
+    <button
+      (click)="openCreateModal()"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-sky-900/30 transition-all cursor-pointer self-start md:self-auto"
+    >
+      <i class="fa-solid fa-plus text-[11px]"></i>
+      Create Organization
+    </button>
   </div>
 
-  <!-- Search Section -->
-  <div class="search-section">
-    <div class="search-container">
-      <i class="fa-solid fa-search search-icon"></i>
+  <!-- Search Strip -->
+  <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-sm flex items-center gap-3">
+    <div class="relative flex-1">
+      <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+        <i class="fa-solid fa-search"></i>
+      </div>
       <input
         type="text"
-        class="search-input"
-        placeholder="Search companies by name, industry, or email..."
+        placeholder="Search organizations by name, industry, legal entity, or contact email..."
         [value]="searchTerm"
-        (input)="searchTerm = $event.target.value; searchCompanies()"
+        (input)="searchTerm = $any($event.target).value; searchCompanies()"
+        class="w-full pl-9 pr-9 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs placeholder-slate-500 focus:outline-none focus:border-sky-500/50 transition-colors"
       />
       <button
-        class="btn btn-clear"
         *ngIf="searchTerm"
         (click)="searchTerm = ''; searchCompanies()"
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white text-xs cursor-pointer"
       >
-        <i class="fa-solid fa-times"></i>
+        <i class="fa-solid fa-xmark"></i>
       </button>
+    </div>
+
+    <div class="text-xs text-slate-400 font-mono hidden sm:block">
+      Found <strong class="text-white">{{ filteredCompanies.length }}</strong> entities
     </div>
   </div>
 
-  <div class="content-container" *ngIf="!isLoading; else loadingTemplate">
-    <!-- No Companies State -->
-    <div *ngIf="filteredCompanies.length === 0" class="no-company-state">
-      <div class="illustration">
-        <i class="fa-solid fa-building fa-3x"></i>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-24 rounded-2xl bg-slate-900/40 border border-slate-800/80">
+    <div class="w-10 h-10 border-3 border-sky-500/20 border-t-sky-400 rounded-full animate-spin mb-3"></div>
+    <span class="text-xs text-slate-400 font-medium">Querying organizational directory...</span>
+  </div>
+
+  <!-- Content State -->
+  <div *ngIf="!isLoading">
+    <!-- Empty State -->
+    <div
+      *ngIf="filteredCompanies.length === 0"
+      class="py-16 px-6 rounded-2xl bg-slate-900/60 border border-slate-800 text-center flex flex-col items-center justify-center max-w-md mx-auto"
+    >
+      <div class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 text-slate-500 flex items-center justify-center text-xl mb-3">
+        <i class="fa-solid fa-building"></i>
       </div>
-      <h2>No Companies Found</h2>
-      <p *ngIf="searchTerm; else noCompanies">
-        No companies match your search criteria. Try adjusting your search.
+      <h3 class="font-bold text-white text-sm mb-1">No Organizations Found</h3>
+      <p class="text-xs text-slate-400 mb-4" *ngIf="searchTerm">
+        No companies matched "{{ searchTerm }}". Try adjusting your search query.
       </p>
-      <ng-template #noCompanies>
-        <p>
-          You haven't created any company profiles yet. Get started by creating
-          one now.
-        </p>
-      </ng-template>
-      <button class="btn btn-primary" (click)="openCreateModal()">
-        <i class="fa-solid fa-plus"></i> Create Company
+      <p class="text-xs text-slate-400 mb-4" *ngIf="!searchTerm">
+        No corporate entities have been registered yet. Create your first profile to begin.
+      </p>
+      <button
+        (click)="openCreateModal()"
+        class="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-sky-900/30 transition-all cursor-pointer"
+      >
+        Register Organization
       </button>
     </div>
 
-    <!-- Companies List -->
-    <div *ngIf="filteredCompanies.length > 0" class="companies-list">
-      <div class="company-card" *ngFor="let company of filteredCompanies">
-        <div class="company-header">
-          <div class="company-info">
-            <h3>{{ company.name }}</h3>
-            <p class="company-industry" *ngIf="company.industry">
-              {{ company.industry }}
-            </p>
-          </div>
-          <div
-            class="company-status status-{{ company.status?.toLowerCase() }}"
-          >
-            {{ company.status }}
-          </div>
-        </div>
+    <!-- Company Grid Cards -->
+    <div *ngIf="filteredCompanies.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div
+        *ngFor="let company of filteredCompanies"
+        class="group rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/40 p-5 shadow-sm hover:shadow-lg hover:shadow-sky-950/20 transition-all flex flex-col justify-between"
+      >
+        <div>
+          <!-- Card Header -->
+          <div class="flex items-start justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/20 to-blue-600/20 border border-sky-500/30 text-sky-400 flex items-center justify-center text-sm font-bold flex-shrink-0 group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-building"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">
+                  {{ company.name }}
+                </h3>
+                <span *ngIf="company.industry" class="text-[10px] text-slate-400 font-medium">
+                  {{ company.industry }}
+                </span>
+              </div>
+            </div>
 
-        <div class="company-details">
-          <div class="detail-row">
-            <span class="label">Legal Name:</span>
-            <span class="value">{{ company.legalName || "N/A" }}</span>
-          </div>
-
-          <div class="detail-row">
-            <span class="label">Contact:</span>
-            <span class="value">{{ company.contact?.email || "N/A" }}</span>
-          </div>
-
-          <div class="detail-row">
-            <span class="label">Type:</span>
-            <span class="value">{{ company.type }}</span>
-          </div>
-
-          <div class="detail-row">
-            <span class="label">Founded:</span>
-            <span class="value">
-              {{
-                company.foundedDate
-                  ? (company.foundedDate | date : "mediumDate")
-                  : "N/A"
-              }}
+            <span
+              class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
+              [ngClass]="company.status?.toLowerCase() === 'active' 
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                : 'bg-slate-800 text-slate-400 border-slate-700'"
+            >
+              {{ company.status || 'Active' }}
             </span>
           </div>
+
+          <!-- Entity Parameters -->
+          <div class="space-y-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Legal Name:</span>
+              <span class="text-slate-300 font-semibold truncate max-w-[180px]">{{ company.legalName || "N/A" }}</span>
+            </div>
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Email:</span>
+              <span class="text-slate-300 font-mono truncate max-w-[180px]">{{ company.contact?.email || "N/A" }}</span>
+            </div>
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Entity Type:</span>
+              <span class="text-sky-400 font-semibold uppercase text-[10px]">{{ company.type || 'Enterprise' }}</span>
+            </div>
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-500 font-medium">Founded:</span>
+              <span class="text-slate-400 font-mono">
+                {{ company.foundedDate ? (company.foundedDate | date : "MMM d, y") : "N/A" }}
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div class="company-actions">
+        <!-- Card Footer Actions -->
+        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5">
+            <button
+              (click)="openViewModal(company)"
+              class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <i class="fa-solid fa-eye text-[10px]"></i>
+              View
+            </button>
+            <button
+              (click)="openEditModal(company)"
+              class="px-2.5 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/20 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+              Edit
+            </button>
+          </div>
+
           <button
-            class="btn btn-sm btn-outline"
-            (click)="openViewModal(company)"
-          >
-            <i class="fa-solid fa-eye"></i> View
-          </button>
-          <button
-            class="btn btn-sm btn-primary"
-            (click)="openEditModal(company)"
-          >
-            <i class="fa-solid fa-pen-to-square"></i> Edit
-          </button>
-          <button
-            class="btn btn-sm btn-danger"
             (click)="deleteCompany(company)"
+            class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs transition-colors cursor-pointer"
+            title="Delete Organization"
           >
-            <i class="fa-solid fa-trash"></i> Delete
+            <i class="fa-solid fa-trash-can text-[10px]"></i>
           </button>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Loading Template -->
-  <ng-template #loadingTemplate>
-    <div class="loading-container">
-      <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-      <p>Loading companies...</p>
-    </div>
-  </ng-template>
 </div>

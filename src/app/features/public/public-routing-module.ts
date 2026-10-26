@@ -109,6 +109,18 @@ const routes: Routes = [
             (c) => c.AidlyErpComponent
           ),
       },
+      {
+        path: 'conventional-commit-generator',
+        loadComponent: () =>
+          import(
+            './products/conventional-commit-generator/conventional-commit-generator.component'
+          ).then((c) => c.ConventionalCommitGeneratorComponent),
+      },
+      {
+        path: 'commit-generator',
+        redirectTo: 'conventional-commit-generator',
+        pathMatch: 'full',
+      },
       // Internship routes
       {
         path: 'internship/apply',

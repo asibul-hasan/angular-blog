@@ -1,11 +1,47 @@
-<div class="bg-slate-950 min-h-screen">
-  <!-- Sidebar -->
+<div class="bg-slate-950 min-h-screen relative overflow-x-hidden">
+  <!-- Mobile Backdrop Overlay -->
+  @if (layoutService.isMobileMenuOpen()) {
+    <div
+      (click)="layoutService.closeMobileMenu()"
+      class="fixed inset-0 bg-black/75 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
+      aria-label="Close navigation overlay"
+    ></div>
+  }
+
+  <!-- Sidebar Component (Responsive Drawer) -->
   <app-sidebar></app-sidebar>
 
-  <!-- Main Content Wrapper -->
+  <!-- Mobile Top Bar (Visible only on < md screens) -->
+  <header class="flex md:hidden items-center justify-between px-4 py-3 bg-slate-950/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-20">
+    <button
+      type="button"
+      (click)="layoutService.toggleMobileMenu()"
+      class="p-2 -ml-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
+      aria-label="Toggle navigation menu"
+    >
+      <i class="fa-solid fa-bars text-lg"></i>
+    </button>
+
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-sm font-black tracking-wider uppercase bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+        InfoAidTech
+      </span>
+    </div>
+
+    <a
+      routerLink="/dashboard/user-management/my-profile"
+      class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs font-bold text-white shadow-md hover:scale-105 transition-transform"
+      title="My Profile"
+    >
+      {{ userInitials }}
+    </a>
+  </header>
+
+  <!-- Main Content Wrapper: ml-0 on mobile, md:ml-[315px] or md:ml-[64px] on desktop -->
   <main
     [class]="'transition-all duration-300 min-h-screen ' + 
-             (layoutService.isSidebarExpanded() ? 'ml-64' : 'ml-20')"
+             (layoutService.isSidebarExpanded() ? 'md:ml-[315px]' : 'md:ml-[64px]')"
   >
     <!-- Background Accents (Global) -->
     <div class="pointer-events-none fixed inset-0 overflow-hidden">
@@ -13,9 +49,10 @@
       <div class="absolute bottom-[-5%] right-[-5%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]"></div>
     </div>
 
-    <!-- Content Area -->
-    <div class="relative z-10 p-4 lg:p-6">
+    <!-- Content Area: Fluid and responsive padding -->
+    <div class="relative z-10 p-3 sm:p-5 lg:p-7 max-w-[1920px] mx-auto w-full">
       <router-outlet></router-outlet>
     </div>
   </main>
 </div>
+

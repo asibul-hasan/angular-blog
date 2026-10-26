@@ -21,6 +21,8 @@ export interface InternProfile {
   status: 'pending' | 'active' | 'completed' | 'terminated';
   startDate: string;
   certificateId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface InternTask {

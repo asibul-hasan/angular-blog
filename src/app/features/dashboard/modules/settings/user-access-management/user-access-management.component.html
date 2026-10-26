@@ -1,120 +1,126 @@
-<div class="p-6">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-white">User Access Management</h1>
+<!-- User Access & Governance Matrix -->
+<div class="space-y-6 w-full animate-in fade-in duration-300">
+  <!-- Page Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2.5">
+        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">
+          User Access Matrix
+        </h1>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+          {{ users.length }} Authorized Accounts
+        </span>
+      </div>
+      <p class="text-slate-400 text-xs sm:text-sm mt-1">
+        Manage role-based privileges, credential states, and administrative permissions.
+      </p>
+    </div>
   </div>
 
-  <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-6">
-    <div class="p-4 border-b border-gray-700">
-      <div
-        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-      >
-        <div class="flex-1">
-          <div class="relative">
-            <input
-              type="text"
-              placeholder="Search users..."
-              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
-            />
-            <i
-              class="fa-solid fa-search absolute left-3 top-3 text-gray-400"
-            ></i>
-          </div>
-        </div>
-        <div class="flex space-x-2">
-          <select
-            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option>All Roles</option>
-            <option>Admin</option>
-            <option>Superadmin</option>
-            <option>Recruiter</option>
-            <option>Employer</option>
-            <option>HR</option>
-            <option>Manager</option>
-            <option>Support</option>
-          </select>
+  <!-- Search & Filter Bar -->
+  <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+    <div class="relative flex-1">
+      <div class="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">
+        <i class="fa-solid fa-search"></i>
+      </div>
+      <input
+        type="text"
+        placeholder="Filter accounts by name or email address..."
+        class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs placeholder-slate-500 focus:outline-none focus:border-purple-500/50 transition-colors"
+      />
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="relative">
+        <select
+          class="pl-3 pr-8 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-xs focus:outline-none focus:border-purple-500/50 appearance-none transition-colors"
+        >
+          <option>All Security Roles</option>
+          <option>Admin</option>
+          <option>Superadmin</option>
+          <option>Recruiter</option>
+          <option>Employer</option>
+          <option>HR</option>
+          <option>Manager</option>
+          <option>Support</option>
+        </select>
+        <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
+          <i class="fa-solid fa-chevron-down"></i>
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- Accounts Roster Table -->
+  <div class="rounded-2xl bg-slate-900/80 border border-slate-800 overflow-hidden shadow-lg shadow-black/20">
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-700">
-        <thead class="bg-gray-700">
-          <tr>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-            >
-              User
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-            >
-              Email
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-            >
-              Role
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-            >
-              Status
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider"
-            >
-              Actions
-            </th>
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-slate-800/80 bg-slate-950/40 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <th class="py-3 px-4">User Identity</th>
+            <th class="py-3 px-4">Email Address</th>
+            <th class="py-3 px-4">Assigned Role</th>
+            <th class="py-3 px-4 text-center">Account State</th>
+            <th class="py-3 px-4 text-right">Actions</th>
           </tr>
         </thead>
-        <tbody class="bg-gray-800 divide-y divide-gray-700">
-          <tr *ngFor="let user of users">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10">
-                  <div
-                    class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white"
-                  >
-                    {{ user.name.charAt(0) }}
-                  </div>
+        <tbody class="divide-y divide-slate-800/60 text-xs">
+          <tr *ngFor="let user of users" class="hover:bg-slate-800/30 transition-colors group">
+            <td class="py-3.5 px-4">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border border-purple-500/30 text-purple-400 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                  {{ user.name.charAt(0) }}
                 </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-white">
-                    {{ user.name }}
-                  </div>
+                <div class="font-bold text-white text-xs group-hover:text-purple-300 transition-colors">
+                  {{ user.name }}
                 </div>
               </div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+
+            <td class="py-3.5 px-4 text-slate-300 font-mono text-[11px]">
               {{ user.email }}
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
-              >
+
+            <td class="py-3.5 px-4">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-500/10 text-purple-400 border border-purple-500/20 inline-flex items-center gap-1">
+                <i class="fa-solid fa-shield-halved text-[9px]"></i>
                 {{ user.role }}
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
+
+            <td class="py-3.5 px-4 text-center">
               <span
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                [ngClass]="
-                  user.isActive
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
-                "
+                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border inline-flex items-center gap-1.5"
+                [ngClass]="user.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20'"
               >
-                {{ user.isActive ? "Active" : "Inactive" }}
+                <span class="w-1.5 h-1.5 rounded-full" [ngClass]="user.isActive ? 'bg-emerald-400' : 'bg-rose-400'"></span>
+                {{ user.isActive ? "Active" : "Disabled" }}
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+
+            <td class="py-3.5 px-4 text-right">
               <button
                 (click)="manageAccess(user)"
-                class="text-blue-400 hover:text-blue-300 mr-3"
+                class="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 text-purple-400 text-xs font-semibold inline-flex items-center gap-1.5 transition-all cursor-pointer"
               >
-                Manage Access
+                <i class="fa-solid fa-key text-[10px]"></i>
+                Configure
               </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="users.length === 0">
+            <td colspan="5" class="py-16 text-center">
+              <div class="flex flex-col items-center justify-center max-w-sm mx-auto">
+                <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-slate-700 text-slate-500 flex items-center justify-center text-lg mb-3">
+                  <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="font-bold text-white text-sm mb-1">No Accounts Registered</h3>
+                <p class="text-xs text-slate-400">
+                  User accounts will display here when provisioned.
+                </p>
+              </div>
             </td>
           </tr>
         </tbody>

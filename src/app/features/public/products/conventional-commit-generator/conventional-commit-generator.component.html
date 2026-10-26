@@ -1,0 +1,446 @@
+<div class="pt-28 pb-16 px-4 md:px-8 max-w-7xl mx-auto text-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="mb-8 text-center max-w-3xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-linear-to-r from-[var(--color-accent)]/15 to-pink-500/10 border border-[var(--color-accent)]/30 text-xs font-semibold text-[var(--color-accent)] mb-3 tracking-wide uppercase">
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Conventional Commits v1.0.0 Formatter
+    </div>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-3">
+      Conventional Commit <span class="bg-gradient-to-r from-[var(--color-accent)] via-pink-400 to-rose-400 bg-clip-text text-transparent">Generator</span>
+    </h1>
+    <p class="text-sm sm:text-base text-gray-400 max-w-2xl mx-auto">
+      Type a casual change description. The tool automatically detects the commit type, scope, imperative title, and description.
+    </p>
+  </header>
+
+  <!-- Main Generator Workspace -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- LEFT: Input Area (Col-span 5) -->
+    <div class="lg:col-span-5 space-y-4">
+      <div class="bg-gray-950/90 backdrop-blur-xl border border-gray-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-xs uppercase tracking-wider font-semibold text-gray-300 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-[var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Change Description
+          </label>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 font-mono">{{ rawInput().length }} chars</span>
+            <button
+              type="button"
+              (click)="clearAll()"
+              class="text-xs text-gray-400 hover:text-rose-400 transition-colors cursor-pointer"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <textarea
+          [ngModel]="rawInput()"
+          (ngModelChange)="onRawInputChange($event)"
+          rows="5"
+          placeholder="e.g. fixed the login button not working on mobile devices, refs #42..."
+          class="w-full bg-gray-900/90 text-gray-100 placeholder-gray-400 text-sm font-sans rounded-xl p-3.5 border border-gray-700/60 focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)]/50 outline-none transition-all resize-y shadow-inner"
+        ></textarea>
+
+        <!-- Auto-detected status & AI polish button -->
+        <div class="mt-4 pt-3 border-t border-gray-800/80 flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
+            <span class="text-gray-400">Auto-Identified:</span>
+            <span
+              class="px-2.5 py-1 rounded-md font-mono font-bold text-xs"
+              [ngClass]="getTypeInfo(autoAnalysis().type).bgClass + ' ' + getTypeInfo(autoAnalysis().type).textClass + ' border ' + getTypeInfo(autoAnalysis().type).borderClass"
+            >
+              {{ autoAnalysis().type }}<span *ngIf="autoAnalysis().scope">({{ autoAnalysis().scope }})</span><span *ngIf="autoAnalysis().breaking">!</span>
+            </span>
+          </div>
+
+          <button
+            type="button"
+            (click)="polishWithAI()"
+            [disabled]="isAiLoading() || !rawInput().trim()"
+            class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-accent)] to-rose-600 hover:from-[var(--color-accent)]/90 hover:to-rose-500 text-white text-xs font-semibold shadow-lg shadow-[var(--color-accent)]/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer group"
+          >
+            <svg
+              *ngIf="!isAiLoading()"
+              class="w-4 h-4 transition-transform group-hover:rotate-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <svg
+              *ngIf="isAiLoading()"
+              class="w-4 h-4 animate-spin"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>{{ isAiLoading() ? 'Polishing with Gemini...' : 'Polish with Gemini AI' }}</span>
+          </button>
+
+          <!-- Error notice if AI fails -->
+          <div *ngIf="aiErrorMessage()" class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs">
+            {{ aiErrorMessage() }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: 4 Output & Copy Options (Col-span 7) -->
+    <div class="lg:col-span-7 space-y-4">
+
+      <!-- BOX 1: Copy Title -->
+      <div class="bg-gray-950/90 backdrop-blur-xl border border-gray-800 rounded-2xl p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center">1</span>
+            <label class="text-xs uppercase tracking-wider font-semibold text-gray-200">
+              Commit Title (Subject)
+            </label>
+          </div>
+          <span
+            class="text-[11px] font-mono px-2 py-0.5 rounded-full font-bold"
+            [ngClass]="
+              displayTitle().length <= 50
+                ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                : displayTitle().length <= 72
+                ? 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/30'
+                : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+            "
+          >
+            {{ displayTitle().length }}/50 chars
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input
+            type="text"
+            [ngModel]="displayTitle()"
+            (ngModelChange)="onTitleChange($event)"
+            placeholder="Commit title will appear here..."
+            class="flex-1 bg-gray-900/90 text-gray-100 font-mono text-sm rounded-xl px-3.5 py-2.5 border border-gray-700/60 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 outline-none transition-all shadow-inner"
+          />
+          <button
+            type="button"
+            (click)="copyTitle()"
+            [disabled]="!displayTitle().trim()"
+            class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-200 hover:text-white border border-gray-700 text-xs font-semibold active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg *ngIf="!copiedTitle()" class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            <svg *ngIf="copiedTitle()" class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ copiedTitle() ? 'Copied!' : 'Copy Title' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- BOX 2: Copy Description -->
+      <div class="bg-gray-950/90 backdrop-blur-xl border border-gray-800 rounded-2xl p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-sky-500/20 text-sky-400 font-bold text-xs flex items-center justify-center">2</span>
+            <label class="text-xs uppercase tracking-wider font-semibold text-gray-200">
+              Commit Description (Body)
+            </label>
+          </div>
+          <button
+            type="button"
+            (click)="copyDescription()"
+            [disabled]="!displayDescription().trim()"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-200 hover:text-white border border-gray-700 text-xs font-semibold active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg *ngIf="!copiedDescription()" class="w-4 h-4 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            <svg *ngIf="copiedDescription()" class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ copiedDescription() ? 'Copied!' : 'Copy Description' }}</span>
+          </button>
+        </div>
+
+        <textarea
+          [ngModel]="displayDescription()"
+          (ngModelChange)="onDescriptionChange($event)"
+          rows="3"
+          placeholder="Commit body and issue references..."
+          class="w-full bg-gray-900/90 text-gray-200 font-mono text-xs rounded-xl p-3 border border-gray-700/60 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/50 outline-none transition-all resize-y shadow-inner"
+        ></textarea>
+      </div>
+
+      <!-- BOX 3: Copy Full Message (Title + Description) -->
+      <div class="bg-gray-950/90 backdrop-blur-xl border border-gray-800 rounded-2xl p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xs flex items-center justify-center">3</span>
+            <label class="text-xs uppercase tracking-wider font-semibold text-gray-200">
+              Full Message (Title + Description)
+            </label>
+          </div>
+          <button
+            type="button"
+            (click)="copyFullMessage()"
+            [disabled]="!fullCommitMessage().trim()"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[var(--color-accent)] to-rose-600 hover:from-[var(--color-accent)]/90 hover:to-rose-500 text-white text-xs font-semibold shadow-md active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg *ngIf="!copiedFull()" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            <svg *ngIf="copiedFull()" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ copiedFull() ? 'Copied Full Message!' : 'Copy Title + Description' }}</span>
+          </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-gray-900/80 border border-gray-800 text-xs font-mono text-gray-300 whitespace-pre-wrap select-all leading-relaxed max-h-36 overflow-y-auto">
+          {{ fullCommitMessage() || 'No commit message generated yet.' }}
+        </div>
+      </div>
+
+      <!-- BOX 4: Copy Git Command (git commit -m) -->
+      <div class="bg-gray-950/90 backdrop-blur-xl border border-gray-800 rounded-2xl p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xs flex items-center justify-center">4</span>
+            <label class="text-xs uppercase tracking-wider font-semibold text-gray-200">
+              Terminal Command (<code class="text-amber-400 font-mono">git commit -m</code>)
+            </label>
+          </div>
+          <button
+            type="button"
+            (click)="copyGitCommand()"
+            [disabled]="!displayTitle().trim()"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-200 hover:text-white border border-gray-700 text-xs font-semibold active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg *ngIf="!copiedGitCommand()" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <svg *ngIf="copiedGitCommand()" class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ copiedGitCommand() ? 'Copied Command!' : 'Copy git commit -m' }}</span>
+          </button>
+        </div>
+
+        <div class="p-3 bg-gray-900/90 rounded-xl text-emerald-400 font-mono text-xs break-all border border-gray-800 select-all shadow-inner">
+          {{ gitCommand() }}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SEO-FRIENDLY COMPREHENSIVE EXPLANATION & KNOWLEDGE BASE SECTION -->
+  <!-- ============================================================== -->
+  <article class="mt-16 pt-12 border-t border-gray-800/80 space-y-12">
+
+    <!-- Section 1: Overview & Specification Anatomy -->
+    <section>
+      <div class="max-w-3xl mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 flex items-center gap-2.5">
+          <span class="w-2.5 h-6 rounded-full bg-[var(--color-accent)] inline-block"></span>
+          What is a Conventional Commit? (v1.0.0 Specification)
+        </h2>
+        <p class="text-sm sm:text-base text-gray-300 leading-relaxed">
+          The <strong>Conventional Commits specification</strong> is a lightweight, standardized convention established on top of Git commit messages. It introduces an explicit, machine-readable syntax that makes Git histories cleaner, easier to navigate, and fully compatible with automated versioning systems such as <em>Semantic Versioning (SemVer)</em>.
+        </p>
+      </div>
+
+      <!-- Anatomy Blueprint Card -->
+      <div class="p-6 rounded-2xl bg-gray-950/80 border border-gray-800 shadow-xl font-mono text-xs leading-relaxed text-gray-300">
+        <div class="text-gray-400 uppercase text-[11px] font-sans font-bold tracking-wider mb-3">
+          Conventional Commit Structure
+        </div>
+        <div class="p-4 rounded-xl bg-gray-900/90 border border-gray-800/80 space-y-2 overflow-x-auto">
+          <div>
+            <span class="text-emerald-400 font-bold">&lt;type&gt;</span><span class="text-purple-400">[optional scope]</span><span class="text-rose-400 font-bold">[!]</span><span class="text-gray-400">: </span><span class="text-white font-medium">&lt;description in imperative mood&gt;</span>
+          </div>
+          <div class="text-gray-500">
+            [optional blank line]
+          </div>
+          <div class="text-sky-300">
+            [optional body: detailed explanation of motivation and changes]
+          </div>
+          <div class="text-gray-500">
+            [optional blank line]
+          </div>
+          <div class="text-amber-400">
+            [optional footer(s): BREAKING CHANGE: &lt;note&gt; or Refs #123 / Fixes #42]
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: The 4-Stage Automated Pipeline -->
+    <section>
+      <div class="max-w-3xl mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 flex items-center gap-2.5">
+          <span class="w-2.5 h-6 rounded-full bg-purple-500 inline-block"></span>
+          How the 4-Stage Analysis Pipeline Works
+        </h2>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          When you paste raw, casual text into our generator, it passes through four discrete linguistic processing stages to produce clean, compliant commits:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="p-5 rounded-2xl bg-gray-950/80 border border-gray-800 hover:border-gray-700 transition-all shadow-md">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-sm mb-3">
+            01
+          </div>
+          <h3 class="text-base font-semibold text-white mb-2">Type Detection</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Evaluates keywords to identify commit intent: <code class="text-emerald-400">fix</code> for bug resolutions, <code class="text-emerald-400">feat</code> for new features, <code class="text-emerald-400">refactor</code> for architectural updates, and <code class="text-emerald-400">build</code> for package upgrades.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-gray-950/80 border border-gray-800 hover:border-gray-700 transition-all shadow-md">
+          <div class="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold text-sm mb-3">
+            02
+          </div>
+          <h3 class="text-base font-semibold text-white mb-2">Scope Extraction</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Detects architectural boundaries like <em>auth</em>, <em>api</em>, <em>checkout</em>, <em>ui</em>, or <em>deps</em> from natural language context ("in login page", "for API", file paths).
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-gray-950/80 border border-gray-800 hover:border-gray-700 transition-all shadow-md">
+          <div class="w-9 h-9 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center font-bold text-sm mb-3">
+            03
+          </div>
+          <h3 class="text-base font-semibold text-white mb-2">Imperative Titles</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Converts past tense verbs to imperative mood ("fixed" &rarr; "fix", "added" &rarr; "add"), removes filler words, and enforces the standard 50-character limit.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-gray-950/80 border border-gray-800 hover:border-gray-700 transition-all shadow-md">
+          <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center font-bold text-sm mb-3">
+            04
+          </div>
+          <h3 class="text-base font-semibold text-white mb-2">Body & Footers</h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Re-wraps long descriptions at 72 characters, flags breaking changes with <code class="text-rose-400">!</code> and <code class="text-amber-400">BREAKING CHANGE:</code>, and isolates issue numbers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Conventional Commit Types Cheat Sheet -->
+    <section>
+      <div class="max-w-3xl mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 flex items-center gap-2.5">
+          <span class="w-2.5 h-6 rounded-full bg-emerald-500 inline-block"></span>
+          Conventional Commit Types Reference
+        </h2>
+        <p class="text-sm text-gray-300 leading-relaxed">
+          Standardizing your team's commit vocabulary allows automated release tools like <em>semantic-release</em> to bump versions correctly:
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-gray-800 bg-gray-950/80 shadow-xl">
+        <table class="w-full text-left text-xs font-sans">
+          <thead class="bg-gray-900/90 text-gray-300 uppercase tracking-wider text-[11px] border-b border-gray-800">
+            <tr>
+              <th class="py-3 px-4">Type</th>
+              <th class="py-3 px-4">SemVer Bump</th>
+              <th class="py-3 px-4">Purpose</th>
+              <th class="py-3 px-4">Example Subject</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-800/60 text-gray-300">
+            <tr *ngFor="let t of commitTypesList" class="hover:bg-gray-900/40 transition-colors">
+              <td class="py-3 px-4 font-mono font-bold" [ngClass]="t.textClass">
+                {{ t.id }}
+              </td>
+              <td class="py-3 px-4">
+                <span *ngIf="t.id === 'feat'" class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono text-[10px] font-bold">MINOR</span>
+                <span *ngIf="t.id === 'fix'" class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 font-mono text-[10px] font-bold">PATCH</span>
+                <span *ngIf="t.id !== 'feat' && t.id !== 'fix'" class="px-2 py-0.5 rounded bg-gray-800 text-gray-400 font-mono text-[10px]">None / Internal</span>
+              </td>
+              <td class="py-3 px-4 text-gray-300">
+                {{ t.label }}
+              </td>
+              <td class="py-3 px-4 font-mono text-gray-400">
+                {{ t.id }}: {{ t.id === 'feat' ? 'add social login with Google' : t.id === 'fix' ? 'prevent memory leak in dashboard' : t.id === 'docs' ? 'add installation guide in readme' : 'update build dependencies' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 4: Key Benefits for Teams -->
+    <section>
+      <div class="max-w-3xl mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 flex items-center gap-2.5">
+          <span class="w-2.5 h-6 rounded-full bg-sky-500 inline-block"></span>
+          Why Use an Automated Commit Generator?
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs sm:text-sm text-gray-300">
+        <div class="p-6 rounded-2xl bg-gray-950/80 border border-gray-800 space-y-2">
+          <h3 class="text-base font-semibold text-white">Automated Release Notes & Changelogs</h3>
+          <p class="text-gray-400 leading-relaxed">
+            By following conventional commits, CI/CD pipelines can parse git logs automatically to generate formatted release notes and publish release tags without manual human curation.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-gray-950/80 border border-gray-800 space-y-2">
+          <h3 class="text-base font-semibold text-white">Accelerated Code Review & Git Blame</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Teammates and code reviewers instantly understand whether a commit introduces a feature, fixes a bug, or alters internal interfaces without having to read through large diffs first.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-gray-950/80 border border-gray-800 space-y-2">
+          <h3 class="text-base font-semibold text-white">Zero Setup, 100% Privacy-Preserving</h3>
+          <p class="text-gray-400 leading-relaxed">
+            The generator functions completely in your browser without requiring account registration, extension installation, or sending proprietary code to third parties.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Frequently Asked Questions (FAQ) -->
+    <section>
+      <div class="max-w-3xl mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-3 flex items-center gap-2.5">
+          <span class="w-2.5 h-6 rounded-full bg-amber-500 inline-block"></span>
+          Frequently Asked Questions (FAQ)
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div *ngFor="let item of faqList" class="p-5 rounded-2xl bg-gray-950/80 border border-gray-800 shadow-md space-y-2">
+          <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]"></span>
+            {{ item.question }}
+          </h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            {{ item.answer }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+</div>
