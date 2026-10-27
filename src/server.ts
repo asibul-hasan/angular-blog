@@ -291,12 +291,44 @@ export function app(): express.Express {
     res.status(404).send('Sitemap not found');
   });
 
-  // Serve static files from /browser, allowing instant delivery of prerendered routes
-  // HTML files are served with revalidation headers while hashed assets keep 1-year immutable caching
+  // ✅ Serve prerendered static routes directly without trailing-slash redirects to prevent 301 loops
+  const PRERENDERED_STATIC_ROUTES = new Set([
+    '/',
+    '/about',
+    '/service',
+    '/contact',
+    '/careers',
+    '/terms-of-service',
+    '/privacy-policy',
+    '/disclaimer',
+  ]);
+
+  server.use((req, res, next) => {
+    if (req.method === 'GET' || req.method === 'HEAD') {
+      if (PRERENDERED_STATIC_ROUTES.has(req.path)) {
+        const targetFile = req.path === '/'
+          ? join(browserDistFolder, 'index.html')
+          : join(browserDistFolder, req.path, 'index.html');
+        if (existsSync(targetFile)) {
+          res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+          res.type('text/html; charset=utf-8');
+          if (req.method === 'HEAD') {
+            return res.status(200).end();
+          }
+          return res.sendFile(targetFile);
+        }
+      }
+    }
+    next();
+  });
+
+  // Serve static assets from /browser
+  // redirect: false prevents express.static from issuing directory trailing-slash 301 redirects
   server.use(
     express.static(browserDistFolder, {
       maxAge: '1y',
-      index: 'index.html',
+      index: false,
+      redirect: false,
       setHeaders: (res, filePath) => {
         if (filePath.endsWith('.html')) {
           res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');

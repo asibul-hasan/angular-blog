@@ -47,6 +47,11 @@ jobs:
 
           # Create .htaccess for Apache SPA HTML5 History mode rewrite on cPanel
           cat << 'EOF' > ./dist/infoAidTech/browser/.htaccess
+          # Prevent Apache/LiteSpeed from issuing 301 redirects to trailing slash on directories
+          <IfModule mod_dir.c>
+            DirectorySlash Off
+          </IfModule>
+
           <IfModule mod_rewrite.c>
             RewriteEngine On
             RewriteBase /
