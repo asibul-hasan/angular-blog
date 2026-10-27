@@ -34,6 +34,21 @@
                 "output": "/"
               },
               {
+                "glob": "llms.txt",
+                "input": "src/assets",
+                "output": "/"
+              },
+              {
+                "glob": "ai-catalog.json",
+                "input": "src/assets",
+                "output": "/"
+              },
+              {
+                "glob": "ai-catalog.json",
+                "input": "src/assets",
+                "output": "/.well-known/"
+              },
+              {
                 "glob": "**/*",
                 "input": "node_modules/tinymce",
                 "output": "/tinymce/"

@@ -1,0 +1,98 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "InfoAidTech",
+    "identifier": "https://infoaidtech.net"
+  },
+  "entries": [
+    {
+      "identifier": "urn:ai:infoaidtech.net:tools:conventional-commit-generator",
+      "displayName": "Conventional Commit Generator",
+      "type": "application/json",
+      "url": "https://infoaidtech.net/conventional-commit-generator",
+      "description": "Interactive developer utility to construct standard Conventional Commits with scopes, types, breaking changes, and git-compliant formatting.",
+      "representativeQueries": [
+        "Generate conventional commit message",
+        "Create git commit message with standard format",
+        "Conventional commits helper tool"
+      ],
+      "tags": [
+        "git",
+        "developer-tools",
+        "productivity",
+        "commits"
+      ]
+    },
+    {
+      "identifier": "urn:ai:infoaidtech.net:tools:image-converter",
+      "displayName": "Image Converter & Optimizer",
+      "type": "application/json",
+      "url": "https://infoaidtech.net/image-converter",
+      "description": "Client-side high-performance image converter and compressor supporting WebP, PNG, JPEG, and batch conversions without uploading images to external servers.",
+      "representativeQueries": [
+        "Convert image to WebP format",
+        "Compress images client-side",
+        "Batch image optimizer online"
+      ],
+      "tags": [
+        "image-conversion",
+        "compression",
+        "webp",
+        "tools"
+      ]
+    },
+    {
+      "identifier": "urn:ai:infoaidtech.net:tools:json-to-typescript",
+      "displayName": "JSON to TypeScript Converter",
+      "type": "application/json",
+      "url": "https://infoaidtech.net/json-to-ts",
+      "description": "Generates clean, strongly-typed TypeScript interfaces and type definitions from JSON payloads.",
+      "representativeQueries": [
+        "Convert JSON to TypeScript interfaces",
+        "Generate TypeScript types from JSON payload",
+        "TypeScript type generator tool"
+      ],
+      "tags": [
+        "typescript",
+        "json",
+        "types",
+        "code-generator"
+      ]
+    },
+    {
+      "identifier": "urn:ai:infoaidtech.net:services:software-development",
+      "displayName": "InfoAidTech Custom Software Development",
+      "type": "application/json",
+      "url": "https://infoaidtech.net/service",
+      "description": "Full-lifecycle enterprise software engineering, scalable web applications, REST APIs, cloud consulting, and modular SME ERP solutions.",
+      "representativeQueries": [
+        "Hire software development agency",
+        "Custom web application development services",
+        "Enterprise ERP solutions Bangladesh"
+      ],
+      "tags": [
+        "software-engineering",
+        "cloud-consulting",
+        "web-development"
+      ]
+    },
+    {
+      "identifier": "urn:ai:infoaidtech.net:resources:engineering-blog",
+      "displayName": "InfoAidTech Engineering Blog",
+      "type": "application/json",
+      "url": "https://infoaidtech.net/blog",
+      "description": "Technical insights, architectural guides, modern frontend patterns, and software engineering best practices.",
+      "representativeQueries": [
+        "Read software engineering blog articles",
+        "Angular and frontend development tutorials",
+        "Cloud architecture and best practices"
+      ],
+      "tags": [
+        "blog",
+        "tutorials",
+        "software-architecture",
+        "tech-insights"
+      ]
+    }
+  ]
+}

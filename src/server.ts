@@ -123,6 +123,41 @@ export function app(): express.Express {
     );
   });
 
+  // ✅ AI Agent Discoverability: Serve llms.txt as text/markdown adhering to llmstxt.org spec
+  server.get('/llms.txt', (req, res) => {
+    const candidates = [
+      join(browserDistFolder, 'llms.txt'),
+      join(browserDistFolder, 'assets/llms.txt'),
+      resolve(serverDistFolder, '../../src/assets/llms.txt'),
+    ];
+    for (const p of candidates) {
+      if (existsSync(p)) {
+        res.type('text/markdown; charset=utf-8');
+        return res.sendFile(p);
+      }
+    }
+    res.type('text/markdown; charset=utf-8').send(
+      '# InfoAidTech\n> Professional IT services, custom software engineering, scalable cloud solutions, and enterprise SME ERP development.\n\n## Core Services\n- [Custom Software Development](https://infoaidtech.net/service): Enterprise software engineering and scalable applications.\n- [Engineering Blog](https://infoaidtech.net/blog): In-depth articles covering software architecture and engineering.\n'
+    );
+  });
+
+  // ✅ AI Agent Discoverability: Serve ai-catalog.json adhering to Agentic Resource Discovery (ARD) spec
+  server.get(['/ai-catalog.json', '/.well-known/ai-catalog.json'], (req, res) => {
+    const candidates = [
+      join(browserDistFolder, '.well-known/ai-catalog.json'),
+      join(browserDistFolder, 'ai-catalog.json'),
+      join(browserDistFolder, 'assets/ai-catalog.json'),
+      resolve(serverDistFolder, '../../src/assets/ai-catalog.json'),
+    ];
+    for (const p of candidates) {
+      if (existsSync(p)) {
+        res.type('application/json; charset=utf-8');
+        return res.sendFile(p);
+      }
+    }
+    res.status(404).json({ error: 'AI Catalog not found' });
+  });
+
   // ✅ SEO Optimization 3: Dynamic, real-time Google-compliant sitemap.xml
   server.get('/sitemap.xml', async (req, res) => {
     const apiEndpoints = [

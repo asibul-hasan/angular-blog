@@ -1,0 +1,24 @@
+# InfoAidTech
+> Professional IT services, custom software engineering, scalable cloud solutions, and enterprise SME ERP development.
+
+InfoAidTech is a software technology firm specializing in custom web and mobile applications, high-performance API architectures, cloud infrastructure consulting, and enterprise software systems.
+
+## Core Services
+- [Custom Software Development](https://infoaidtech.net/service): Enterprise software engineering, scalable web architectures, full-stack application development, and systems integration.
+- [Cloud & DevOps Consulting](https://infoaidtech.net/service): Cloud-native architecture design, CI/CD automation, serverless deployments, and infrastructure scaling.
+- [Mobile Application Development](https://infoaidtech.net/service): Modern cross-platform mobile apps for iOS and Android using Flutter and React Native.
+
+## Developer Utilities
+- [Conventional Commit Generator](https://infoaidtech.net/conventional-commit-generator): Free developer tool for generating structured Conventional Commits with scopes, types, breaking changes, and standard formatting.
+- [Image Converter & Optimizer](https://infoaidtech.net/image-converter): High-performance client-side image conversion and compression utility supporting WebP, PNG, and JPEG.
+- [JSON to TypeScript Converter](https://infoaidtech.net/json-to-ts): Automatic TypeScript type and interface generator from JSON payloads.
+
+## Technical Blog & Documentation
+- [Engineering Blog & Insights](https://infoaidtech.net/blog): In-depth articles covering software architecture, modern frontend frameworks (Angular, React, Vue), cloud engineering, and technical SEO.
+
+## Company Information
+- [About InfoAidTech](https://infoaidtech.net/about): Company overview, team leadership, engineering methodology, and commercial background.
+- [Contact & Support](https://infoaidtech.net/contact): Inquiries, enterprise quotes, project discovery sessions, and technical support.
+- [Careers & Opportunities](https://infoaidtech.net/careers): Current job openings, tech internships, and career opportunities at InfoAidTech.
+- [Terms of Service](https://infoaidtech.net/terms-of-service): Terms governing the use of InfoAidTech products and digital services.
+- [Privacy Policy](https://infoaidtech.net/privacy-policy): Privacy practices and data governance guidelines.
