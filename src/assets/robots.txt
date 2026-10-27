@@ -6,4 +6,3 @@ Disallow: /login
 Disallow: /register
 
 Sitemap: https://infoaidtech.net/sitemap.xml
-Agentmap: https://infoaidtech.net/ai-catalog.json

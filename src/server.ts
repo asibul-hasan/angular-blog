@@ -32,13 +32,22 @@ export function app(): express.Express {
     }
   }
 
-  // ✅ SEO Optimization 1: Enforce Canonical URLs and 301-redirect legacy WordPress & alternate URLs
+  // ✅ SEO & Security Optimization 1: Enforce HTTPS & Canonical URLs
   server.use((req, res, next) => {
+    // Redirect HTTP traffic to HTTPS
+    const proto = (req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http')).toString().toLowerCase();
+    if (proto === 'http') {
+      return res.redirect(301, `https://infoaidtech.net${req.originalUrl}`);
+    }
+
     // Force non-www host
     const host = (req.headers.host || '').toLowerCase();
     if (host.startsWith('www.')) {
       return res.redirect(301, `https://infoaidtech.net${req.originalUrl}`);
     }
+
+    // Global AI Agent Discoverability Link headers (RFC 8288 / ARD Spec)
+    res.setHeader('Link', '</llms.txt>; rel="describedby", </ai-catalog.json>; rel="ai-catalog"');
 
     const rawPath = req.path;
     let decodedPath = rawPath;
@@ -121,7 +130,7 @@ export function app(): express.Express {
       }
     }
     res.type('text/plain; charset=utf-8').send(
-      'User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /api/\nSitemap: https://infoaidtech.net/sitemap.xml\nAgentmap: https://infoaidtech.net/ai-catalog.json\n'
+      'User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /api/\nSitemap: https://infoaidtech.net/sitemap.xml\n'
     );
     return;
   });
