@@ -79,9 +79,14 @@ jobs:
           </IfModule>
           EOF
 
-          # Create tmp/restart.txt to signal cPanel Passenger/LiteSpeed to restart Node.js
-          mkdir -p ./dist/infoAidTech/tmp
+          # Create tmp/restart.txt in both root and infoAidTech to signal cPanel Passenger/LiteSpeed to restart Node.js
+          mkdir -p ./dist/tmp ./dist/infoAidTech/tmp
+          date +%s > ./dist/tmp/restart.txt
           date +%s > ./dist/infoAidTech/tmp/restart.txt
+
+          # Copy .htaccess to root and infoAidTech so LiteSpeed detects configuration changes
+          cp ./dist/infoAidTech/browser/.htaccess ./dist/.htaccess || true
+          cp ./dist/infoAidTech/browser/.htaccess ./dist/infoAidTech/.htaccess || true
 
       - name: Sync files to cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

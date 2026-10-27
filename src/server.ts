@@ -4,7 +4,7 @@ import { renderApplication } from '@angular/platform-server';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, statSync } from 'node:fs';
 import bootstrap from './main.server';
 
 export function app(): express.Express {
@@ -12,19 +12,24 @@ export function app(): express.Express {
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
 
-  // Try to find the correct index file
-  let indexHtml: string;
+  // Try to find the correct index file dynamically with mtime cache
   const indexPath = join(browserDistFolder, 'index.html');
   const indexCsrPath = join(browserDistFolder, 'index.csr.html');
+  let cachedIndexHtml = '';
+  let lastIndexMtime = 0;
 
-  if (existsSync(indexPath)) {
-    indexHtml = readFileSync(indexPath, 'utf-8');
-    console.log('Using index.html');
-  } else if (existsSync(indexCsrPath)) {
-    indexHtml = readFileSync(indexCsrPath, 'utf-8');
-    console.log('Using index.csr.html');
-  } else {
-    throw new Error('Could not find index.html or index.csr.html');
+  function getIndexHtml(): string {
+    const targetPath = existsSync(indexPath) ? indexPath : indexCsrPath;
+    try {
+      const stats = statSync(targetPath);
+      if (stats.mtimeMs !== lastIndexMtime || !cachedIndexHtml) {
+        cachedIndexHtml = readFileSync(targetPath, 'utf-8');
+        lastIndexMtime = stats.mtimeMs;
+      }
+      return cachedIndexHtml;
+    } catch {
+      return cachedIndexHtml || (existsSync(targetPath) ? readFileSync(targetPath, 'utf-8') : '');
+    }
   }
 
   // ✅ SEO Optimization 1: Enforce Canonical URLs and 301-redirect legacy WordPress & alternate URLs
@@ -209,7 +214,7 @@ export function app(): express.Express {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     renderApplication(bootstrap, {
-      document: indexHtml,
+      document: getIndexHtml(),
       url: `${protocol}://${headers.host}${originalUrl}`,
       platformProviders: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
     })
