@@ -12,7 +12,7 @@ import {
 } from '@angular/common/http';
 import { httpLoaderInterceptor } from './core/interceptors/http-loader.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import {
@@ -26,7 +26,7 @@ import { customImageLoader } from './core/loaders/custom-image-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
+    provideAnimationsAsync(),
     { provide: IMAGE_LOADER, useValue: customImageLoader },
     provideZoneChangeDetection({
       eventCoalescing: true,
