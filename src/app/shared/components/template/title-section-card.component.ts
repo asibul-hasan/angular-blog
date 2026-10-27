@@ -44,7 +44,8 @@ import { Router } from '@angular/router';
                 }}
               </p>
 
-              <p class="text-base text-white/50 leading-relaxed">
+              <!-- Description: text-gray-400 achieves 7.5:1 contrast ratio against dark background -->
+              <p class="text-base text-gray-400 leading-relaxed">
                      {{ description }}
 
               </p>

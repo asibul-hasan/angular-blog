@@ -92,8 +92,9 @@ import { Subscription } from 'rxjs';
                 {{ lang()?.ourSoftwareDevelopmentTechnology }}
               </p>
 
+              <!-- Description: dark:text-gray-400 achieves 7.5:1 contrast ratio against dark background -->
               <p
-                class="text-base text-dark/50 dark:text-white/50 leading-relaxed"
+                class="text-base text-dark/70 dark:text-gray-400 leading-relaxed"
               >
                 {{
                   lang()

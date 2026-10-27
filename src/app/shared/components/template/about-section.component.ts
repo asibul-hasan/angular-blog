@@ -52,14 +52,15 @@ import { map } from 'rxjs/operators';
                 {{ langService.lang.aboutInfoaidTech }}
               </h2>
 
-              <p class="text-xl text-white/60 leading-relaxed max-w-xl">
+              <!-- Text contrast improved to text-gray-300 and text-gray-400 for WCAG AA 4.5:1+ compliance -->
+              <p class="text-xl text-gray-300 leading-relaxed max-w-xl">
                 {{
                   langService.lang
                     .mergingVisionAndExpertiseToEmpowerBusinessesInTheDigitalEra
                 }}
               </p>
 
-              <p class="text-base text-white/50 leading-relaxed">
+              <p class="text-base text-gray-400 leading-relaxed">
                 {{
                   langService.lang
                     .weCombineVisionAndExpertiseToPropelYourBusinessForwardWithAKeenEyeOnTheDigitalLandscapeWeEnsureYourSuccessInTodaysCompetitiveMarket

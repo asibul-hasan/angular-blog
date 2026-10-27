@@ -16,7 +16,10 @@ import { Footer } from '../../../shared/components/footer/footer.component';
   ],
   template: `
     <app-navbar></app-navbar>
-    <router-outlet></router-outlet>
+    <!-- Accessible main landmark for WCAG AA compliance and Lighthouse audit -->
+    <main id="main-content" role="main">
+      <router-outlet></router-outlet>
+    </main>
     <app-footer></app-footer>
   `
 })

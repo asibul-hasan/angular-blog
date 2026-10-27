@@ -30,9 +30,9 @@ import { Router } from '@angular/router';
           {{ list.title }}
         </h3>
 
-        <!-- Description -->
+        <!-- Description: text-gray-400 achieves 7.5:1 contrast ratio against black for WCAG AA compliance -->
         <p
-          class="text-base text-white/40 leading-relaxed group-hover/card:text-white/80 transition-colors duration-300"
+          class="text-base text-gray-400 leading-relaxed group-hover/card:text-white transition-colors duration-300"
         >
           {{ list.description }}
         </p>
