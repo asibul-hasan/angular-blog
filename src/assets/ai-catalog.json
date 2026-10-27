@@ -6,7 +6,7 @@
   },
   "entries": [
     {
-      "identifier": "urn:ai:infoaidtech.net:tools:conventional-commit-generator",
+      "identifier": "urn:air:infoaidtech.net:tools:conventional-commit-generator",
       "displayName": "Conventional Commit Generator",
       "type": "application/json",
       "url": "https://infoaidtech.net/conventional-commit-generator",
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "identifier": "urn:ai:infoaidtech.net:tools:image-converter",
+      "identifier": "urn:air:infoaidtech.net:tools:image-converter",
       "displayName": "Image Converter & Optimizer",
       "type": "application/json",
       "url": "https://infoaidtech.net/image-converter",
@@ -42,7 +42,7 @@
       ]
     },
     {
-      "identifier": "urn:ai:infoaidtech.net:tools:json-to-typescript",
+      "identifier": "urn:air:infoaidtech.net:tools:json-to-typescript",
       "displayName": "JSON to TypeScript Converter",
       "type": "application/json",
       "url": "https://infoaidtech.net/json-to-ts",
@@ -60,7 +60,7 @@
       ]
     },
     {
-      "identifier": "urn:ai:infoaidtech.net:services:software-development",
+      "identifier": "urn:air:infoaidtech.net:services:software-development",
       "displayName": "InfoAidTech Custom Software Development",
       "type": "application/json",
       "url": "https://infoaidtech.net/service",
@@ -77,7 +77,7 @@
       ]
     },
     {
-      "identifier": "urn:ai:infoaidtech.net:resources:engineering-blog",
+      "identifier": "urn:air:infoaidtech.net:resources:engineering-blog",
       "displayName": "InfoAidTech Engineering Blog",
       "type": "application/json",
       "url": "https://infoaidtech.net/blog",

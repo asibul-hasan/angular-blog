@@ -139,6 +139,7 @@ Disallow: /login
 Disallow: /register
 
 Sitemap: ${SITE_URL}/sitemap.xml
+Agentmap: ${SITE_URL}/ai-catalog.json
 `;
 }
 

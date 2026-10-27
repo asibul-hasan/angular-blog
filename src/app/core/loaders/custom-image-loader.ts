@@ -17,7 +17,7 @@ export function customImageLoader(config: ImageLoaderConfig): string {
     if (src.includes('res.cloudinary.com/dfcir8epp/image/upload/')) {
       // Avoid duplicate transformation if already present
       if (!src.includes('/image/upload/f_auto') && !src.includes('/image/upload/w_') && !src.includes('/image/upload/c_')) {
-        const transform = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
+        const transform = width ? `f_auto,q_auto:eco,w_${width}` : 'f_auto,q_auto:eco';
         return src.replace('/image/upload/', `/image/upload/${transform}/`);
       }
     }
@@ -30,7 +30,7 @@ export function customImageLoader(config: ImageLoaderConfig): string {
   }
 
   // 3. Relative Cloudinary asset ID (e.g. "v1755598681/infoaidtech-hero-img_jfmruv.webp")
-  const transform = width ? `f_auto,q_auto,w_${width}` : 'f_auto,q_auto';
+  const transform = width ? `f_auto,q_auto:eco,w_${width}` : 'f_auto,q_auto:eco';
   const cleanSrc = src.replace(/^\/+/, '');
   return `https://res.cloudinary.com/dfcir8epp/image/upload/${transform}/${cleanSrc}`;
 }

@@ -21,13 +21,19 @@ import {
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
 import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
-import { IMAGE_LOADER } from '@angular/common';
+import { IMAGE_LOADER, IMAGE_CONFIG } from '@angular/common';
 import { customImageLoader } from './core/loaders/custom-image-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     { provide: IMAGE_LOADER, useValue: customImageLoader },
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        breakpoints: [16, 32, 48, 64, 96, 128, 256, 384, 500, 566, 640, 750, 828, 1080, 1200, 1920],
+      },
+    },
     provideZoneChangeDetection({
       eventCoalescing: true,
       runCoalescing: true // Improved performance

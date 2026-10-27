@@ -121,7 +121,7 @@ export function app(): express.Express {
       }
     }
     res.type('text/plain; charset=utf-8').send(
-      'User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /api/\nSitemap: https://infoaidtech.net/sitemap.xml\n'
+      'User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /api/\nSitemap: https://infoaidtech.net/sitemap.xml\nAgentmap: https://infoaidtech.net/ai-catalog.json\n'
     );
     return;
   });
@@ -173,7 +173,7 @@ export function app(): express.Express {
       },
       entries: [
         {
-          identifier: "urn:ai:infoaidtech.net:tools:conventional-commit-generator",
+          identifier: "urn:air:infoaidtech.net:tools:conventional-commit-generator",
           displayName: "Conventional Commit Generator",
           type: "application/json",
           url: "https://infoaidtech.net/conventional-commit-generator",
@@ -182,7 +182,7 @@ export function app(): express.Express {
           tags: ["git", "developer-tools", "productivity", "commits"]
         },
         {
-          identifier: "urn:ai:infoaidtech.net:tools:image-converter",
+          identifier: "urn:air:infoaidtech.net:tools:image-converter",
           displayName: "Image Converter & Optimizer",
           type: "application/json",
           url: "https://infoaidtech.net/image-converter",
@@ -191,7 +191,7 @@ export function app(): express.Express {
           tags: ["image-conversion", "compression", "webp", "tools"]
         },
         {
-          identifier: "urn:ai:infoaidtech.net:tools:json-to-typescript",
+          identifier: "urn:air:infoaidtech.net:tools:json-to-typescript",
           displayName: "JSON to TypeScript Converter",
           type: "application/json",
           url: "https://infoaidtech.net/json-to-ts",
