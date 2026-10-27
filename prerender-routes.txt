@@ -1,0 +1,8 @@
+/
+/about
+/service
+/contact
+/careers
+/terms-of-service
+/privacy-policy
+/disclaimer

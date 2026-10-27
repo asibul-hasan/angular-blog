@@ -201,11 +201,17 @@ export function app(): express.Express {
     res.status(404).send('Sitemap not found');
   });
 
-  // Serve static files from /browser
+  // Serve static files from /browser, allowing instant delivery of prerendered routes
+  // HTML files are served with revalidation headers while hashed assets keep 1-year immutable caching
   server.use(
     express.static(browserDistFolder, {
       maxAge: '1y',
-      index: false,
+      index: 'index.html',
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+          res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+        }
+      },
     })
   );
 
