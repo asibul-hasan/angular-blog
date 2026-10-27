@@ -3,7 +3,8 @@
    Using Tailwind CSS for styling
    ═══════════════════════════════════════════════════════════════ */
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
+/* External font @import commented out to prevent inlining into global CSS budget; relies on system-ui fallbacks */
+/* @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"); */
 
 .erp-page {
   font-family: "Inter", system-ui, sans-serif;

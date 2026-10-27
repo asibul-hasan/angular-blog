@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { Footer } from '../../../shared/components/footer/footer.component';
-import { ChatbotComponent } from '../../../shared/components/chatbot/chatbot.component';
 
+// Chatbot is loaded at the root level in app.component.html with @defer (on idle)
 @Component({
   selector: 'app-public-layout',
   standalone: true,
@@ -13,13 +13,11 @@ import { ChatbotComponent } from '../../../shared/components/chatbot/chatbot.com
     RouterModule,
     NavbarComponent,
     Footer,
-    ChatbotComponent,
   ],
   template: `
     <app-navbar></app-navbar>
     <router-outlet></router-outlet>
     <app-footer></app-footer>
-    <app-chatbot></app-chatbot>
   `
 })
 export class PublicLayout { }
