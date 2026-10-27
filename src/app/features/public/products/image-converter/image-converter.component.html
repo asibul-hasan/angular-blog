@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-[#0a0a0f] text-gray-100 relative overflow-hidden font-sans selection:bg-[#f76179]/30 selection:text-white">
 
-  <!-- Ambient Radiant Orbs (InfoAidTech Signature) -->
+  <!-- Ambient Radiant Orbs (InfoAidTech Signature Theme) -->
   <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[720px] h-[520px] rounded-full blur-[170px] opacity-25"
        style="background: radial-gradient(circle, #f76179 0%, #1e3e62 55%, transparent 75%)"></div>
   <div class="pointer-events-none absolute top-[600px] -left-40 w-[500px] h-[500px] rounded-full blur-[150px] opacity-15"
@@ -9,50 +9,20 @@
        style="background: radial-gradient(circle, #f76179 0%, transparent 70%)"></div>
 
   <!-- Main Container -->
-  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-28">
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-28">
 
-    <!-- Hero Header (TinyPNG Vibe + InfoAidTech Theme) -->
-    <div class="text-center max-w-3xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-semibold uppercase tracking-wider text-[#f76179] mb-6 backdrop-blur-md shadow-inner">
+    <!-- Top Eyebrow Tagline: Instant Visual Anchor -->
+    <div class="text-center max-w-2xl mx-auto mb-6">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-semibold uppercase tracking-wider text-[#f76179] backdrop-blur-md shadow-inner">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        100% Client-Side Engine · Zero Uploads · Free Forever
-      </div>
-
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-5 text-white">
-        Smart WebP & Image
-        <span class="bg-gradient-to-r from-[#f76179] via-rose-400 to-[#38bdf8] bg-clip-text text-transparent">
-          Converter & Compressor
-        </span>
-      </h1>
-
-      <p class="text-base sm:text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mx-auto">
-        Optimize, compress, and convert your images with the perfect balance of visual quality and small file size. Runs 100% locally in your browser with zero server uploads.
-      </p>
-
-      <div class="mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 text-xs text-gray-300">
-        <span class="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-          </svg>
-          No File Size Limits
-        </span>
-        <span class="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-          </svg>
-          Batch Processing (ZIP)
-        </span>
-        <span class="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-          </svg>
-          100% Private (Local Canvas)
-        </span>
+        <span>Instant In-Browser Image Engine · 100% Client-Side Privacy</span>
       </div>
     </div>
 
-    <!-- THE SIGNATURE DROPZONE CARD (TinyPNG-Style Centerpiece) -->
-    <div class="rounded-3xl p-6 sm:p-8 backdrop-blur-2xl border transition-all duration-300 shadow-2xl mb-12"
+    <!-- ========================================================================= -->
+    <!-- 1. THE SIGNATURE DROPZONE CARD (The Main Visualize Area - Above the Fold)   -->
+    <!-- ========================================================================= -->
+    <div class="rounded-3xl p-6 sm:p-8 backdrop-blur-2xl border transition-all duration-300 shadow-2xl mb-14"
          style="background: rgba(18, 24, 38, 0.65); border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 20px 60px -15px rgba(0,0,0,0.6)">
 
       <!-- Settings Toolbar (Sleek Glass Bar at Top of Dropzone) -->
@@ -74,6 +44,7 @@
           <div class="relative">
             <select
               [(ngModel)]="outputFormat"
+              aria-label="Target Output Format"
               class="appearance-none px-4 py-2 pr-9 bg-[#111827] border border-white/15 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] cursor-pointer hover:border-white/30 transition-all">
               @for (type of imageType; track type.value) {
                 <option [value]="type.value" class="bg-[#111827] text-white py-1">{{ type.name }}</option>
@@ -91,6 +62,7 @@
             <select
               [(ngModel)]="compressionMode"
               (change)="onCompressionModeChange()"
+              aria-label="Compression Mode"
               class="appearance-none px-4 py-2 pr-9 bg-[#111827] border border-white/15 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] cursor-pointer hover:border-white/30 transition-all">
               @for (mode of compressionModeList; track mode.value) {
                 <option [value]="mode.value" class="bg-[#111827] text-white py-1">{{ mode.name }}</option>
@@ -108,6 +80,7 @@
             <div class="relative">
               <select
                 [(ngModel)]="quality"
+                aria-label="Quality Level"
                 class="appearance-none px-4 py-2 pr-9 bg-[#111827] border border-white/15 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] cursor-pointer hover:border-white/30 transition-all">
                 @for (q of qualityList; track q.value) {
                   <option [value]="q.value" class="bg-[#111827] text-white py-1">{{ q.name }}</option>
@@ -126,6 +99,7 @@
             <div class="relative">
               <select
                 [(ngModel)]="targetFileSize"
+                aria-label="Target File Size"
                 class="appearance-none px-4 py-2 pr-9 bg-[#111827] border border-white/15 rounded-xl text-xs font-semibold text-white focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] cursor-pointer hover:border-white/30 transition-all">
                 @for (size of targetSizeList; track size.value) {
                   <option [value]="size.value" class="bg-[#111827] text-white py-1">{{ size.name }}</option>
@@ -141,7 +115,7 @@
         </div>
       </div>
 
-      <!-- Drag & Drop Target Area (TinyPNG Style) -->
+      <!-- Drag & Drop Target Area (TinyPNG-Style Primary Hero Box) -->
       <div
         class="relative border-2 border-dashed rounded-2xl p-8 sm:p-14 text-center transition-all duration-300 group cursor-pointer"
         [class.border-[#f76179]]="dragActive()"
@@ -158,7 +132,7 @@
         (drop)="handleDrop($event)"
         (click)="fileInput.click()">
 
-        <!-- Floating Cloud / Image Stack Icon -->
+        <!-- Floating Gradient Cloud Icon -->
         <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#f76179]/20 via-[#f76179]/10 to-[#1e3e62]/40 border border-[#f76179]/30 flex items-center justify-center mx-auto mb-5 group-hover:scale-105 group-hover:border-[#f76179]/60 transition-all duration-300 shadow-xl shadow-[#f76179]/10">
           <svg class="w-10 h-10 text-[#f76179] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
@@ -198,7 +172,7 @@
         </p>
       </div>
 
-      <!-- FILE QUEUE & CONVERSION WORKBENCH (TinyPNG Style List Rows) -->
+      <!-- FILE QUEUE & CONVERSION WORKBENCH (TinyPNG-Style Row Cards) -->
       @if (files().length > 0) {
         <div class="mt-8 pt-8 border-t border-white/10">
 
@@ -212,7 +186,7 @@
                 </span>
               </h3>
 
-              <!-- Overall Savings Highlight (The Iconic TinyPNG Badge!) -->
+              <!-- Overall Savings Badge -->
               @if (hasCompletedFiles() && totalSavingsPercent() > 0) {
                 <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold animate-fadeIn">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -246,7 +220,7 @@
             </div>
           </div>
 
-          <!-- File List: TinyPNG-Style Horizontal Cards -->
+          <!-- File List: Horizontal Cards -->
           <div class="space-y-2.5 max-h-[520px] overflow-y-auto pr-1 custom-scrollbar">
             @for (imageFile of files(); track imageFile.id) {
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-all duration-200">
@@ -292,7 +266,6 @@
 
                   @if (imageFile.status === 'completed') {
                     <div class="flex items-center gap-2">
-                      <!-- TinyPNG-Style Green Savings Pill Badge -->
                       @if (getFileSavingsPercent(imageFile) > 0) {
                         <span class="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shadow-sm">
                           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -382,8 +355,52 @@
 
     </div>
 
-    <!-- VALUE PROPOSITIONS & TRUST METRICS (InfoAidTech Glass Cards) -->
-    <div class="grid md:grid-cols-3 gap-6 mb-20">
+    <!-- ========================================================================= -->
+    <!-- 2. THE HERO HEADER (Image 1 - Positioned DIRECTLY AFTER the Dropzone Card) -->
+    <!-- ========================================================================= -->
+    <section class="text-center max-w-3xl mx-auto my-16 pt-6" aria-labelledby="main-heading">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-semibold uppercase tracking-wider text-[#f76179] mb-6 backdrop-blur-md shadow-inner">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        100% CLIENT-SIDE ENGINE · ZERO UPLOADS · FREE FOREVER
+      </div>
+
+      <h1 id="main-heading" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] mb-5 text-white">
+        Smart WebP & Image
+        <span class="bg-gradient-to-r from-[#f76179] via-rose-400 to-[#38bdf8] bg-clip-text text-transparent">
+          Converter & Compressor
+        </span>
+      </h1>
+
+      <p class="text-base sm:text-lg text-gray-400 font-normal leading-relaxed max-w-2xl mx-auto">
+        Optimize, compress, and convert your images with the perfect balance of visual quality and small file size. Runs 100% locally in your browser with zero server uploads.
+      </p>
+
+      <div class="mt-6 flex flex-wrap justify-center gap-2 sm:gap-3 text-xs text-gray-300">
+        <span class="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+          </svg>
+          No File Size Limits
+        </span>
+        <span class="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Batch Processing (ZIP)
+        </span>
+        <span class="bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-full font-medium flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+          </svg>
+          100% Private (Local Canvas)
+        </span>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 3. VALUE PROPOSITIONS & PRIVACY PILLARS (3 Glass Bento Cards)             -->
+    <!-- ========================================================================= -->
+    <section class="grid md:grid-cols-3 gap-6 mb-20" aria-label="Core Capabilities">
       <div class="rounded-3xl p-7 border transition-all duration-300 hover:-translate-y-1"
            style="background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.08)">
         <div class="w-12 h-12 rounded-2xl bg-[#f76179]/15 border border-[#f76179]/30 flex items-center justify-center mb-5 text-[#f76179]">
@@ -391,9 +408,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-bold text-white mb-2">100% Client-Side Privacy</h3>
+        <h2 class="text-lg font-bold text-white mb-2">100% Client-Side In-Browser Privacy</h2>
         <p class="text-sm text-gray-400 leading-relaxed">
-          Unlike cloud compressors, your photos never upload to remote servers. All compression executes strictly inside your browser memory using HTML5 Canvas.
+          Unlike ordinary cloud compressors, your confidential graphics, private photos, and client assets never touch a remote server. All compression executes strictly inside browser RAM via HTML5 Canvas.
         </p>
       </div>
 
@@ -404,9 +421,9 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-bold text-white mb-2">Smart WebP Compression</h3>
+        <h2 class="text-lg font-bold text-white mb-2">Smart Next-Gen Compression (Up to -80%)</h2>
         <p class="text-sm text-gray-400 leading-relaxed">
-          Intelligently reduces byte payload by up to 80% without perceivable loss in sharpness. Boost your website's Google PageSpeed & Core Web Vitals instantly.
+          Drastically shrinks JPEG, PNG, and WebP payloads without visual quality loss. Directly fulfills Google PageSpeed Insights "Serve images in next-gen formats" to supercharge Core Web Vitals (LCP).
         </p>
       </div>
 
@@ -417,16 +434,167 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <h3 class="text-lg font-bold text-white mb-2">Universal 8-Format Matrix</h3>
+        <h2 class="text-lg font-bold text-white mb-2">Universal 8-Format Matrix & Batch ZIP</h2>
         <p class="text-sm text-gray-400 leading-relaxed">
-          Full support for WebP, AVIF, PNG, JPEG, ICO, BMP, TIFF, and GIF. Cross-convert between modern and legacy formats with one click.
+          Convert seamlessly between WebP, AVIF, PNG, JPEG, ICO, BMP, TIFF, and GIF. Batch process up to 50 files simultaneously and download all optimized results in one clean ZIP archive.
         </p>
       </div>
-    </div>
+    </section>
 
-    <!-- HOW IT WORKS (3 Simple Steps - Bento Glass Cards) -->
-    <div class="rounded-3xl p-8 sm:p-10 border mb-20"
-         style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+    <!-- ========================================================================= -->
+    <!-- 4. FORMAT COMPARISON MATRIX TABLE (Top SEO Ranking Factor)                -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-6 sm:p-10 border mb-20 overflow-hidden"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#f76179]">Deep Format Comparison</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">WebP vs AVIF vs PNG vs JPEG</h2>
+        <p class="text-sm text-gray-400 mt-2">
+          Compare compression ratios, transparency, animation, and Google Core Web Vitals performance across modern image standards.
+        </p>
+      </div>
+
+      <!-- Responsive Table Container -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[640px]">
+          <thead>
+            <tr class="border-b border-white/10 text-gray-300">
+              <th class="py-3 px-4 font-bold text-white">Format</th>
+              <th class="py-3 px-4 font-bold text-white">Compression</th>
+              <th class="py-3 px-4 font-bold text-white">Avg. Reduction</th>
+              <th class="py-3 px-4 font-bold text-white">Alpha (Transparency)</th>
+              <th class="py-3 px-4 font-bold text-white">Animation</th>
+              <th class="py-3 px-4 font-bold text-white">Browser Support</th>
+              <th class="py-3 px-4 font-bold text-white">SEO & LCP Impact</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-gray-300">
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-3.5 px-4 font-bold text-emerald-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                WebP (.webp)
+              </td>
+              <td class="py-3.5 px-4">Lossy & Lossless</td>
+              <td class="py-3.5 px-4 font-semibold text-emerald-400">-30% to -80%</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Yes (8-bit)</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Yes</td>
+              <td class="py-3.5 px-4">97.3% (Global)</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Maximum Boost</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-3.5 px-4 font-bold text-blue-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                AVIF (.avif)
+              </td>
+              <td class="py-3.5 px-4">Next-Gen AV1</td>
+              <td class="py-3.5 px-4 font-semibold text-blue-400">-50% to -85%</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Yes (Full)</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Yes</td>
+              <td class="py-3.5 px-4">93.5% (Growing)</td>
+              <td class="py-3.5 px-4 text-blue-400 font-semibold">Ultra High</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-3.5 px-4 font-bold text-purple-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                PNG (.png)
+              </td>
+              <td class="py-3.5 px-4">Lossless Deflate</td>
+              <td class="py-3.5 px-4 text-gray-400">Baseline (Heavy)</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Yes (24-bit)</td>
+              <td class="py-3.5 px-4 text-gray-500">APNG (Limited)</td>
+              <td class="py-3.5 px-4">100% (Universal)</td>
+              <td class="py-3.5 px-4 text-amber-400 font-semibold">Moderate (Heavy)</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-3.5 px-4 font-bold text-rose-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                JPEG / JPG
+              </td>
+              <td class="py-3.5 px-4">Lossy DCT</td>
+              <td class="py-3.5 px-4 text-gray-400">-40% vs RAW</td>
+              <td class="py-3.5 px-4 text-rose-400 font-semibold">No</td>
+              <td class="py-3.5 px-4 text-rose-400 font-semibold">No</td>
+              <td class="py-3.5 px-4">100% (Universal)</td>
+              <td class="py-3.5 px-4 text-amber-400 font-semibold">Standard</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-3.5 px-4 font-bold text-amber-400 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                GIF (.gif)
+              </td>
+              <td class="py-3.5 px-4">LZW (256 Colors)</td>
+              <td class="py-3.5 px-4 text-rose-400 font-semibold">Poor (Bulky)</td>
+              <td class="py-3.5 px-4 text-amber-400">1-bit Binary</td>
+              <td class="py-3.5 px-4 text-emerald-400 font-semibold">Yes</td>
+              <td class="py-3.5 px-4">100% (Legacy)</td>
+              <td class="py-3.5 px-4 text-rose-400 font-semibold">Slows LCP</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-gray-500 mt-4 text-center">
+        💡 <strong>Pro Tip:</strong> Converting PNG and JPEG images to WebP typically slashes network payload by 30% to 80%, providing the single biggest boost to Google PageSpeed scores.
+      </p>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 5. GOOGLE CORE WEB VITALS & SEO IMPACT GUIDE (Rich Keyword Content)        -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-8 sm:p-10 border mb-20"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+      <div class="flex flex-col lg:flex-row items-start gap-8">
+        <div class="lg:w-1/3">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Search Engine Ranking</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-white mt-1 leading-snug">
+            How WebP Directly Boosts Your Google Ranking
+          </h2>
+          <p class="text-sm text-gray-400 mt-3 leading-relaxed">
+            Google Core Web Vitals measure real-world user experience. Uncompressed media is the #1 cause of failing Largest Contentful Paint (LCP) benchmarks.
+          </p>
+        </div>
+
+        <div class="lg:w-2/3 space-y-4 text-sm text-gray-300 leading-relaxed">
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+            <h3 class="font-bold text-white text-base mb-1.5 flex items-center gap-2">
+              <span class="text-emerald-400">01.</span> Slashes Largest Contentful Paint (LCP)
+            </h3>
+            <p class="text-gray-400">
+              Hero banners and product images usually determine LCP. Replacing 1.8 MB PNG hero banners with 140 KB WebP files drops LCP load times from 4.2 seconds down to 0.8 seconds, passing Google’s <span class="text-emerald-400 font-semibold">Good</span> threshold easily.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+            <h3 class="font-bold text-white text-base mb-1.5 flex items-center gap-2">
+              <span class="text-emerald-400">02.</span> Satisfies Google PageSpeed Insights Audit
+            </h3>
+            <p class="text-gray-400">
+              Lighthouse explicitly docks points if you serve legacy image formats. Using InfoAidTech Image Converter to batch produce WebP or AVIF satisfies the mandatory <em>"Serve images in next-gen formats"</em> recommendation immediately.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+            <h3 class="font-bold text-white text-base mb-1.5 flex items-center gap-2">
+              <span class="text-emerald-400">03.</span> Lowers Mobile Bounce Rates & Bandwidth
+            </h3>
+            <p class="text-gray-400">
+              Over 60% of web traffic originates on mobile devices with variable 4G/5G connections. Lean image assets ensure immediate render on cellular networks, decreasing bounce rates and boosting e-commerce checkout conversions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 6. HOW IT WORKS (3 Simple Steps - Bento Glass Cards)                      -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-8 sm:p-10 border mb-20"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)"
+             aria-label="Workflow">
       <div class="text-center max-w-xl mx-auto mb-12">
         <span class="text-xs font-bold uppercase tracking-widest text-[#f76179]">Workflow</span>
         <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Convert Images in 3 Simple Steps</h2>
@@ -463,15 +631,18 @@
           </p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- SUPPORTED FORMATS SHOWCASE -->
-    <div class="rounded-3xl p-8 sm:p-10 border mb-20"
-         style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+    <!-- ========================================================================= -->
+    <!-- 7. SUPPORTED FORMATS SHOWCASE                                             -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-8 sm:p-10 border mb-20"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)"
+             aria-label="Supported Formats">
       <div class="text-center max-w-xl mx-auto mb-10">
         <span class="text-xs font-bold uppercase tracking-widest text-[#f76179]">Compatibility</span>
         <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Supported Output Formats</h2>
-        <p class="text-sm text-gray-400 mt-2">Every format is generated locally with native high-speed codecs</p>
+        <p class="text-sm text-gray-400 mt-2">Every format is generated locally with native high-speed browser codecs</p>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -486,11 +657,13 @@
           </div>
         }
       </div>
-    </div>
+    </section>
 
-    <!-- WHAT IS JFIF / FORMAT EDUCATION SECTION -->
-    <div class="rounded-3xl p-8 sm:p-10 border mb-20"
-         style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+    <!-- ========================================================================= -->
+    <!-- 8. FORMAT EDUCATION: WHAT IS JFIF / WEBP ARCHITECTURE                     -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-8 sm:p-10 border mb-20"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
       <div class="flex flex-col md:flex-row items-start gap-6">
         <div class="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/40 shrink-0 flex items-center justify-center text-blue-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -499,7 +672,7 @@
         </div>
         <div class="flex-1">
           <h2 class="text-xl sm:text-2xl font-bold text-white mb-4">
-            {{ pageData() ? pageData()!.whatIsJfif.title : 'Understanding Image Formats & Web Compression' }}
+            {{ pageData() ? pageData()!.whatIsJfif.title : 'Understanding Modern Image Formats & Web Compression' }}
           </h2>
           @if (pageData()) {
             @for (paragraph of pageData()!.whatIsJfif.content; track $index) {
@@ -508,14 +681,62 @@
           }
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- INTERACTIVE FAQ SECTION (Glassmorphism Accordion) -->
-    <div class="rounded-3xl p-8 sm:p-10 border mb-20"
-         style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+    <!-- ========================================================================= -->
+    <!-- 9. WEB DEVELOPER & E-COMMERCE STORE OPTIMIZATION GUIDE                    -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-8 sm:p-10 border mb-20"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#38bdf8]">Developer & Storefront Guide</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Image Optimization for Modern Web Platforms</h2>
+        <p class="text-sm text-gray-400 mt-2">
+          Best practices for integrating lightweight WebP and AVIF assets into production codebases and online stores.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+          <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <span class="text-[#38bdf8]">💻</span> HTML5 Responsive Picture Elements
+          </h3>
+          <p class="text-xs sm:text-sm text-gray-400 leading-relaxed mb-3">
+            Serve next-gen WebP to modern browsers while providing seamless fallbacks for older devices using the semantic HTML5 <code>&lt;picture&gt;</code> element:
+          </p>
+          <pre class="p-3 rounded-xl bg-black/60 border border-white/10 font-mono text-xs text-gray-300 overflow-x-auto"><code>&lt;picture&gt;
+  &lt;source srcset="hero.avif" type="image/avif"&gt;
+  &lt;source srcset="hero.webp" type="image/webp"&gt;
+  &lt;img src="hero.jpg" alt="Optimized Hero" loading="lazy"&gt;
+&lt;/picture&gt;</code></pre>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+          <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+            <span class="text-emerald-400">🛍️</span> E-Commerce Stores (Shopify & WooCommerce)
+          </h3>
+          <p class="text-xs sm:text-sm text-gray-400 leading-relaxed mb-3">
+            E-commerce conversion rates drop by 4.42% for every second of page delay. By converting product catalog photos to WebP before uploading to Shopify, Magento, or WooCommerce, your product pages load under 1.5 seconds.
+          </p>
+          <ul class="text-xs text-gray-400 space-y-1.5 list-disc list-inside">
+            <li>Reduces CDN data transfer bandwidth costs by up to 60%.</li>
+            <li>Eliminates customer drop-off on high-resolution image galleries.</li>
+            <li>Passes Google Merchant Center image requirements without blur.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 10. INTERACTIVE FAQ SECTION (Glassmorphism Accordion)                     -->
+    <!-- ========================================================================= -->
+    <section class="rounded-3xl p-8 sm:p-10 border mb-20"
+             style="background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08)"
+             aria-label="Frequently Asked Questions">
       <div class="text-center max-w-xl mx-auto mb-10">
         <span class="text-xs font-bold uppercase tracking-widest text-[#f76179]">Questions & Answers</span>
         <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">Frequently Asked Questions</h2>
+        <p class="text-sm text-gray-400 mt-2">Everything you need to know about image compression, privacy, and SEO ranking.</p>
       </div>
 
       <div class="space-y-3.5 max-w-3xl mx-auto">
@@ -527,9 +748,9 @@
             <button
               type="button"
               (click)="toggleFaq(i)"
-              class="w-full p-5 text-left flex items-center justify-between gap-4 text-sm sm:text-base font-bold text-white hover:text-[#f76179] transition-colors">
+              class="w-full p-5 text-left flex items-center justify-between gap-4 text-sm sm:text-base font-bold text-white hover:text-[#f76179] transition-colors cursor-pointer">
               <span class="flex items-center gap-3">
-                <span class="w-6 h-6 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-xs text-[#f76179] shrink-0">
+                <span class="w-6 h-6 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-xs text-[#f76179] shrink-0 font-mono">
                   ?
                 </span>
                 {{ faq.question }}
@@ -542,16 +763,18 @@
             </button>
 
             @if (openFaqIndex() === i) {
-              <div class="px-5 pb-5 pt-0 text-sm text-gray-400 leading-relaxed border-t border-white/5">
+              <div class="px-5 pb-5 pt-0 text-sm text-gray-400 leading-relaxed border-t border-white/5 animate-fadeIn">
                 {{ faq.answer }}
               </div>
             }
           </div>
         }
       </div>
-    </div>
+    </section>
 
-    <!-- FOOTER CTA (Deep Space Banner) -->
+    <!-- ========================================================================= -->
+    <!-- 11. FOOTER CTA (Deep Space Banner)                                        -->
+    <!-- ========================================================================= -->
     <div class="rounded-3xl p-10 sm:p-14 border text-center relative overflow-hidden"
          style="background: linear-gradient(135deg, rgba(247,97,121,0.12) 0%, rgba(30,62,98,0.3) 100%); border-color: rgba(247,97,121,0.3)">
       <div class="relative z-10 max-w-xl mx-auto">
@@ -564,7 +787,7 @@
         <button
           type="button"
           (click)="fileInput.click()"
-          class="inline-flex items-center gap-2.5 px-9 py-4 bg-gradient-to-r from-[#f76179] to-rose-500 hover:from-rose-500 hover:to-[#f76179] text-white text-base font-bold rounded-xl transition-all shadow-xl shadow-[#f76179]/30 hover:shadow-[#f76179]/50 hover:-translate-y-0.5">
+          class="inline-flex items-center gap-2.5 px-9 py-4 bg-gradient-to-r from-[#f76179] to-rose-500 hover:from-rose-500 hover:to-[#f76179] text-white text-base font-bold rounded-xl transition-all shadow-xl shadow-[#f76179]/30 hover:shadow-[#f76179]/50 hover:-translate-y-0.5 cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
           </svg>

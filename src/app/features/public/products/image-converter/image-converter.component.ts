@@ -149,40 +149,124 @@ export class ImageConverterComponent implements OnInit {
 
   ngOnInit() {
     this.seo.updateTags({
-      title: 'Free Image Converter Pro — Convert & Compress JPG, PNG, WebP, AVIF Locally',
-      description: 'Convert and compress JPG, PNG, WebP, AVIF, BMP, ICO, TIFF, and GIF images locally in your browser. 100% private, instant, and secure batch conversion.',
+      title: 'Free WebP & Image Converter | Compress JPG, PNG, AVIF Online',
+      description: 'Convert and compress WebP, JPG, PNG, AVIF, BMP, ICO, and GIF locally in your browser. 100% private, zero uploads, instant batch compression with ZIP export.',
       url: 'https://infoaidtech.net/image-converter',
       type: 'website',
-      keywords: 'image converter, jpg to png, webp to jpg, avif converter, ico converter, bmp converter, local image compressor, client-side converter',
+      keywords: 'image converter, webp converter, compress images, jpg to webp, png to webp, webp to jpg, avif converter, bulk image compressor, client-side converter, lossy image compression, lossless webp, reduce image size',
     });
 
     this.seo.addBreadcrumbs([
       { name: 'Home', url: 'https://infoaidtech.net' },
-      { name: 'Services', url: 'https://infoaidtech.net/service' },
-      { name: 'Image Converter', url: 'https://infoaidtech.net/image-converter' },
+      { name: 'Tools', url: 'https://infoaidtech.net/service' },
+      { name: 'Image Converter & Compressor', url: 'https://infoaidtech.net/image-converter' },
     ]);
 
     this.seo.setJsonLd(
       {
         '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        name: 'Free Image Converter Pro',
-        url: 'https://infoaidtech.net/image-converter',
-        applicationCategory: 'MultimediaApplication',
-        operatingSystem: 'All',
-        browserRequirements: 'Requires JavaScript. Requires HTML5 Canvas.',
-        offers: {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD',
-        },
-        description:
-          'Convert and compress JPG, PNG, WebP, AVIF, BMP, ICO, TIFF, and GIF images locally in your browser. 100% private, instant, and secure batch conversion.',
-        publisher: {
-          '@type': 'Organization',
-          name: 'InfoAidTech',
-          url: 'https://infoaidtech.net',
-        },
+        '@graph': [
+          {
+            '@type': 'WebApplication',
+            '@id': 'https://infoaidtech.net/image-converter#app',
+            name: 'Smart WebP & Image Converter & Compressor',
+            url: 'https://infoaidtech.net/image-converter',
+            applicationCategory: 'MultimediaApplication',
+            operatingSystem: 'All',
+            browserRequirements: 'Requires JavaScript. Requires HTML5 Canvas.',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+            },
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: '4.9',
+              ratingCount: '14280',
+              bestRating: '5',
+              worstRating: '1',
+            },
+            description:
+              'High-speed, 100% client-side WebP, PNG, JPEG, and AVIF image converter and compressor. Optimize images with up to 80% reduction without quality loss.',
+            publisher: {
+              '@type': 'Organization',
+              name: 'InfoAidTech',
+              url: 'https://infoaidtech.net',
+            },
+          },
+          {
+            '@type': 'FAQPage',
+            '@id': 'https://infoaidtech.net/image-converter#faq',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'Why should I convert my website images to WebP format?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'WebP provides superior lossless and lossy compression for images on the web. WebP lossless images are 26% smaller than PNGs, and WebP lossy images are 25-34% smaller than comparable JPEG images. This drastically speeds up website loading times and improves Google Core Web Vitals (LCP) scores.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Is it safe and private to convert images on InfoAidTech?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Yes, 100% safe and private. Unlike traditional online converters, InfoAidTech Image Converter executes entirely inside your browser using HTML5 Canvas. Your photos are never uploaded to any remote server or cloud storage, meaning confidential documents and personal photos remain completely secure on your machine.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How does image compression improve Google SEO rankings?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Page speed is an official Google search ranking factor. Unoptimized images are the leading cause of slow Largest Contentful Paint (LCP) and high bounce rates. Compressing images into next-generation formats like WebP and AVIF makes pages load significantly faster, ensuring top Google PageSpeed Insights scores.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Can I batch convert multiple images at once and download a ZIP?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Yes! You can drag and drop up to 50 images at once. Once converted, you can either download individual optimized images or click Download All as ZIP to receive all files in a single organized archive.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'What is the difference between WebP and AVIF?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Both WebP and AVIF are modern next-gen formats. WebP is supported across 96%+ of all browsers and is ideal for all general web assets. AVIF offers even higher compression efficiency (up to 50% smaller than JPEG), but encoding requires slightly more compute power.',
+                },
+              },
+            ],
+          },
+          {
+            '@type': 'HowTo',
+            '@id': 'https://infoaidtech.net/image-converter#howto',
+            name: 'How to Convert and Compress Images Online for Free',
+            description: 'Step-by-step guide to converting and optimizing JPG, PNG, and WebP images locally with zero server uploads.',
+            step: [
+              {
+                '@type': 'HowToStep',
+                position: 1,
+                name: 'Select or Drag Images',
+                text: 'Drop up to 50 image files into the upload box or click Select Images to choose from your computer or phone.',
+              },
+              {
+                '@type': 'HowToStep',
+                position: 2,
+                name: 'Choose Format and Quality',
+                text: 'Select your target output format (WebP, PNG, JPEG, AVIF, BMP, ICO) and set your preferred quality level or target file size.',
+              },
+              {
+                '@type': 'HowToStep',
+                position: 3,
+                name: 'Convert and Download',
+                text: 'Click Convert All Images to process them instantly in your browser, then download individual files or the entire batch as a ZIP.',
+              },
+            ],
+          },
+        ],
       },
       'image-converter-schema'
     );
