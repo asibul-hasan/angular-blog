@@ -60,10 +60,11 @@ import { LanguageService } from '../../services/language/lang.service';
     `,
   ],
   template: `
-    <section class="relative min-h-screen flex items-center bg-black overflow-hidden" aria-label="Hero">
-      <!-- Orbs and ambient background -->
-      <div class="pointer-events-none absolute top-0 left-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-30" style="background:radial-gradient(circle,#f76179,transparent 70%)"></div>
-      <div class="pointer-events-none absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-20" style="background:radial-gradient(circle,#1e3e62,transparent 70%)"></div>
+    <!-- Set min-height with mobile fallback to stabilize initial viewport and avoid CLS -->
+    <section class="relative min-h-[600px] md:min-h-screen flex items-center bg-black overflow-hidden" aria-label="Hero">
+      <!-- Decorative ambient background blobs: strictly contained with GPU acceleration and translateZ to prevent layout shifts -->
+      <div class="pointer-events-none absolute top-0 left-0 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full blur-[100px] sm:blur-[150px] opacity-30 transform-gpu" style="background:radial-gradient(circle,#f76179,transparent 70%);contain:strict;will-change:transform,opacity;transform:translateZ(0)"></div>
+      <div class="pointer-events-none absolute bottom-0 right-0 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full blur-[100px] sm:blur-[150px] opacity-20 transform-gpu" style="background:radial-gradient(circle,#1e3e62,transparent 70%);contain:strict;will-change:transform,opacity;transform:translateZ(0)"></div>
 
       <!-- Hexagon Pattern Overlay Overlay -->
       <div class="absolute inset-0 z-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\\'60\\' height=\\'60\\' viewBox=\\'0 0 60 60\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M30 0l25.98 15v30L30 60 4.02 45V15z\\' fill-opacity=\\'0\\' stroke=\\'%23ffffff\\' stroke-width=\\'1\\' stroke-dasharray=\\'5 5\\'/%3E%3C/svg%3E');"></div>
@@ -120,15 +121,17 @@ import { LanguageService } from '../../services/language/lang.service';
           <!-- Glow behind image -->
           <div class="absolute inset-0 bg-[#f76179]/20 blur-[100px] rounded-full"></div>
           
-          <div class="relative rounded-[40px] overflow-hidden p-2"
+          <!-- Explicit aspect-square container prevents layout shift while image loads -->
+          <div class="relative rounded-[40px] overflow-hidden p-2 aspect-square"
                style="background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.1)">
+             <!-- Explicit 500x500 dimensions match Cloudinary source aspect ratio, eliminating CLS -->
              <img ngSrc="v1755598681/infoaidtech-hero-img_jfmruv.webp" 
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  alt="InfoAidTech Hero" class="w-full h-auto rounded-[32px] object-cover" width="1200" height="800" priority />
+                  sizes="(min-width: 1024px) 500px, (min-width: 768px) 50vw, calc(100vw - 32px)"
+                  alt="InfoAidTech Hero" class="w-full h-full rounded-[32px] object-cover" width="500" height="500" priority />
           </div>
 
-          <!-- Floating abstract badges -->
-          <div class="absolute -left-8 top-1/4 px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl animate-[float_6s_ease-in-out_infinite]">
+          <!-- Floating abstract badges: hidden on small mobile screens (<640px) to prevent horizontal viewport shift -->
+          <div class="hidden sm:flex absolute -left-8 top-1/4 px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl animate-[float_6s_ease-in-out_infinite]">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-full bg-[#f76179]/20 flex items-center justify-center">🎯</div>
               <div>
@@ -138,7 +141,7 @@ import { LanguageService } from '../../services/language/lang.service';
             </div>
           </div>
 
-          <div class="absolute -right-8 bottom-1/4 px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl animate-[float_8s_ease-in-out_infinite_reverse]">
+          <div class="hidden sm:flex absolute -right-8 bottom-1/4 px-6 py-4 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl animate-[float_8s_ease-in-out_infinite_reverse]">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-full bg-[#1e3e62]/40 flex items-center justify-center text-white">⚡</div>
               <div>
@@ -164,7 +167,8 @@ export class HeroComponent {
     private el: ElementRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.isMobile = isPlatformBrowser(!this.platformId);
+    // Check platform properly without inverting platformId token
+    this.isMobile = isPlatformBrowser(this.platformId) && window.innerWidth < 768;
     this.gradientSizePrimary = this.isMobile ? '400' : '600';
     this.gradientSizeSecondary = this.isMobile ? '300' : '400';
     if (this.isMobile) {
