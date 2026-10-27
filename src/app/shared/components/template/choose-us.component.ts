@@ -36,7 +36,8 @@ import { map } from 'rxjs/operators';
                 {{ langService.lang.ourAimIsToImproveReturnOnInvestmentsAndReduceCosts || 'Our aim is to improve return on investments and reduce costs.' }}
               </p>
 
-              <p class="text-base text-gray-500 leading-relaxed">
+              <!-- Use text-gray-400 for WCAG AA 4.5:1 contrast against dark background -->
+              <p class="text-base text-gray-400 leading-relaxed">
                 {{ langService.lang.discoverTheReasonsWhyWereTheRightChoiceForYouWithOurExpertiseDedicationAndCommitmentToExcellenceWeDeliverOutstandingResultsThatExceedExpectations || 'Discover the reasons why we\\'re the right choice for you.' }}
               </p>
             </div>

@@ -43,9 +43,10 @@ import { CommonModule } from '@angular/common';
                 </div>
 
                 <div class="relative z-10 h-full flex flex-col justify-between">
-                  <h4 class="text-xl font-black text-white mb-6 pr-8 leading-tight">
+                  <!-- Use h3 instead of h4 to maintain valid heading hierarchy after h2 -->
+                  <h3 class="text-xl font-black text-white mb-6 pr-8 leading-tight">
                     {{ t.title }}
-                  </h4>
+                  </h3>
 
                   <p class="text-gray-400 font-medium leading-relaxed mb-10 text-base">
                     "{{ t.message }}"

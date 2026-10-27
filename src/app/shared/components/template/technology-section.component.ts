@@ -133,11 +133,12 @@ import { Subscription } from 'rxjs';
                     </svg>
                   </div>
                   <div>
-                    <h4
+                    <!-- Use h3 instead of h4 to preserve sequential heading hierarchy after h2 -->
+                    <h3
                       class="text-lg font-semibold text-dark dark:text-white mb-2"
                     >
                       {{ f.title }}
-                    </h4>
+                    </h3>
                     <p class="text-sm text-dark/60 dark:text-white/60">
                       {{ f.desc }}
                     </p>

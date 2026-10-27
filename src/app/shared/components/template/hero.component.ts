@@ -97,21 +97,21 @@ import { LanguageService } from '../../services/language/lang.service';
             </a>
           </div>
 
-          <!-- Trust metrics -->
+          <!-- Trust metrics: text-gray-400 satisfies WCAG AA 4.5:1 contrast against black background -->
           <div class="mt-12 pt-8 border-t border-white/10 flex items-center gap-8">
             <div>
               <p class="text-2xl font-black text-white">120<span class="text-[#f76179]">+</span></p>
-              <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Projects</p>
+              <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Projects</p>
             </div>
             <div class="w-px h-10 bg-white/10"></div>
             <div>
               <p class="text-2xl font-black text-white">50<span class="text-[#f76179]">+</span></p>
-              <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Global Clients</p>
+              <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Global Clients</p>
             </div>
             <div class="w-px h-10 bg-white/10"></div>
             <div>
               <p class="text-2xl font-black text-white">99<span class="text-[#f76179]">%</span></p>
-              <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Success</p>
+              <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Success</p>
             </div>
           </div>
         </div>

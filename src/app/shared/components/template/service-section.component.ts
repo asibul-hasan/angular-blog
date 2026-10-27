@@ -32,7 +32,8 @@ import { CarouselCardComponent } from './cards/carousel-card.component';
                 {{ langService.lang.weProvideTheBestServiceForYou || 'We provide the best service for you.' }}
               </p>
 
-              <p class="text-base text-gray-500 leading-relaxed max-w-3xl mx-auto">
+              <!-- Use text-gray-400 for WCAG AA 4.5:1 contrast against dark background -->
+              <p class="text-base text-gray-400 leading-relaxed max-w-3xl mx-auto">
                 {{ langService.lang.werededicatedToGivingYouTopNotchServiceThatsJustRightForYouWeMakeSureEveryTimeWeHelpYouItsEvenBetterThanYouExpectedWhetherYouNeedAdviceTechHelpOrAnythingElseWereHereToMakeSureYouReachYourGoalsSmoothlyAndSuccessfully || 'We\\'re dedicated to giving you top-notch service that\\'s just right for you.' }}
               </p>
          </div>
