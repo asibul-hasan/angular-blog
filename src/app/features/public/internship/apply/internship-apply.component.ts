@@ -8,6 +8,7 @@ import { ToastService } from '../../../../core/services';
 import { InternService } from '../../../../shared/services';
 import { APP_CONSTANTS } from '../../../../shared/constants/app.constants';
 import { UpperSectionComponent } from '../../../../shared/components/template/cards/page-upper-section.component';
+import { loadFontAwesome } from '../../../../core/utils/font-awesome-loader';
 
 @Component({
     selector: 'app-internship-apply',
@@ -41,6 +42,9 @@ export class InternshipApplyComponent {
         private internService: InternService,
         @Inject(PLATFORM_ID) private platformId: Object,
     ) {
+        if (isPlatformBrowser(this.platformId)) {
+            loadFontAwesome();
+        }
         // SEO tags
         this.seo.updateTags({
             title: 'Apply for Internship — Kickstart Your Tech Career | InfoAidTech',

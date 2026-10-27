@@ -88,16 +88,7 @@
       />
     </noscript>
 
-    <!-- ✅ Font Awesome (deferred for non-blocking render) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-      media="print"
-      onload="this.media='all';this.onload=null;"
-    />
+    <!-- Font Awesome is loaded on-demand via font-awesome-loader.ts to avoid 129 KiB unused CSS/webfont on landing pages -->
 
     <!-- Deferred Google Analytics loader to eliminate render blocking and reduce TBT on initial mobile load -->
     <script>

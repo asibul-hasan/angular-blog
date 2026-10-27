@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LayoutService } from '../../../core/services/layout.service';
 import { UserContextService } from '../../../core/services/user-context.service';
 import { filter } from 'rxjs/operators';
+import { loadFontAwesome } from '../../../core/utils/font-awesome-loader';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -19,6 +20,9 @@ export class DashboardLayoutComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
+    // Ensure Font Awesome is loaded for all dashboard icons
+    loadFontAwesome();
+
     // Automatically close mobile menu on route change
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
