@@ -1,151 +1,495 @@
+<!-- Upper Section Banner -->
 <app-upper-section [title]="'Get in Touch'"></app-upper-section>
 
-<section class="bg-black text-white min-h-screen pt-24 pb-32 relative overflow-hidden">
-  <!-- Dynamic Center Glow -->
-  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full blur-[250px] opacity-[0.12]" style="background:radial-gradient(circle,#f76179,#1e3e62 70%,transparent 80%)"></div>
+<!-- Main Page Body -->
+<section class="bg-black text-white min-h-screen py-16 sm:py-24 relative overflow-hidden">
+  <!-- Ambient Atmospheric Glowing Orbs -->
+  <div
+    class="pointer-events-none absolute top-12 left-1/4 -translate-x-1/2 w-[700px] h-[700px] rounded-full blur-[220px] opacity-[0.14]"
+    style="background: radial-gradient(circle, #f76179, transparent 70%)"
+  ></div>
+  <div
+    class="pointer-events-none absolute bottom-24 right-10 w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.12]"
+    style="background: radial-gradient(circle, #1e3e62, transparent 75%)"
+  ></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <div class="grid lg:grid-cols-12 gap-16 xl:gap-24 items-start">
-      
-      <!-- Left: Context Column -->
-      <div class="lg:col-span-5 space-y-16">
-        <div>
-          <span class="inline-flex items-center gap-2 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.3em] uppercase text-[#f76179] mb-10">
-            Nexus point
-          </span>
-          <h2 class="text-6xl md:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.9] mb-10 text-white">
-            Start the<br/>
-            <span class="bg-gradient-to-r from-[#f76179] to-[#1e3e62] bg-clip-text text-transparent">Nexus.</span>
-          </h2>
-          <p class="text-xl text-gray-500 font-light leading-relaxed max-w-sm">
-            Ready to convert your technical vision into a market-leading reality? We handle the engineering complexity, you handle the growth.
-          </p>
-        </div>
+    <div class="grid lg:grid-cols-12 gap-8 xl:gap-12 items-start">
 
-        <!-- Contact Bento Grid (Left side) -->
-        <div class="grid gap-5">
-          @for (info of quickInfo; track info.label) {
-            <div class="group flex items-center gap-8 p-8 rounded-[40px] bg-white/[0.02] border border-white/5 hover:border-[#f76179]/30 hover:bg-white/5 transition-all duration-500">
-              <div class="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-2xl"
-                   style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08)">
-                {{ info.icon }}
+      <!-- ==========================================
+           LEFT COLUMN: STICKY SIDEBAR (INFO & COORDINATES)
+           ========================================== -->
+      <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
+        
+        <!-- Card 1: Direct Contact Channels & Overview -->
+        <div class="rounded-3xl p-6 sm:p-8 bg-[#0c1017]/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f76179]/10 border border-[#f76179]/20 text-[#f76179] text-xs font-semibold uppercase tracking-wider mb-5">
+            <span class="w-2 h-2 rounded-full bg-[#f76179] animate-pulse"></span>
+            Direct Line • 24h Response
+          </div>
+
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3" style="text-wrap: balance">
+            Let's Engineer Your Vision
+          </h2>
+          <p class="text-sm text-gray-400 font-normal leading-relaxed mb-6" style="text-wrap: pretty">
+            Direct communication with InfoAidTech's engineering leads, cloud architects, and SME solutions specialists. Reach out for consultations, software architecture, and custom enterprise deployments.
+          </p>
+
+          <!-- Key Communication Channels -->
+          <div class="space-y-3.5 border-t border-white/5 pt-5">
+            <a
+              href="mailto:info@infoaidtech.net"
+              class="group flex items-start gap-3.5 p-3 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-[#f76179]/30 transition-all duration-200"
+            >
+              <div class="w-9 h-9 rounded-xl bg-[#f76179]/10 border border-[#f76179]/20 text-[#f76179] flex items-center justify-center shrink-0 text-sm group-hover:scale-105 transition-transform">
+                <i class="fa-regular fa-envelope"></i>
+              </div>
+              <div class="truncate">
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Official Email</p>
+                <p class="text-sm font-bold text-white group-hover:text-[#f76179] transition-colors truncate">info@infoaidtech.net</p>
+              </div>
+            </a>
+
+            <a
+              href="https://wa.me/8801832824147"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-start gap-3.5 p-3 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-emerald-500/30 transition-all duration-200"
+            >
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 text-sm group-hover:scale-105 transition-transform">
+                <i class="fa-brands fa-whatsapp"></i>
+              </div>
+              <div class="truncate">
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Instant WhatsApp</p>
+                <p class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors truncate">+880 1832-824147</p>
+              </div>
+            </a>
+
+            <div class="flex items-start gap-3.5 p-3 rounded-2xl bg-white/[0.02] border border-white/5">
+              <div class="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 text-sm">
+                <i class="fa-solid fa-location-dot"></i>
               </div>
               <div>
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-700 mb-2">{{ info.label }}</p>
-                <p class="text-2xl font-black text-white group-hover:text-[#f76179] transition-colors">{{ info.value }}</p>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Headquarters</p>
+                <p class="text-sm font-bold text-white">Dhaka, Bangladesh (Remote Global)</p>
               </div>
             </div>
-          }
+
+            <div class="flex items-start gap-3.5 p-3 rounded-2xl bg-white/[0.02] border border-white/5">
+              <div class="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 text-sm">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-gray-400">Response SLA</p>
+                <p class="text-sm font-bold text-white">Guaranteed within 24 business hours</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Operating Matrix -->
-        <div class="p-10 rounded-[48px] bg-gradient-to-br from-[#1e3e62]/10 to-transparent border border-white/5">
-          <div class="flex items-center gap-5 mb-10">
-            <span class="text-4xl">🌎</span>
-            <h4 class="text-3xl font-black text-white tracking-tighter">Availability Matrix</h4>
+        <!-- Card 2: Live Form Completion Tracker -->
+        <div class="rounded-3xl p-6 bg-[#0c1017]/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Inquiry Progress</span>
+            <span class="tabular-nums font-bold text-sm" [class.text-[#f76179]]="completionPercentage < 100" [class.text-emerald-400]="completionPercentage === 100">
+              {{ completionPercentage }}%
+            </span>
           </div>
-          <div class="space-y-6">
+
+          <!-- Progress Track & Bar -->
+          <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden mb-3">
+            <div
+              class="h-full rounded-full transition-all duration-300 ease-out"
+              [style.width.%]="completionPercentage"
+              [class.bg-gradient-to-r]="true"
+              [class.from-[#f76179]]="completionPercentage < 100"
+              [class.to-[#f38d49]]="completionPercentage < 100"
+              [class.from-emerald-500]="completionPercentage === 100"
+              [class.to-teal-400]="completionPercentage === 100"
+            ></div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span class="tabular-nums">
+              <strong class="text-white font-semibold">{{ completedRequiredCount }}</strong> of {{ totalRequiredCount }} required fields completed
+            </span>
+            @if (completionPercentage === 100) {
+              <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check"></i> Ready to Send
+              </span>
+            } @else {
+              <span class="text-amber-400/90 font-medium">In Progress</span>
+            }
+          </div>
+        </div>
+
+        <!-- Card 3: Operating Availability Matrix -->
+        <div class="rounded-3xl p-6 bg-[#0c1017]/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-gray-300 mb-4 flex items-center gap-2">
+            <i class="fa-regular fa-clock text-[#f76179]"></i>
+            Operating Hours
+          </h3>
+
+          <div class="space-y-3">
             @for (hour of officeHours; track hour.day) {
-              <div class="flex justify-between items-center py-4 border-b border-white/5 last:border-0">
-                <span class="text-gray-500 font-bold text-sm tracking-tight">{{ hour.day }}</span>
-                <span [class.text-red-400]="hour.hours === 'Closed'" class="text-white font-black text-sm tracking-wider uppercase">{{ hour.hours }}</span>
+              <div class="flex justify-between items-center py-2 border-b border-white/5 last:border-0 text-xs">
+                <span class="text-gray-400 font-medium">{{ hour.day }}</span>
+                <span [class.text-rose-400]="hour.hours === 'Closed'" class="text-white font-semibold tabular-nums uppercase">
+                  {{ hour.hours }}
+                </span>
               </div>
             }
           </div>
         </div>
-      </div>
 
-      <!-- Right: Form Complex -->
-      <div class="lg:col-span-7">
-        <div class="relative rounded-[56px] p-10 md:p-16 xl:p-20 overflow-hidden border border-white/10 bg-white/[0.01] backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
+        <!-- Card 4: Direct Support Assistance -->
+        <div class="rounded-3xl p-5 bg-white/[0.02] border border-white/5 text-center">
+          <p class="text-xs text-gray-400 mb-1">Need urgent engineering assistance or NDA execution?</p>
+          <a
+            href="mailto:support@infoaidtech.net"
+            class="text-xs font-semibold text-[#f76179] hover:underline inline-flex items-center gap-1.5"
+          >
+            <i class="fa-regular fa-envelope"></i> support&#64;infoaidtech.net
+          </a>
+        </div>
+
+      </aside>
+
+      <!-- ==========================================
+           RIGHT COLUMN: THE CONTACT FORM COMPLEX
+           ========================================== -->
+      <main class="lg:col-span-8">
+        <div class="rounded-3xl p-6 sm:p-10 lg:p-12 bg-[#0c1017]/95 border border-white/10 backdrop-blur-2xl shadow-2xl relative">
           
-          <div class="mb-16">
-            <h3 class="text-4xl font-black text-white mb-3 tracking-tighter">Initialize Project</h3>
-            <p class="text-gray-600 font-bold text-sm uppercase tracking-widest">Protocol Version 1.0.4</p>
+          <!-- Form Header -->
+          <div class="mb-10 pb-6 border-b border-white/10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300 mb-3">
+              <i class="fa-solid fa-paper-plane text-[#f76179] text-[10px]"></i>
+              <span>Consultation & Project Inquiries</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-2" style="text-wrap: balance">
+              Send Us a Message
+            </h1>
+            <p class="text-sm text-gray-400 font-normal leading-relaxed" style="text-wrap: pretty">
+              Have a project in mind, need software engineering consultation, or want to explore an enterprise SME deployment? Provide your details below and our team will get back to you promptly.
+            </p>
           </div>
 
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-12">
-            <div class="grid md:grid-cols-2 gap-10">
-              <!-- Name -->
-              <div class="relative group">
-                <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Subject ID</label>
-                <input type="text" formControlName="name" placeholder="Full Name"
-                       class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all font-bold">
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-10">
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 1: CONTACT COORDINATES
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6">
+              <legend class="sr-only">Contact Coordinates</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-[#f76179]/15 border border-[#f76179]/25 text-[#f76179] flex items-center justify-center text-sm font-bold shadow-sm">
+                  1
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Your Coordinates</h3>
+                  <p class="text-xs text-gray-400">Identity details so our team knows who to address</p>
+                </div>
               </div>
 
-              <!-- Email -->
-              <div class="relative group">
-                <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Data Port</label>
-                <input type="email" formControlName="email" placeholder="email@address.net"
-                       class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all font-bold">
-              </div>
-            </div>
-
-            <!-- Subject -->
-            <div class="relative group">
-              <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Header</label>
-              <input type="text" formControlName="subject" placeholder="What is the core focus?"
-                     class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all font-bold">
-            </div>
-
-            <!-- Service Dropdown -->
-            <div class="relative group">
-              <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Sector</label>
-              <div class="relative">
-                <select formControlName="serviceInterest" class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white appearance-none focus:outline-none focus:border-[#f76179] transition-all font-black uppercase tracking-widest text-xs">
-                  <option value="" disabled selected class="bg-black">Select Domain...</option>
-                  @for (opt of serviceOptions; track opt) {
-                    <option [value]="opt" class="bg-black">{{ opt }}</option>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- Full Name -->
+                <div class="space-y-1.5">
+                  <label for="name" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Full Name <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors text-sm">
+                      <i class="fa-regular fa-user"></i>
+                    </div>
+                    <input
+                      id="name"
+                      type="text"
+                      formControlName="name"
+                      placeholder="e.g. Asibul Hasan or Sarah Jenkins"
+                      autocomplete="name"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('name')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('name')"
+                      [class.focus:border-red-500]="isFieldInvalid('name')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('name')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('name') }}
+                    </p>
                   }
-                </select>
-                <div class="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none text-gray-600">▼</div>
+                </div>
+
+                <!-- Work Email -->
+                <div class="space-y-1.5">
+                  <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Business / Work Email <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors text-sm">
+                      <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <input
+                      id="email"
+                      type="email"
+                      formControlName="email"
+                      placeholder="name@company.com"
+                      autocomplete="email"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('email')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('email')"
+                      [class.focus:border-red-500]="isFieldInvalid('email')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('email')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('email') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Phone / WhatsApp (Full width on tablet/mobile, span 2) -->
+                <div class="md:col-span-2 space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <label for="phone" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      Phone / WhatsApp Number
+                    </label>
+                    <span class="text-[11px] text-gray-500 font-medium">Optional for expedited response</span>
+                  </div>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-400/80 group-focus-within:text-emerald-400 transition-colors text-sm">
+                      <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <input
+                      id="phone"
+                      type="tel"
+                      formControlName="phone"
+                      placeholder="+1 (555) 000-0000 or +880 1832-824147"
+                      autocomplete="tel"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                    />
+                  </div>
+                </div>
+
+              </div>
+            </fieldset>
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 2: PROJECT / INQUIRY FOCUS
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6 pt-8 border-t border-white/10">
+              <legend class="sr-only">Project Focus</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-orange-500/15 border border-orange-500/25 text-orange-400 flex items-center justify-center text-sm font-bold shadow-sm">
+                  2
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Scope & Topic</h3>
+                  <p class="text-xs text-gray-400">Categorize your inquiry so we connect you to the right technical lead</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- Subject -->
+                <div class="space-y-1.5">
+                  <label for="subject" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Subject / Project Title <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-400 transition-colors text-sm">
+                      <i class="fa-regular fa-file-lines"></i>
+                    </div>
+                    <input
+                      id="subject"
+                      type="text"
+                      formControlName="subject"
+                      placeholder="e.g. Healthcare ERP System Architecture"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('subject')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('subject')"
+                      [class.focus:border-red-500]="isFieldInvalid('subject')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('subject')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('subject') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Service Domain Selection -->
+                <div class="space-y-1.5">
+                  <label for="serviceInterest" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Solution Domain <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-400 transition-colors text-sm">
+                      <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <select
+                      id="serviceInterest"
+                      formControlName="serviceInterest"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-10 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 appearance-none cursor-pointer"
+                      [class.border-red-500]="isFieldInvalid('serviceInterest')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('serviceInterest')"
+                      [class.focus:border-red-500]="isFieldInvalid('serviceInterest')"
+                    >
+                      <option value="" disabled selected class="bg-[#0f172a] text-gray-400">Select solution domain...</option>
+                      @for (opt of serviceOptions; track opt.value) {
+                        <option [value]="opt.value" class="bg-[#0f172a] text-white py-2">{{ opt.label }}</option>
+                      }
+                    </select>
+                    <!-- Custom Chevron Arrow Indicator -->
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  @if (isFieldInvalid('serviceInterest')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('serviceInterest') }}
+                    </p>
+                  }
+                </div>
+
+              </div>
+            </fieldset>
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 3: DETAILED PROJECT BRIEF
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6 pt-8 border-t border-white/10">
+              <legend class="sr-only">Detailed Message</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/25 text-purple-400 flex items-center justify-center text-sm font-bold shadow-sm">
+                  3
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Detailed Brief</h3>
+                  <p class="text-xs text-gray-400">Describe your technical vision, existing infrastructure, timeline, or key objectives</p>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <label for="message" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                  Project Description / Message <span class="text-[#f76179] font-bold" title="Required">*</span>
+                </label>
+                <div class="relative group">
+                  <textarea
+                    id="message"
+                    rows="5"
+                    formControlName="message"
+                    placeholder="Outline your project scope, core business goals, estimated timeline, target technology stack, or specific questions for our engineering leads..."
+                    class="w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 resize-y min-h-[130px] leading-relaxed"
+                    [class.border-red-500]="isFieldInvalid('message')"
+                    [class.focus:ring-red-500\/15]="isFieldInvalid('message')"
+                    [class.focus:border-red-500]="isFieldInvalid('message')"
+                  ></textarea>
+                </div>
+                @if (isFieldInvalid('message')) {
+                  <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                    <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('message') }}
+                  </p>
+                }
+              </div>
+            </fieldset>
+
+            <!-- ═══════════════════════════════════════
+                 SUBMISSION BAR & ACTION
+                 ═══════════════════════════════════════ -->
+            <div class="pt-8 border-t border-white/10 space-y-4">
+              
+              <!-- Completion Warning if Form Invalid -->
+              @if (contactForm.invalid && contactForm.touched) {
+                <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs flex items-center gap-3 animate-fadeIn">
+                  <i class="fa-solid fa-triangle-exclamation text-base shrink-0 text-red-400"></i>
+                  <span>Please complete all {{ totalRequiredCount }} required fields marked with <strong class="text-white">*</strong> before sending.</span>
+                </div>
+              }
+
+              <!-- Submit Button (Standard Height h-14 matching Internship) -->
+              <button
+                type="submit"
+                [disabled]="isSubmitting"
+                class="w-full h-14 bg-gradient-to-r from-[#f76179] via-[#fa7389] to-[#ea4b64] hover:from-[#e54e66] hover:to-[#d43750] disabled:from-gray-800 disabled:to-gray-900 disabled:text-gray-500 disabled:border disabled:border-white/5 disabled:shadow-none rounded-2xl font-bold text-white text-base shadow-[0_10px_35px_rgba(247,97,121,0.3)] hover:shadow-[0_15px_45px_rgba(247,97,121,0.5)] transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer disabled:cursor-not-allowed"
+              >
+                @if (isSubmitting) {
+                  <span class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  <span>Transmitting Message Securely...</span>
+                } @else {
+                  <i class="fa-solid fa-paper-plane text-sm"></i>
+                  <span>Send Message</span>
+                }
+              </button>
+
+              <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-500 pt-2 gap-2 text-center sm:text-left">
+                <span class="flex items-center gap-1.5 justify-center">
+                  <i class="fa-solid fa-lock text-[10px] text-emerald-400"></i>
+                  <span>SSL 256-bit Encrypted Transmission</span>
+                </span>
+                <span>By contacting us, you agree to our <a routerLink="/terms-of-service" class="text-gray-400 hover:text-white underline">Terms</a> & <a routerLink="/privacy-policy" class="text-gray-400 hover:text-white underline">Privacy Policy</a></span>
               </div>
             </div>
 
-            <!-- Message -->
-            <div class="relative group">
-              <label class="absolute -top-3 left-6 px-3 bg-black text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 group-focus-within:text-[#f76179] transition-colors z-10">Detailed Brief</label>
-              <textarea rows="6" formControlName="message" placeholder="Technical requirements, goals, and architectural vision..."
-                        class="w-full px-8 py-6 bg-transparent border border-white/10 rounded-3xl text-white placeholder-gray-800 focus:outline-none focus:border-[#f76179] focus:ring-1 focus:ring-[#f76179] transition-all resize-none font-medium leading-relaxed"></textarea>
-            </div>
-
-            <button type="submit" [disabled]="contactForm.invalid"
-                    class="group relative w-full py-8 rounded-3xl font-black text-white text-xl transition-all shadow-2xl disabled:opacity-30 disabled:cursor-not-allowed hover:scale-[1.01] flex items-center justify-center gap-4 overflow-hidden"
-                    style="background:linear-gradient(135deg,#f76179,#c0365a);box-shadow:0 20px 60px rgba(247,97,121,0.4)">
-              <span class="relative z-10">Transmit Request</span>
-              <svg class="w-6 h-6 relative z-10 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-              </svg>
-              <!-- Hover shimmer -->
-              <div class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            </button>
           </form>
         </div>
+      </main>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         BOTTOM SECTION: PROTOCOLS & FAQ
+         ═══════════════════════════════════════ -->
+    <div class="mt-24 sm:mt-32 pt-16 border-t border-white/10">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-semibold uppercase tracking-wider text-[#f76179] mb-4">
+          <i class="fa-solid fa-circle-question text-[10px]"></i>
+          Consultation Protocols
+        </span>
+        <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Frequently Asked Questions
+        </h3>
+        <p class="text-sm text-gray-400 mt-2">
+          Everything you need to know about our engagement workflows, technical SLAs, and project kickoffs.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+        @for (faq of faqs; track faq.q; let i = $index) {
+          <div
+            (click)="toggleFaq(i)"
+            class="rounded-2xl p-6 bg-[#0c1017]/80 border border-white/10 hover:border-white/20 transition-all duration-200 cursor-pointer group"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <h4 class="text-base font-bold text-white group-hover:text-[#f76179] transition-colors flex items-start gap-2.5">
+                <span class="text-[#f76179] font-bold text-sm mt-0.5">Q.</span>
+                <span>{{ faq.q }}</span>
+              </h4>
+              <div
+                class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-white transition-transform duration-200 text-xs"
+                [class.rotate-180]="openFaqIndex() === i"
+              >
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+            </div>
+            @if (openFaqIndex() === i) {
+              <div class="mt-4 pt-4 border-t border-white/5 animate-fadeIn">
+                <p class="text-sm text-gray-400 font-normal leading-relaxed pl-5 border-l-2 border-[#f76179]/50">
+                  {{ faq.a }}
+                </p>
+              </div>
+            }
+          </div>
+        }
       </div>
     </div>
 
-    <!-- FAQ Section -->
-    @defer (on viewport) {
-      <div class="mt-40">
-        <div class="text-center mb-20">
-          <span class="inline-block px-5 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black tracking-[0.3em] uppercase text-[#f76179] mb-8">Intelligence Base</span>
-          <h3 class="text-5xl md:text-6xl font-black text-white tracking-tighter">Protocols & FAQ</h3>
-        </div>
-        <div class="grid md:grid-cols-2 gap-8">
-          @for (faq of faqs; track faq.q) {
-            <div class="bg-white/[0.02] border border-white/5 rounded-[40px] p-10 hover:bg-white/5 transition-all duration-300 group">
-              <h4 class="text-xl font-black text-white mb-6 flex items-start gap-4">
-                <span class="text-[#f76179] font-black group-hover:scale-125 transition-transform">?</span>
-                {{ faq.q }}
-              </h4>
-              <p class="text-gray-500 text-lg leading-relaxed pl-8 border-l border-white/10">{{ faq.a }}</p>
-            </div>
-          }
-        </div>
-      </div>
-    } @placeholder {
-      <div class="mt-40 h-96"></div>
-    }
   </div>
 </section>

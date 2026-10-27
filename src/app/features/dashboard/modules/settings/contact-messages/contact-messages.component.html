@@ -1,0 +1,640 @@
+<!-- Contact Inquiries & Leads Studio -->
+<div class="space-y-6 w-full animate-in fade-in duration-300">
+  
+  <!-- Page Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2.5">
+        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">
+          Client Inquiries & Messages
+        </h1>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#f76179]/10 text-[#f76179] border border-[#f76179]/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#f76179] animate-pulse"></span>
+          {{ totalCount }} Inquiries Ingested
+        </span>
+      </div>
+      <p class="text-slate-400 text-xs sm:text-sm mt-1">
+        Review incoming visitor inquiries from <code class="text-slate-300 bg-slate-800/60 px-1 py-0.5 rounded">/contact</code>, track replies, and manually log external client leads.
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        (click)="loadMessages()"
+        [disabled]="isLoading"
+        class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 hover:bg-slate-800 text-xs font-bold transition-all shadow-sm cursor-pointer disabled:opacity-50"
+      >
+        <i class="fa-solid fa-arrows-rotate text-[11px]" [class.animate-spin]="isLoading"></i>
+        Sync
+      </button>
+
+      <button
+        type="button"
+        (click)="openCreateModal()"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#f76179] to-rose-600 hover:from-rose-500 hover:to-[#f76179] text-white text-xs font-bold shadow-lg shadow-[#f76179]/20 transition-all cursor-pointer"
+      >
+        <i class="fa-solid fa-plus text-[11px]"></i>
+        Log New Inquiry
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Stat Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Card 1: Total -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Inquiries</p>
+        <h3 class="text-2xl font-black text-white mt-1 tabular-nums">{{ totalCount }}</h3>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-base">
+        <i class="fa-solid fa-inbox"></i>
+      </div>
+    </div>
+
+    <!-- Card 2: Unread -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-rose-400">Unread / Pending</p>
+        <h3 class="text-2xl font-black text-rose-400 mt-1 tabular-nums">{{ unreadCount }}</h3>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center text-base">
+        <i class="fa-solid fa-envelope-open-text"></i>
+      </div>
+    </div>
+
+    <!-- Card 3: Replied -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Replied / Engaged</p>
+        <h3 class="text-2xl font-black text-emerald-400 mt-1 tabular-nums">{{ repliedCount }}</h3>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-base">
+        <i class="fa-solid fa-check-double"></i>
+      </div>
+    </div>
+
+    <!-- Card 4: Archived -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Archived</p>
+        <h3 class="text-2xl font-black text-slate-300 mt-1 tabular-nums">{{ archivedCount }}</h3>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-slate-800/40 border border-slate-700/40 text-slate-400 flex items-center justify-center text-base">
+        <i class="fa-solid fa-box-archive"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters & Controls Bar -->
+  <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+    <!-- Filter Tabs -->
+    <div class="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
+      <button
+        type="button"
+        (click)="applyFilter('all')"
+        [class.bg-[#f76179]]="currentFilter === 'all'"
+        [class.text-white]="currentFilter === 'all'"
+        [class.text-slate-400]="currentFilter !== 'all'"
+        [class.hover:text-white]="currentFilter !== 'all'"
+        [class.hover:bg-slate-800]="currentFilter !== 'all'"
+        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
+      >
+        All ({{ totalCount }})
+      </button>
+
+      <button
+        type="button"
+        (click)="applyFilter('unread')"
+        [class.bg-rose-500]="currentFilter === 'unread'"
+        [class.text-white]="currentFilter === 'unread'"
+        [class.text-slate-400]="currentFilter !== 'unread'"
+        [class.hover:text-white]="currentFilter !== 'unread'"
+        [class.hover:bg-slate-800]="currentFilter !== 'unread'"
+        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 flex items-center gap-1.5"
+      >
+        <span>Unread</span>
+        <span *ngIf="unreadCount > 0" class="px-1.5 py-0.2 rounded-full bg-rose-950/80 text-[10px]">{{ unreadCount }}</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="applyFilter('read')"
+        [class.bg-blue-600]="currentFilter === 'read'"
+        [class.text-white]="currentFilter === 'read'"
+        [class.text-slate-400]="currentFilter !== 'read'"
+        [class.hover:text-white]="currentFilter !== 'read'"
+        [class.hover:bg-slate-800]="currentFilter !== 'read'"
+        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
+      >
+        Read ({{ readCount }})
+      </button>
+
+      <button
+        type="button"
+        (click)="applyFilter('replied')"
+        [class.bg-emerald-600]="currentFilter === 'replied'"
+        [class.text-white]="currentFilter === 'replied'"
+        [class.text-slate-400]="currentFilter !== 'replied'"
+        [class.hover:text-white]="currentFilter !== 'replied'"
+        [class.hover:bg-slate-800]="currentFilter !== 'replied'"
+        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
+      >
+        Replied ({{ repliedCount }})
+      </button>
+
+      <button
+        type="button"
+        (click)="applyFilter('archived')"
+        [class.bg-slate-700]="currentFilter === 'archived'"
+        [class.text-white]="currentFilter === 'archived'"
+        [class.text-slate-400]="currentFilter !== 'archived'"
+        [class.hover:text-white]="currentFilter !== 'archived'"
+        [class.hover:bg-slate-800]="currentFilter !== 'archived'"
+        class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
+      >
+        Archived ({{ archivedCount }})
+      </button>
+    </div>
+
+    <!-- Live Search -->
+    <div class="relative w-full md:w-72">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 text-xs">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="searchMessages()"
+        placeholder="Search name, email, subject, text..."
+        class="w-full pl-9 pr-8 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 placeholder-slate-500 text-xs focus:outline-none focus:border-[#f76179]/50 transition-colors"
+      />
+      <button
+        *ngIf="searchTerm"
+        (click)="searchTerm = ''; searchMessages()"
+        class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-white text-xs cursor-pointer"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-24 rounded-2xl bg-slate-900/40 border border-slate-800/80">
+    <div class="w-10 h-10 border-3 border-[#f76179]/20 border-t-[#f76179] rounded-full animate-spin mb-3"></div>
+    <span class="text-xs text-slate-400 font-medium">Synchronizing contact inquiries...</span>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredMessages.length === 0" class="flex flex-col items-center justify-center py-20 rounded-2xl bg-slate-900/40 border border-slate-800/80 text-center px-4">
+    <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl text-slate-500 mb-4">
+      <i class="fa-regular fa-envelope"></i>
+    </div>
+    <h3 class="text-base font-bold text-white mb-1">No Inquiries Found</h3>
+    <p class="text-xs text-slate-400 max-w-sm mb-5">
+      No contact messages matched your active filter or search query. New submissions from <code class="text-slate-300">/contact</code> will appear here automatically.
+    </p>
+    <button
+      (click)="openCreateModal()"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-semibold transition-all cursor-pointer"
+    >
+      <i class="fa-solid fa-plus text-[10px]"></i> Log Manual Inquiry
+    </button>
+  </div>
+
+  <!-- Inquiries Table / Feed -->
+  <div *ngIf="!isLoading && filteredMessages.length > 0" class="rounded-2xl bg-slate-900/80 border border-slate-800 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse text-xs">
+        <thead>
+          <tr class="border-b border-slate-800/80 bg-slate-950/50 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <th class="py-3.5 px-4">Sender & Coordinates</th>
+            <th class="py-3.5 px-4">Subject & Scope</th>
+            <th class="py-3.5 px-4">Domain</th>
+            <th class="py-3.5 px-4">Received</th>
+            <th class="py-3.5 px-4">Status</th>
+            <th class="py-3.5 px-4 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800/60">
+          <tr
+            *ngFor="let msg of filteredMessages"
+            class="hover:bg-slate-800/40 transition-colors group"
+            [class.bg-rose-500/[0.02]]="(msg.status || 'unread') === 'unread'"
+          >
+            <!-- Sender -->
+            <td class="py-3.5 px-4">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#f76179]/20 to-blue-500/20 border border-white/10 flex items-center justify-center font-bold text-white shrink-0 text-xs">
+                  {{ msg.name ? msg.name.charAt(0).toUpperCase() : 'U' }}
+                </div>
+                <div class="truncate max-w-[200px]">
+                  <p class="font-bold text-white truncate flex items-center gap-1.5">
+                    <span>{{ msg.name }}</span>
+                    <span *ngIf="(msg.status || 'unread') === 'unread'" class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+                  </p>
+                  <a [href]="'mailto:' + msg.email" class="text-slate-400 hover:text-[#f76179] transition-colors truncate block text-[11px]">
+                    {{ msg.email }}
+                  </a>
+                  <p *ngIf="msg.phone" class="text-slate-500 text-[10px] flex items-center gap-1">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 text-[9px]"></i> {{ msg.phone }}
+                  </p>
+                </div>
+              </div>
+            </td>
+
+            <!-- Subject & Snippet -->
+            <td class="py-3.5 px-4 max-w-[280px]">
+              <p class="font-bold text-slate-200 truncate">{{ msg.subject }}</p>
+              <p class="text-slate-400 text-[11px] truncate mt-0.5 font-normal">{{ msg.message }}</p>
+            </td>
+
+            <!-- Service Domain -->
+            <td class="py-3.5 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-slate-300 text-[10px] font-medium whitespace-nowrap">
+                {{ msg.serviceInterest || 'General Inquiry' }}
+              </span>
+            </td>
+
+            <!-- Timestamp -->
+            <td class="py-3.5 px-4 text-slate-400 whitespace-nowrap text-[11px]">
+              {{ msg.createdAt ? (msg.createdAt | date : 'MMM d, y h:mm a') : 'Recently' }}
+            </td>
+
+            <!-- Status Pill / Select -->
+            <td class="py-3.5 px-4 whitespace-nowrap">
+              <div class="relative inline-block">
+                <select
+                  [value]="msg.status || 'unread'"
+                  (change)="updateStatus(msg, $any($event.target).value)"
+                  [ngClass]="getStatusBadgeClass(msg.status)"
+                  class="pl-2 pr-6 py-1 rounded-lg border text-[11px] font-bold uppercase tracking-wider appearance-none cursor-pointer focus:outline-none bg-slate-900"
+                >
+                  <option value="unread" class="bg-slate-900 text-rose-400">Unread</option>
+                  <option value="read" class="bg-slate-900 text-blue-400">Read</option>
+                  <option value="replied" class="bg-slate-900 text-emerald-400">Replied</option>
+                  <option value="archived" class="bg-slate-900 text-slate-400">Archived</option>
+                </select>
+                <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[9px] text-slate-400">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+              </div>
+            </td>
+
+            <!-- Actions -->
+            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+              <div class="flex items-center justify-end gap-1.5">
+                <!-- View Details -->
+                <button
+                  type="button"
+                  (click)="openDetailModal(msg)"
+                  class="p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  title="View full inquiry"
+                >
+                  <i class="fa-regular fa-eye text-xs"></i>
+                </button>
+
+                <!-- Quick Reply via Mailto -->
+                <a
+                  [href]="getMailtoLink(msg)"
+                  target="_blank"
+                  class="p-1.5 rounded-lg bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 hover:text-blue-300 border border-blue-500/20 transition-colors cursor-pointer"
+                  title="Reply via Email"
+                >
+                  <i class="fa-solid fa-reply text-xs"></i>
+                </a>
+
+                <!-- Delete -->
+                <button
+                  type="button"
+                  (click)="deleteMessage(msg)"
+                  class="p-1.5 rounded-lg hover:bg-rose-500/10 text-slate-500 hover:text-rose-400 transition-colors cursor-pointer"
+                  title="Delete message"
+                >
+                  <i class="fa-regular fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: INQUIRY DETAILS & ACTIONS
+       ======================================================== -->
+  <div
+    *ngIf="showDetailModal && selectedMessage"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+  >
+    <div
+      class="w-full max-w-2xl rounded-3xl bg-[#0c1017] border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+    >
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f76179]/20 to-blue-500/20 border border-white/10 flex items-center justify-center font-bold text-white text-sm">
+            {{ selectedMessage.name ? selectedMessage.name.charAt(0).toUpperCase() : 'U' }}
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">{{ selectedMessage.name }}</h3>
+            <p class="text-xs text-slate-400">{{ selectedMessage.email }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span
+            [ngClass]="getStatusBadgeClass(selectedMessage.status)"
+            class="px-2.5 py-1 rounded-lg border text-[10px] font-bold uppercase tracking-wider"
+          >
+            {{ selectedMessage.status || 'unread' }}
+          </span>
+          <button
+            (click)="closeDetailModal()"
+            class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 overflow-y-auto space-y-6">
+        
+        <!-- Metadata Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Phone / WhatsApp</span>
+            <span class="text-white font-medium mt-0.5 block">{{ selectedMessage.phone || 'Not provided' }}</span>
+          </div>
+
+          <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Target Solution</span>
+            <span class="text-purple-400 font-medium mt-0.5 block">{{ selectedMessage.serviceInterest || 'General Inquiry' }}</span>
+          </div>
+
+          <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Received At</span>
+            <span class="text-slate-300 font-medium mt-0.5 block">
+              {{ selectedMessage.createdAt ? (selectedMessage.createdAt | date : 'EEEE, MMM d, y h:mm:ss a') : 'Recently' }}
+            </span>
+          </div>
+
+          <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Origin URL</span>
+            <span class="text-slate-300 font-medium mt-0.5 block truncate">{{ selectedMessage.companyUrl || 'https://infoaidtech.net' }}</span>
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#f76179] block mb-1">Subject</span>
+          <h4 class="text-sm font-bold text-white">{{ selectedMessage.subject }}</h4>
+        </div>
+
+        <!-- Full Message Body -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Message Content</label>
+          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line font-normal">
+            {{ selectedMessage.message }}
+          </div>
+        </div>
+
+        <!-- Internal Admin Notes -->
+        <div class="space-y-2 pt-2 border-t border-white/5">
+          <div class="flex items-center justify-between">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-amber-400">Internal Admin Notes</label>
+            <span class="text-[10px] text-slate-500">Private notes for team coordination</span>
+          </div>
+          <textarea
+            rows="3"
+            [(ngModel)]="adminNotesInput"
+            placeholder="Add follow-up notes, deal size, meeting scheduled, or assigned developer..."
+            class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-amber-400/50 resize-y"
+          ></textarea>
+          <button
+            type="button"
+            (click)="saveAdminNotes()"
+            [disabled]="isSaving"
+            class="px-3.5 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold transition-all cursor-pointer"
+          >
+            Save Admin Notes
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 bg-slate-950/40">
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400">Mark Status:</span>
+          <button
+            type="button"
+            (click)="updateStatus(selectedMessage, 'unread')"
+            class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-400 text-xs font-bold transition-colors cursor-pointer"
+          >
+            Unread
+          </button>
+          <button
+            type="button"
+            (click)="updateStatus(selectedMessage, 'replied')"
+            class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold transition-colors cursor-pointer"
+          >
+            Replied
+          </button>
+          <button
+            type="button"
+            (click)="updateStatus(selectedMessage, 'archived')"
+            class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs font-bold transition-colors cursor-pointer"
+          >
+            Archive
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a
+            [href]="getMailtoLink(selectedMessage)"
+            target="_blank"
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-md cursor-pointer"
+          >
+            <i class="fa-solid fa-paper-plane text-[10px]"></i> Reply via Email
+          </a>
+
+          <button
+            (click)="deleteMessage(selectedMessage)"
+            class="px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-bold transition-colors cursor-pointer"
+          >
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: LOG NEW INQUIRY / MANUAL FORM INPUT
+       ======================================================== -->
+  <div
+    *ngIf="showCreateModal"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+  >
+    <div
+      class="w-full max-w-xl rounded-3xl bg-[#0c1017] border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+    >
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-white/10 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-white">Log Client Inquiry / Lead</h3>
+          <p class="text-xs text-slate-400">Record a lead received via WhatsApp, phone, or direct referral</p>
+        </div>
+        <button
+          (click)="closeCreateModal()"
+          class="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Form) -->
+      <form [formGroup]="createForm" (ngSubmit)="submitManualMessage()" class="p-6 overflow-y-auto space-y-4">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Name -->
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Sender Name <span class="text-rose-400">*</span>
+            </label>
+            <input
+              type="text"
+              formControlName="name"
+              placeholder="Full name"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Email Address <span class="text-rose-400">*</span>
+            </label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="client@company.com"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Phone -->
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Phone / WhatsApp
+            </label>
+            <input
+              type="tel"
+              formControlName="phone"
+              placeholder="+880 1832-824147"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+            />
+          </div>
+
+          <!-- Domain -->
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Target Domain <span class="text-rose-400">*</span>
+            </label>
+            <select
+              formControlName="serviceInterest"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+            >
+              @for (opt of serviceOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <div class="space-y-1">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            Subject <span class="text-rose-400">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="subject"
+            placeholder="e.g. Enterprise Accounting Module Implementation"
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+          />
+        </div>
+
+        <!-- Message -->
+        <div class="space-y-1">
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            Message / Requirements <span class="text-rose-400">*</span>
+          </label>
+          <textarea
+            rows="4"
+            formControlName="message"
+            placeholder="Client requirements, discussion notes, budget, and key deliverables..."
+            class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179] resize-y"
+          ></textarea>
+        </div>
+
+        <!-- Status & Notes -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Initial Status
+            </label>
+            <select
+              formControlName="status"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+            >
+              <option value="unread">Unread / Pending</option>
+              <option value="read">Read / In Review</option>
+              <option value="replied">Replied / In Negotiation</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">
+              Internal Notes
+            </label>
+            <input
+              type="text"
+              formControlName="adminNotes"
+              placeholder="Referral via LinkedIn / urgent"
+              class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-[#f76179]"
+            />
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+          <button
+            type="button"
+            (click)="closeCreateModal()"
+            class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            [disabled]="isSaving"
+            class="px-5 py-2 rounded-xl bg-gradient-to-r from-[#f76179] to-rose-600 hover:from-rose-500 hover:to-[#f76179] text-white text-xs font-bold transition-all shadow-md cursor-pointer disabled:opacity-50"
+          >
+            {{ isSaving ? 'Saving...' : 'Record Inquiry' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

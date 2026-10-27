@@ -7,6 +7,7 @@ import { CompanyManagementComponent } from './company-management/company-managem
 // Access Management Components
 import { UserAccessManagementComponent } from './user-access-management/user-access-management.component';
 import { ModuleAccessManagementComponent } from './module-access-management/module-access-management.component';
+import { ContactMessagesComponent } from './contact-messages/contact-messages.component';
 
 export const SETTINGS_ROUTES: Routes = [
     { path: '', redirectTo: 'company-management', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const SETTINGS_ROUTES: Routes = [
         canActivate: [AdminGuard]
     },
     { path: 'user-access-management', component: UserAccessManagementComponent, canActivate: [AdminGuard] },
-    { path: 'module-access-management', component: ModuleAccessManagementComponent, canActivate: [AdminGuard] }
+    { path: 'module-access-management', component: ModuleAccessManagementComponent, canActivate: [AdminGuard] },
+    { path: 'contact-messages', component: ContactMessagesComponent, canActivate: [AdminGuard] }
 ];

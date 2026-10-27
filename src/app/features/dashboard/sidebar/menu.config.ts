@@ -255,6 +255,13 @@ export const SIDEBAR_MODULES: readonly SidebarModule[] = [
             icon: 'fa-solid fa-building',
             description: 'Corporate entities, legal registrations, and profiles.',
           },
+          {
+            form_id: 'ADM_406',
+            title: 'Client Inquiries & Leads',
+            route: '/dashboard/settings/contact-messages',
+            icon: 'fa-solid fa-envelope-open-text',
+            description: 'Incoming website inquiries, contact leads, and client messages.',
+          },
         ],
       },
     ],
