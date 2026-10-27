@@ -21,12 +21,13 @@ import {
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
 import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
-import { provideCloudinaryLoader } from '@angular/common';
+import { IMAGE_LOADER } from '@angular/common';
+import { customImageLoader } from './core/loaders/custom-image-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideCloudinaryLoader('https://res.cloudinary.com/dfcir8epp'),
+    { provide: IMAGE_LOADER, useValue: customImageLoader },
     provideZoneChangeDetection({
       eventCoalescing: true,
       runCoalescing: true // Improved performance

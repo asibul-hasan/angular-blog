@@ -73,8 +73,8 @@ export class BlogCardComponent {
   readonly blog = input.required<any>();
 
   readonly imgUrl = computed(() =>
-    this.blog()?.image ??
-    'https://res.cloudinary.com/dfcir8epp/image/upload/v1755703537/FFFFFF_hi6y3z.svg'
+    this.blog()?.image ||
+    'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop'
   );
 
   readonly title = computed(() => this.blog()?.title ?? 'Untitled Protocol');

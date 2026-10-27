@@ -21,6 +21,11 @@ export class BlogList implements OnInit, OnDestroy {
   readonly currentSlide = signal<number>(0);
   private autoSlideInterval?: any;
 
+  // Pagination state (3-4 items per batch)
+  readonly PAGE_SIZE = 4;
+  readonly visibleCount = signal<number>(4);
+  readonly Math = Math;
+
   // Store references
   readonly allBlogs = computed(() => this.blogStore.blogs());
   readonly categories = computed(() => this.blogStore.categories());
@@ -49,6 +54,30 @@ export class BlogList implements OnInit, OnDestroy {
     const featured = this.featuredBlogs();
     const index = this.currentSlide();
     return featured[index] || null;
+  });
+
+  // Grid blogs for bottom list (excluding current top featured blog)
+  readonly gridBlogs = computed(() => {
+    const all = this.blogs();
+    const featured = this.currentFeaturedBlog();
+    if (!featured) return all;
+    const featuredId = featured._id || featured.id;
+    return all.filter((b: any) => (b._id || b.id) !== featuredId);
+  });
+
+  // Paginated blogs currently visible in the grid
+  readonly paginatedBlogs = computed(() => {
+    return this.gridBlogs().slice(0, this.visibleCount());
+  });
+
+  // Check if more blogs can be loaded
+  readonly hasMoreBlogs = computed(() => {
+    return this.visibleCount() < this.gridBlogs().length;
+  });
+
+  // Number of remaining blogs
+  readonly remainingCount = computed(() => {
+    return Math.max(0, this.gridBlogs().length - this.visibleCount());
   });
 
   // Check if blogs are loading
@@ -127,6 +156,7 @@ export class BlogList implements OnInit, OnDestroy {
 
   selectCategory(id: number | null) {
     this.selectedCategory.set(id);
+    this.visibleCount.set(this.PAGE_SIZE);
   }
 
   // Helper to get category name by id
@@ -173,9 +203,8 @@ export class BlogList implements OnInit, OnDestroy {
     return blog._id || blog.id || index;
   }
 
-  // Load more blogs (pagination)
+  // Load more blogs (loads 4 new blogs on each click)
   loadMoreBlogs() {
-    // Implement pagination logic here
-    console.log('Load more blogs');
+    this.visibleCount.update((count) => count + this.PAGE_SIZE);
   }
 }
