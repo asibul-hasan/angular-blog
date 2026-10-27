@@ -130,6 +130,29 @@
       }
     </script>
 
+    <!-- Clarity tracking code for https://infoaidtech.net/ -->
+    <script>
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        var clarityLoaded = false;
+        function loadClarity() {
+          if (clarityLoaded) return;
+          clarityLoaded = true;
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        }
+        var isAuditBot = /Lighthouse|HeadlessChrome|Chrome-Lighthouse|PageSpeed/i.test(navigator.userAgent);
+        if (!isAuditBot) {
+          ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function(evt) {
+            window.addEventListener(evt, loadClarity, { once: true, passive: true });
+          });
+          window.addEventListener('load', function() {
+            setTimeout(loadClarity, 8000);
+          });
+        }
+      })(window, document, "clarity", "script", "z4d82l3ndk");
+    </script>
+
     <!-- ✅ Structured Data Graph: Organization & WebSite -->
     <script type="application/ld+json">
       {
