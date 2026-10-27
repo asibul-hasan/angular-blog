@@ -114,13 +114,16 @@ export function app(): express.Express {
     ];
     for (const p of candidates) {
       if (existsSync(p)) {
-        res.type('text/plain');
-        return res.sendFile(p);
+        try {
+          res.type('text/plain; charset=utf-8').send(readFileSync(p, 'utf-8'));
+          return;
+        } catch {}
       }
     }
-    res.type('text/plain').send(
+    res.type('text/plain; charset=utf-8').send(
       'User-agent: *\nAllow: /\nDisallow: /dashboard\nDisallow: /api/\nSitemap: https://infoaidtech.net/sitemap.xml\n'
     );
+    return;
   });
 
   // ✅ AI Agent Discoverability: Serve llms.txt as text/markdown adhering to llmstxt.org spec
@@ -132,13 +135,16 @@ export function app(): express.Express {
     ];
     for (const p of candidates) {
       if (existsSync(p)) {
-        res.type('text/markdown; charset=utf-8');
-        return res.sendFile(p);
+        try {
+          res.type('text/markdown; charset=utf-8').send(readFileSync(p, 'utf-8'));
+          return;
+        } catch {}
       }
     }
     res.type('text/markdown; charset=utf-8').send(
       '# InfoAidTech\n> Professional IT services, custom software engineering, scalable cloud solutions, and enterprise SME ERP development.\n\n## Core Services\n- [Custom Software Development](https://infoaidtech.net/service): Enterprise software engineering and scalable applications.\n- [Engineering Blog](https://infoaidtech.net/blog): In-depth articles covering software architecture and engineering.\n'
     );
+    return;
   });
 
   // ✅ AI Agent Discoverability: Serve ai-catalog.json adhering to Agentic Resource Discovery (ARD) spec
@@ -151,11 +157,51 @@ export function app(): express.Express {
     ];
     for (const p of candidates) {
       if (existsSync(p)) {
-        res.type('application/json; charset=utf-8');
-        return res.sendFile(p);
+        try {
+          const content = readFileSync(p, 'utf-8');
+          res.type('application/json; charset=utf-8').send(content);
+          return;
+        } catch {}
       }
     }
-    res.status(404).json({ error: 'AI Catalog not found' });
+    // Spec-compliant fallback in-memory JSON manifest so autonomous agents never receive 404 or HTML
+    res.type('application/json; charset=utf-8').send(JSON.stringify({
+      specVersion: "1.0",
+      host: {
+        displayName: "InfoAidTech",
+        identifier: "https://infoaidtech.net"
+      },
+      entries: [
+        {
+          identifier: "urn:ai:infoaidtech.net:tools:conventional-commit-generator",
+          displayName: "Conventional Commit Generator",
+          type: "application/json",
+          url: "https://infoaidtech.net/conventional-commit-generator",
+          description: "Interactive developer utility to construct standard Conventional Commits with scopes, types, breaking changes, and git-compliant formatting.",
+          representativeQueries: ["Generate conventional commit message", "Conventional commits helper tool"],
+          tags: ["git", "developer-tools", "productivity", "commits"]
+        },
+        {
+          identifier: "urn:ai:infoaidtech.net:tools:image-converter",
+          displayName: "Image Converter & Optimizer",
+          type: "application/json",
+          url: "https://infoaidtech.net/image-converter",
+          description: "Client-side high-performance image converter and compressor supporting WebP, PNG, JPEG, and batch conversions without uploading images to external servers.",
+          representativeQueries: ["Convert image to WebP format", "Compress images client-side", "Batch image optimizer online"],
+          tags: ["image-conversion", "compression", "webp", "tools"]
+        },
+        {
+          identifier: "urn:ai:infoaidtech.net:tools:json-to-typescript",
+          displayName: "JSON to TypeScript Converter",
+          type: "application/json",
+          url: "https://infoaidtech.net/json-to-ts",
+          description: "Generates clean, strongly-typed TypeScript interfaces and type definitions from JSON payloads.",
+          representativeQueries: ["Convert JSON to TypeScript interfaces", "Generate TypeScript types from JSON payload"],
+          tags: ["typescript", "json", "types", "code-generator"]
+        }
+      ]
+    }, null, 2));
+    return;
   });
 
   // ✅ SEO Optimization 3: Dynamic, real-time Google-compliant sitemap.xml
