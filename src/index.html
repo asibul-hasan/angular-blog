@@ -95,45 +95,34 @@
       onload="this.media='all';this.onload=null;"
     />
 
-    <!-- ✅ Deferred Loading for GTM and AdSense -->
+    <!-- Deferred Google Analytics loader to eliminate render blocking and reduce TBT on initial mobile load -->
     <script>
+      // Initialize dataLayer and gtag stub to buffer tracking calls without blocking initial page render
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
       gtag("config", "G-HSYBWMWFWR");
 
-      let thirdPartyLoaded = false;
-      function loadThirdPartyScripts() {
-        if (thirdPartyLoaded) return;
-        thirdPartyLoaded = true;
+      // Guard flag to guarantee gtag.js script is injected exactly once
+      var gtagLoaded = false;
+      function loadGtag() {
+        if (gtagLoaded) return;
+        gtagLoaded = true;
 
-        // // Load AdSense
-        // var adsScript = document.createElement('script');
-        // adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4500577675018061";
-        // adsScript.async = true;
-        // adsScript.crossOrigin = "anonymous";
-        // document.head.appendChild(adsScript);
-
-        // Load GTM
-        var gtmScript = document.createElement('script');
-        gtmScript.src = "https://www.googletagmanager.com/gtag/js?id=G-HSYBWMWFWR";
-        gtmScript.async = true;
-        document.head.appendChild(gtmScript);
+        var script = document.createElement('script');
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-HSYBWMWFWR";
+        script.async = true;
+        document.head.appendChild(script);
       }
 
-      // Load on interaction to pass PageSpeed checks
-      ['scroll', 'mousemove', 'touchstart', 'click', 'keydown'].forEach(function(evt) {
-        window.addEventListener(evt, loadThirdPartyScripts, { once: true, passive: true });
+      // Defer gtag injection until first real user interaction to protect mobile performance metrics
+      ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function(evt) {
+        window.addEventListener(evt, loadGtag, { once: true, passive: true });
       });
-      // Fallback loader on idle after page is completely interactive
+
+      // Fallback injection 5 seconds after window load if no interaction has occurred
       window.addEventListener('load', function() {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() {
-            setTimeout(loadThirdPartyScripts, 8000);
-          }, { timeout: 12000 });
-        } else {
-          setTimeout(loadThirdPartyScripts, 10000);
-        }
+        setTimeout(loadGtag, 5000);
       });
     </script>
 
