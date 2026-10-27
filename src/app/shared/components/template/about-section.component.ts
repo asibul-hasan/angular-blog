@@ -15,12 +15,16 @@ import { map } from 'rxjs/operators';
    <section class="section-about">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  py-16 lg:py-20">
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start relative">
-          <!-- Left: Sticky Image -->
+          <!-- Left: Sticky Image (Optimized with Cloudinary compression, explicit dimensions, and lazy loading) -->
           <div class="lg:sticky lg:top-0">
             <img
-              src="https://res.cloudinary.com/dfcir8epp/image/upload/v1755605324/White-and-Red-Illustrative-Software-Development_fqzphq.webp"
+              src="https://res.cloudinary.com/dfcir8epp/image/upload/f_auto,q_auto,w_800/v1755605324/White-and-Red-Illustrative-Software-Development_fqzphq.webp"
               alt="Section Image"
-              class="w-full md:w-auto rounded-xl "
+              class="w-full md:w-auto rounded-xl"
+              width="1080"
+              height="802"
+              loading="lazy"
+              decoding="async"
             />
           </div>
 
