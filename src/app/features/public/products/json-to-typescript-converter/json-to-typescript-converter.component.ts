@@ -307,6 +307,37 @@ export class JsonToTsComponent implements OnInit {
       type: 'website',
       keywords: 'json to typescript, json to ts converter, json to interface generator, typescript class generator, developer tools infoaidtech',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net' },
+      { name: 'Services', url: 'https://infoaidtech.net/service' },
+      { name: 'JSON to TypeScript Converter', url: 'https://infoaidtech.net/json-to-ts' },
+    ]);
+
+    this.seo.setJsonLd(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'JSON to TypeScript Class & Interface Converter',
+        url: 'https://infoaidtech.net/json-to-ts',
+        applicationCategory: 'DeveloperApplication',
+        operatingSystem: 'All',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+        description:
+          'Convert JSON payloads into clean, strongly typed TypeScript classes and interfaces with automated date detection, type inference, and inheritance options.',
+        publisher: {
+          '@type': 'Organization',
+          name: 'InfoAidTech',
+          url: 'https://infoaidtech.net',
+        },
+      },
+      'json-to-ts-schema'
+    );
   }
 
   inputLineCount    = computed(() => Math.max(this.inputJson.split('\n').length, 1));

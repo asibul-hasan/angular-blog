@@ -120,6 +120,38 @@ export class ImageConverterComponent implements OnInit {
       type: 'website',
       keywords: 'image converter, jpg to png, webp to jpg, avif converter, ico converter, bmp converter, local image compressor, client-side converter',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net' },
+      { name: 'Services', url: 'https://infoaidtech.net/service' },
+      { name: 'Image Converter', url: 'https://infoaidtech.net/image-converter' },
+    ]);
+
+    this.seo.setJsonLd(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Free Image Converter Pro',
+        url: 'https://infoaidtech.net/image-converter',
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'All',
+        browserRequirements: 'Requires JavaScript. Requires HTML5 Canvas.',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+        description:
+          'Convert and compress JPG, PNG, WebP, AVIF, BMP, ICO, TIFF, and GIF images locally in your browser. 100% private, instant, and secure batch conversion.',
+        publisher: {
+          '@type': 'Organization',
+          name: 'InfoAidTech',
+          url: 'https://infoaidtech.net',
+        },
+      },
+      'image-converter-schema'
+    );
+
     this.http.get<PageData>('/assets/data/image-converter-data.json').subscribe({
       next: (data) => this.pageData.set(data),
       error: (error) => console.error('Error loading page data:', error)

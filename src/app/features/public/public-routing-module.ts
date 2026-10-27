@@ -53,6 +53,11 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'service/:slug',
+        redirectTo: 'service',
+        pathMatch: 'full',
+      },
+      {
         path: 'contact',
         loadComponent: () =>
           import('./contact/contact.component').then((c) => c.ContactComponent),
@@ -91,6 +96,11 @@ const routes: Routes = [
           ),
       },
       // products
+      {
+        path: 'products',
+        redirectTo: 'service',
+        pathMatch: 'full',
+      },
       {
         path: 'image-converter',
         loadComponent: () =>

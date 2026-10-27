@@ -73,13 +73,50 @@ export class CareerDetailComponent implements OnInit {
         const title = this.job.title ? `${this.job.title} — InfoAidTech Careers` : 'Career Opportunity — InfoAidTech';
         const rawDesc = this.job.short_desc || this.job.description || 'Join InfoAidTech - Explore exciting job openings.';
         const cleanDesc = rawDesc.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+        const jobUrl = `https://infoaidtech.net/careers/${this.job.slug || jobIdOrSlug}`;
         this.seo.updateTags({
             title,
             description: cleanDesc,
-            url: `https://infoaidtech.net/careers/${this.job.slug || jobIdOrSlug}`,
+            url: jobUrl,
             type: 'article',
             keywords: `${this.job.title || ''}, ${this.job.job || ''}, ${this.job.location || ''}, InfoAidTech careers, hiring`,
         });
+
+        this.seo.addBreadcrumbs([
+            { name: 'Home', url: 'https://infoaidtech.net' },
+            { name: 'Careers', url: 'https://infoaidtech.net/careers' },
+            { name: this.job.title || 'Job Opening', url: jobUrl },
+        ]);
+
+        const schema: Record<string, any> = {
+            '@context': 'https://schema.org',
+            '@type': 'JobPosting',
+            title: this.job.title || 'Software Engineer',
+            description: rawDesc,
+            identifier: {
+                '@type': 'PropertyValue',
+                name: 'InfoAidTech',
+                value: this.job._id || jobIdOrSlug,
+            },
+            datePosted: this.job.createdAt || new Date().toISOString(),
+            validThrough: this.job.expired || undefined,
+            employmentType: this.job.job_type || 'FULL_TIME',
+            hiringOrganization: {
+                '@type': 'Organization',
+                name: 'InfoAidTech',
+                sameAs: 'https://infoaidtech.net',
+                logo: 'https://res.cloudinary.com/dfcir8epp/image/upload/v1755605323/Infoaidtech-logo_l5uyf9.png',
+            },
+            jobLocation: {
+                '@type': 'Place',
+                address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: this.job.location || 'Dhaka',
+                    addressCountry: 'BD',
+                },
+            },
+        };
+        this.seo.setJsonLd(schema, 'job-posting-schema');
     }
 
     applyForJob(): void {

@@ -29,6 +29,12 @@ export function app(): express.Express {
 
   // ✅ SEO Optimization 1: Enforce Canonical URLs and 301-redirect legacy WordPress & alternate URLs
   server.use((req, res, next) => {
+    // Force non-www host
+    const host = (req.headers.host || '').toLowerCase();
+    if (host.startsWith('www.')) {
+      return res.redirect(301, `https://infoaidtech.net${req.originalUrl}`);
+    }
+
     const rawPath = req.path;
     let decodedPath = rawPath;
     try {
@@ -41,6 +47,8 @@ export function app(): express.Express {
     const exactRedirects: Record<string, string> = {
       '/home': '/',
       '/services': '/service',
+      '/products': '/service',
+      '/products/': '/service',
 
       '/products/conventional-commit-generator': '/conventional-commit-generator',
       '/commit-generator': '/conventional-commit-generator',
@@ -52,6 +60,7 @@ export function app(): express.Express {
       '/blog/startup-incubators-catalysts-early-stage-business-success': '/blog/startup-incubators-early-stage-business-success',
       '/blog/organic-social-media-marketing-2024-guide-authentic-connections': '/blog/organic-social-media-marketing-2026-guide-authentic-connections',
       '/blog/on-page-seo-complete-guide-2026': '/blog/on-page-seo-complete-guide-2025',
+      '/blog/object-oriented-programming-oop-javascript': '/blog/comprehensive-guide-object-oriented-programming-oop-javascript',
     };
 
     const target = exactRedirects[rawPath] || exactRedirects[decodedPath];

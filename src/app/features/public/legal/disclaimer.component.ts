@@ -147,5 +147,10 @@ export class DisclaimerComponent {
       url: 'https://infoaidtech.net/disclaimer',
       type: 'website',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net' },
+      { name: 'Disclaimer', url: 'https://infoaidtech.net/disclaimer' },
+    ]);
   }
 }

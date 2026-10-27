@@ -34,6 +34,12 @@ export class CareersComponent implements OnInit {
       type: 'website',
       keywords: 'careers, jobs, software engineer jobs, web developer careers, tech internships, InfoAidTech hiring',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net' },
+      { name: 'Careers', url: 'https://infoaidtech.net/careers' },
+    ]);
+
     this.loadJobs();
   }
 

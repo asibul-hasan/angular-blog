@@ -42,7 +42,7 @@ function fetchJson(url) {
     );
 
     request.on("error", reject);
-    request.setTimeout(6000, () => {
+    request.setTimeout(12000, () => {
       request.destroy();
       reject(new Error("Request timeout"));
     });
@@ -79,7 +79,30 @@ async function getDynamicBlogRoutes() {
   }
 
   console.warn("⚠️ API endpoints unreachable, falling back to static article list.");
-  return [];
+  const staticSlugs = [
+    "on-page-seo-complete-guide-2025",
+    "top-seo-agencies-enterprise-b2b-international-seo",
+    "software-fun-facts-software-development",
+    "ultimate-guide-seo-keyword-research-tools-techniques",
+    "seo-services-complete-guide-elevate-online-presence",
+    "ultimate-guide-seo-techniques-tools-strategies",
+    "iot-standards-protocols-guide",
+    "off-page-seo-services-businesses-maximize-website",
+    "what-is-a-digital-agency-services-benefits-how-to-choose",
+    "how-to-choose-seo-agency-questions-mistakes",
+    "top-41-cpp-project-ideas-beginners-advanced",
+    "percent-2f-in-python-meaning",
+    "comprehensive-guide-object-oriented-programming-oop-javascript",
+    "html-spacing-whitespace-guide",
+    "startup-incubators-early-stage-business-success",
+    "best-free-keyword-research-tool",
+    "google-keyword-planner-guide",
+    "organic-social-media-marketing-2026-guide-authentic-connections",
+  ];
+  return staticSlugs.map((slug) => ({
+    route: `/blog/${slug}`,
+    updatedAt: new Date().toISOString().split("T")[0],
+  }));
 }
 
 /**

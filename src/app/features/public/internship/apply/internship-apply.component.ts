@@ -48,6 +48,12 @@ export class InternshipApplyComponent {
             keywords: 'internship apply, tech internship, software intern, web developer internship, InfoAidTech internship',
         });
 
+        this.seo.addBreadcrumbs([
+            { name: 'Home', url: 'https://infoaidtech.net' },
+            { name: 'Careers', url: 'https://infoaidtech.net/careers' },
+            { name: 'Apply for Internship', url: 'https://infoaidtech.net/internship/apply' },
+        ]);
+
         // Initialize form
         this.internshipForm = this.fb.group({
             fullName: ['', [Validators.required, Validators.minLength(2)]],

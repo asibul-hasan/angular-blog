@@ -148,5 +148,10 @@ export class TermsOfServiceComponent {
       url: 'https://infoaidtech.net/terms-of-service',
       type: 'website',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net' },
+      { name: 'Terms of Service', url: 'https://infoaidtech.net/terms-of-service' },
+    ]);
   }
 }

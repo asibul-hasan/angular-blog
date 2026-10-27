@@ -217,12 +217,37 @@ export class ConventionalCommitGeneratorComponent implements OnInit {
 
     this.seo.addBreadcrumbs([
       { name: 'Home', url: environment.SITE_URL },
-      { name: 'Products', url: `${environment.SITE_URL}/products` },
+      { name: 'Services', url: `${environment.SITE_URL}/service` },
       {
         name: 'Conventional Commit Generator',
         url: `${environment.SITE_URL}/conventional-commit-generator`,
       },
     ]);
+
+    this.seo.setJsonLd(
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Conventional Commit Generator',
+        url: 'https://infoaidtech.net/conventional-commit-generator',
+        applicationCategory: 'DeveloperApplication',
+        operatingSystem: 'All',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+        description:
+          'Free online developer tool to generate structured Conventional Commits v1.0.0 messages with automated type detection, scope extraction, and imperative formatting.',
+        publisher: {
+          '@type': 'Organization',
+          name: 'InfoAidTech',
+          url: 'https://infoaidtech.net',
+        },
+      },
+      'conventional-commit-schema'
+    );
   }
 
   // Auto-analysis pipeline

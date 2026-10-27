@@ -77,13 +77,20 @@ export class InternshipDetailComponent implements OnInit {
         const title = this.job.title ? `${this.job.title} — Internship Program | InfoAidTech` : 'Internship Program — InfoAidTech';
         const rawDesc = this.job.short_desc || this.job.description || 'Apply for an internship opportunity at InfoAidTech.';
         const cleanDesc = rawDesc.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+        const pageUrl = `https://infoaidtech.net/internship/${this.job.slug || jobIdOrSlug}`;
         this.seo.updateTags({
             title,
             description: cleanDesc,
-            url: `https://infoaidtech.net/internship/${this.job.slug || jobIdOrSlug}`,
+            url: pageUrl,
             type: 'article',
             keywords: `${this.job.title || ''}, internship, tech internship, InfoAidTech internship`,
         });
+
+        this.seo.addBreadcrumbs([
+            { name: 'Home', url: 'https://infoaidtech.net' },
+            { name: 'Careers', url: 'https://infoaidtech.net/careers' },
+            { name: this.job.title || 'Internship', url: pageUrl },
+        ]);
     }
 
     applyForJob(): void {

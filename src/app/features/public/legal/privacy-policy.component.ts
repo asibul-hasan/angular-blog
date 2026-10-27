@@ -220,5 +220,10 @@ export class PrivacyPolicyComponent {
       type: 'website',
       keywords: 'privacy policy, data protection, GDPR, CCPA, personal information, cookies policy, InfoaidTech privacy, data security, user privacy rights',
     });
+
+    this.seo.addBreadcrumbs([
+      { name: 'Home', url: 'https://infoaidtech.net' },
+      { name: 'Privacy Policy', url: 'https://infoaidtech.net/privacy-policy' },
+    ]);
   }
 }
