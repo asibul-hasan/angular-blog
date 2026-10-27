@@ -88,6 +88,54 @@
              [innerHTML]="data.blog_content">
         </div>
 
+        <!-- Interactive FAQ Accordion -->
+        @if (faqs().length > 0) {
+          <section class="mt-20 pt-16 border-t border-white/10" aria-label="Frequently Asked Questions">
+            <div class="flex items-center gap-4 mb-8">
+              <div class="w-12 h-12 rounded-2xl bg-[#f76179]/15 border border-[#f76179]/25 text-[#f76179] flex items-center justify-center text-xl shrink-0">
+                <i class="fa-solid fa-circle-question"></i>
+              </div>
+              <div>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Frequently Asked Questions</h3>
+                <p class="text-xs text-gray-400 mt-1">Key insights and questions answered in this guide</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              @for (faq of faqs(); track faq.question; let i = $index) {
+                <div class="rounded-2xl border transition-all duration-200 overflow-hidden"
+                     [class.bg-white/[0.02]]="!faq.isOpen"
+                     [class.border-white/10]="!faq.isOpen"
+                     [class.bg-white/[0.05]]="faq.isOpen"
+                     [class.border-[#f76179]/40]="faq.isOpen">
+                  <button
+                    type="button"
+                    (click)="toggleFaq(i)"
+                    class="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none"
+                    [attr.aria-expanded]="faq.isOpen"
+                  >
+                    <span class="text-base sm:text-lg font-bold text-white leading-snug">
+                      {{ faq.question }}
+                    </span>
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 text-gray-400 transition-transform duration-200"
+                         [class.rotate-180]="faq.isOpen"
+                         [class.text-[#f76179]]="faq.isOpen">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </button>
+                  @if (faq.isOpen) {
+                    <div class="px-5 pb-5 sm:px-6 sm:pb-6 text-gray-300 text-sm sm:text-base leading-relaxed border-t border-white/5 pt-4">
+                      {{ faq.answer }}
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </section>
+        }
+
         <!-- Author Footer Card -->
         <div class="mt-32 p-10 rounded-[48px] bg-gradient-to-br from-[#1e3e62]/20 to-transparent border border-white/5 flex flex-col md:flex-row items-center gap-10">
           <div class="w-24 h-24 rounded-full bg-gradient-to-br from-[#f76179] to-[#1e3e62] shrink-0"></div>

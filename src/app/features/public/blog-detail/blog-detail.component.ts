@@ -11,6 +11,12 @@ import { fromEvent, Subscription, throttleTime } from 'rxjs';
 
 import { NotFoundComponent } from '../../../shared/components/404/404.component';
 
+export interface BlogFaq {
+  question: string;
+  answer: string;
+  isOpen: boolean;
+}
+
 @Component({
   selector: 'app-blog-detail',
   imports: [CommonModule, BlogCardComponent, RouterLink, NotFoundComponent],
@@ -30,8 +36,17 @@ export class BlogDetailComponent implements AfterViewInit, OnDestroy {
   readonly isNotFound = signal<boolean>(false);
   readonly readingProgress = signal<number>(0);
   readonly headings = signal<{id: string, text: string}[]>([]);
+  readonly faqs = signal<BlogFaq[]>([]);
   
   private scrollSub?: Subscription;
+
+  toggleFaq(index: number) {
+    this.faqs.update(list =>
+      list.map((item, i) =>
+        i === index ? { ...item, isOpen: !item.isOpen } : item
+      )
+    );
+  }
 
   // Featured / Related blogs (hydrated on browser)
   readonly allBlogs = computed(() => this.blogStore.blogs());
@@ -107,12 +122,42 @@ export class BlogDetailComponent implements AfterViewInit, OnDestroy {
   }
 
   private setBlog(data: any) {
+    if (data && data.blog_content) {
+      data.blog_content = this.processEmbeddedSchema(data.blog_content);
+    }
     this.blog.set(data);
     this.updateSeo(data);
     this.extractHeadings(data.blog_content);
     if (isPlatformBrowser(this.platformId)) {
       window.scrollTo(0, 0);
     }
+  }
+
+  private processEmbeddedSchema(content: string): string {
+    const match = content.match(/<p>\s*(\{\s*"@context"[\s\S]*?\})\s*<\/p>/i);
+    if (match) {
+      try {
+        const schemaJson = JSON.parse(match[1]);
+        this.seo.addJsonLd(schemaJson, 'blog-faq');
+
+        if (schemaJson['@type'] === 'FAQPage' && Array.isArray(schemaJson.mainEntity)) {
+          const faqItems: BlogFaq[] = schemaJson.mainEntity
+            .map((item: any, idx: number) => ({
+              question: item.name || '',
+              answer: item.acceptedAnswer?.text || '',
+              isOpen: idx === 0
+            }))
+            .filter((f: BlogFaq) => f.question && f.answer);
+          this.faqs.set(faqItems);
+        }
+      } catch (err) {
+        console.warn('Failed to parse embedded schema JSON', err);
+      }
+      return content.replace(match[0], '');
+    } else {
+      this.faqs.set([]);
+    }
+    return content;
   }
 
   private updateSeo(data: any) {

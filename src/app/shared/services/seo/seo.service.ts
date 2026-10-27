@@ -288,6 +288,24 @@ export class SeoService {
     script.textContent = JSON.stringify(breadcrumbSchema);
   }
 
+  /** Add dynamic JSON-LD schema (e.g. FAQPage) */
+  addJsonLd(schema: any, schemaKey: string = 'faq') {
+    if (!this.doc || !this.doc.head) return;
+
+    let script: HTMLScriptElement | null = this.doc.querySelector(
+      `script[type="application/ld+json"][data-schema="${schemaKey}"]`
+    );
+
+    if (!script) {
+      script = this.doc.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-schema', schemaKey);
+      this.doc.head.appendChild(script);
+    }
+
+    script.textContent = JSON.stringify(schema);
+  }
+
   /** Add preconnect hints for performance */
   addPreconnect(domains: string[]) {
     if (!isPlatformBrowser(this.platformId)) return;
