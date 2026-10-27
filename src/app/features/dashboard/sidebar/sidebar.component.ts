@@ -50,14 +50,31 @@ export class SidebarComponent implements OnInit {
   private readonly collapsedSubmodules = signal<Record<string, boolean>>({});
   readonly isUserDropdownOpen = signal(false);
 
+  // Reactive URL signal keeping sidebar states synchronized across reloads and client navigation
+  readonly currentUrl = signal<string>('/');
+
   isBrowser = false;
+
+  constructor() {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser && typeof window !== 'undefined' && window.location) {
+      const browserUrl = window.location.pathname + window.location.search;
+      if (browserUrl && browserUrl !== '/') {
+        this.currentUrl.set(browserUrl);
+        const breadcrumb = getBreadcrumb(browserUrl);
+        if (breadcrumb) {
+          this.selectedModuleId.set(breadcrumb.module.module_code);
+        }
+      }
+    }
+  }
 
   readonly collapsed = computed(() => !this.layoutService.isSidebarExpanded());
 
   readonly activeBranchName = computed(() => 'InfoAidTech HQ');
 
   readonly isHomeActive = computed(() => {
-    const clean = this.router.url.split('?')[0].replace(/\/+$/, '');
+    const clean = this.currentUrl().split('?')[0].replace(/\/+$/, '');
     return clean === '' || clean === '/' || clean === '/dashboard';
   });
 
@@ -144,12 +161,17 @@ export class SidebarComponent implements OnInit {
         this.layoutService.setSidebar(savedExpanded === 'true');
       }
 
-      this.syncActiveModule(this.router.url);
+      const browserUrl = window.location.pathname + window.location.search;
+      const initialUrl = (browserUrl && browserUrl !== '/') ? browserUrl : this.router.url;
+      this.currentUrl.set(initialUrl);
+      this.syncActiveModule(initialUrl);
 
       this.router.events
         .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
         .subscribe((event) => {
-          this.syncActiveModule(event.urlAfterRedirects || event.url);
+          const newUrl = event.urlAfterRedirects || event.url;
+          this.currentUrl.set(newUrl);
+          this.syncActiveModule(newUrl);
         });
     }
   }
@@ -199,7 +221,7 @@ export class SidebarComponent implements OnInit {
     if (this.collapsed()) {
       this.openFlyout(mod);
     }
-    const currentUrl = this.router.url.split('?')[0];
+    const currentUrl = this.currentUrl().split('?')[0];
     const containsCurrent = mod.sub_modules.some((sub) =>
       sub.screens.some((s) => s.route.split('?')[0] === currentUrl)
     );
@@ -253,19 +275,19 @@ export class SidebarComponent implements OnInit {
   }
 
   isRouteActive(route: string): boolean {
-    const currentUrl = this.router.url.split('?')[0];
+    const current = this.currentUrl().split('?')[0];
     const cleanRoute = route.split('?')[0];
-    return currentUrl === cleanRoute;
+    return current === cleanRoute;
   }
 
   hasActiveChild(mod: SidebarModule): boolean {
-    const cleanUrl = this.router.url.split('?')[0];
+    const cleanUrl = this.currentUrl().split('?')[0];
     const breadcrumb = getBreadcrumb(cleanUrl);
     return breadcrumb?.module.module_code === mod.module_code;
   }
 
   isSubmoduleActive(sub: SidebarSubModule): boolean {
-    const cleanUrl = this.router.url.split('?')[0];
+    const cleanUrl = this.currentUrl().split('?')[0];
     const breadcrumb = getBreadcrumb(cleanUrl);
     return breadcrumb?.sub.key === sub.key;
   }

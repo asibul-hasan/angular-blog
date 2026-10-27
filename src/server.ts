@@ -337,6 +337,15 @@ export function app(): express.Express {
     })
   );
 
+  // ✅ Dashboard SPA Client-Side Routing: Bypass SSR for authenticated dashboard routes
+  // Dashboards are private client-only apps disallowed in robots.txt.
+  // Serving index.csr.html directly eliminates server rendering hang and client hydration freeze on reload.
+  server.get(/^\/dashboard(\/.*)?$/, (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    const targetFile = existsSync(indexCsrPath) ? indexCsrPath : indexPath;
+    return res.sendFile(targetFile);
+  });
+
   // All remaining routes use Angular Universal rendering
   server.get(/.*/, (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;

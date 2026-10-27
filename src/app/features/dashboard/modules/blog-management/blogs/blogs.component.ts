@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef } from '@angular/core';
 import { BlogApiService } from '../../../../../shared/services/blog/blog.service';
 import { BlogStoreService } from '../../../../../core/services/blog-store.service';
 import { Router, RouterModule } from '@angular/router';
@@ -27,7 +27,8 @@ export class BlogsComponent implements OnInit {
     @Inject(BlogApiService) private apiService: BlogApiService,
     private blogStore: BlogStoreService,
     @Inject(ToastService) private toast: ToastService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -38,13 +39,38 @@ export class BlogsComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.blogStore.loadBlogs();
-    this.blogs = this.blogStore.blogs();
-    this.loading = false;
+    this.apiService.getBlogs().subscribe({
+      next: (res) => {
+        let items: any[] = [];
+        if (res && res.body && Array.isArray(res.body)) {
+          items = res.body;
+        } else if (Array.isArray(res)) {
+          items = res;
+        }
 
-    if (this.blogs.length > 0) {
-      this.toast.success('Success', 'Blogs loaded successfully');
-    }
+        this.blogs = items
+          .map((el: any) => ({
+            ...el,
+            short_desc: el.blog_content ? el.blog_content.slice(0, 120) : '',
+          }))
+          .sort((a: { createdAt: string }, b: { createdAt: string }) => {
+            const aDate = new Date(a.createdAt || 0).getTime();
+            const bDate = new Date(b.createdAt || 0).getTime();
+            return bDate - aDate;
+          });
+
+        this.loading = false;
+        this.blogStore.refreshBlogs();
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Failed to load blogs:', err);
+        this.error = 'Failed to load articles from the database. Please try again.';
+        this.loading = false;
+        this.toast.error('Error', 'Failed to load articles');
+        this.cdr.markForCheck();
+      },
+    });
   }
 
   get publishedCount(): number {
@@ -113,9 +139,11 @@ export class BlogsComponent implements OnInit {
             blog.image = image;
             this.blogStore.refreshBlogs();
             this.toast.success('Success', 'Cover image updated successfully');
+            this.cdr.markForCheck();
           },
           error: () => {
             this.toast.error('Error', 'Failed to update image URL');
+            this.cdr.markForCheck();
           },
         });
       },
@@ -129,13 +157,15 @@ export class BlogsComponent implements OnInit {
     if (confirm('Are you sure you want to permanently delete this article?')) {
       this.apiService.deleteBlog(id).subscribe({
         next: () => {
+          this.blogs = this.blogs.filter((b) => b._id !== id);
           this.blogStore.refreshBlogs();
-          this.blogs = this.blogStore.blogs();
           this.toast.success('Success', 'Blog deleted successfully');
+          this.cdr.markForCheck();
         },
         error: (err) => {
           console.error('Error deleting blog:', err);
           this.toast.error('Error', 'Failed to delete blog');
+          this.cdr.markForCheck();
         },
       });
     }
@@ -181,10 +211,12 @@ export class BlogsComponent implements OnInit {
         blog[field] = newValue.trim();
         delete this.editingBlog[blog._id][field];
         this.toast.success('Success', `${field} updated successfully`);
+        this.cdr.markForCheck();
       },
       error: (err) => {
         this.toast.error('Error', `Failed to update ${field}`);
         console.error(`Failed to update ${field}:`, err);
+        this.cdr.markForCheck();
       },
     });
   }
