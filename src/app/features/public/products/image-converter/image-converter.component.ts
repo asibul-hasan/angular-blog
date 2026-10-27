@@ -71,18 +71,53 @@ export class ImageConverterComponent implements OnInit {
   readonly allConverted = computed(() =>
     this.files().length > 0 && this.files().every(f => f.status === 'completed' || f.status === 'error')
   );
+  readonly hasCompletedFiles = computed(() => this.files().some(f => f.status === 'completed'));
+  readonly pendingFilesCount = computed(() => this.files().filter(f => f.status === 'pending').length);
+  readonly completedFilesCount = computed(() => this.files().filter(f => f.status === 'completed').length);
+
+  readonly totalOriginalSize = computed(() =>
+    this.files().reduce((sum, f) => sum + f.file.size, 0)
+  );
+
+  readonly totalCompressedSize = computed(() =>
+    this.files().reduce((sum, f) => sum + (f.compressedSize || f.file.size), 0)
+  );
+
+  readonly totalSavedBytes = computed(() => {
+    const comp = this.files().filter(f => f.status === 'completed').reduce((sum, f) => sum + (f.compressedSize || 0), 0);
+    const orig = this.files().filter(f => f.status === 'completed').reduce((sum, f) => sum + f.file.size, 0);
+    return Math.max(0, orig - comp);
+  });
+
+  readonly totalSavingsPercent = computed(() => {
+    const comp = this.files().filter(f => f.status === 'completed').reduce((sum, f) => sum + (f.compressedSize || 0), 0);
+    const orig = this.files().filter(f => f.status === 'completed').reduce((sum, f) => sum + f.file.size, 0);
+    if (!orig || comp >= orig) return 0;
+    return Math.round(((orig - comp) / orig) * 100);
+  });
+
+  readonly openFaqIndex = signal<number | null>(0);
+
+  toggleFaq(index: number) {
+    this.openFaqIndex.update(cur => cur === index ? null : index);
+  }
+
+  getFileSavingsPercent(imageFile: ImageFile): number {
+    if (!imageFile.compressedSize || imageFile.compressedSize >= imageFile.file.size) return 0;
+    return Math.round(((imageFile.file.size - imageFile.compressedSize) / imageFile.file.size) * 100);
+  }
 
   // Settings
-  outputFormat: OutputFormat = 'jpeg';
+  outputFormat: OutputFormat = 'webp';
   compressionMode = 'quality';
   quality = '0.9';
   targetFileSize = '200';
 
   // --- Output format options (all workable) ---
   readonly imageType: DropdownOption[] = [
+    { name: 'WebP  (.webp) — Modern, ultra small', value: 'webp' },
     { name: 'JPEG  (.jpg)  — Best for photos', value: 'jpeg' },
     { name: 'PNG   (.png)  — Lossless + transparency', value: 'png' },
-    { name: 'WebP  (.webp) — Modern, small size', value: 'webp' },
     { name: 'AVIF  (.avif) — Next-gen compression', value: 'avif' },
     { name: 'BMP   (.bmp)  — Uncompressed bitmap', value: 'bmp' },
     { name: 'ICO   (.ico)  — Windows icon format', value: 'ico' },
@@ -686,34 +721,37 @@ export class ImageConverterComponent implements OnInit {
 
   getFormatColorClasses(color: string): string {
     const map: Record<string, string> = {
-      indigo: 'bg-indigo-50 border-indigo-200 hover:border-indigo-400',
-      purple: 'bg-purple-50 border-purple-200 hover:border-purple-400',
-      green:  'bg-emerald-50 border-emerald-200 hover:border-emerald-400',
-      orange: 'bg-orange-50 border-orange-200 hover:border-orange-400',
-      cyan:   'bg-cyan-50 border-cyan-200 hover:border-cyan-400',
-      red:    'bg-rose-50 border-rose-200 hover:border-rose-400',
-      pink:   'bg-pink-50 border-pink-200 hover:border-pink-400',
+      indigo: 'border-indigo-500/30 bg-indigo-500/10 hover:border-indigo-400/60 hover:bg-indigo-500/15',
+      purple: 'border-purple-500/30 bg-purple-500/10 hover:border-purple-400/60 hover:bg-purple-500/15',
+      green:  'border-emerald-500/30 bg-emerald-500/10 hover:border-emerald-400/60 hover:bg-emerald-500/15',
+      orange: 'border-orange-500/30 bg-orange-500/10 hover:border-orange-400/60 hover:bg-orange-500/15',
+      cyan:   'border-cyan-500/30 bg-cyan-500/10 hover:border-cyan-400/60 hover:bg-cyan-500/15',
+      red:    'border-rose-500/30 bg-rose-500/10 hover:border-rose-400/60 hover:bg-rose-500/15',
+      pink:   'border-pink-500/30 bg-pink-500/10 hover:border-pink-400/60 hover:bg-pink-500/15',
     };
-    return map[color] ?? 'bg-slate-50 border-slate-200';
+    return map[color] ?? 'border-white/10 bg-white/5 hover:border-white/20';
   }
 
   getFormatTextColorClass(color: string): string {
     const map: Record<string, string> = {
-      indigo: 'text-indigo-600',
-      purple: 'text-purple-600',
-      green:  'text-emerald-600',
-      orange: 'text-orange-600',
-      cyan:   'text-cyan-600',
-      red:    'text-rose-600',
-      pink:   'text-pink-600',
+      indigo: 'text-indigo-400',
+      purple: 'text-purple-400',
+      green:  'text-emerald-400',
+      orange: 'text-orange-400',
+      cyan:   'text-cyan-400',
+      red:    'text-rose-400',
+      pink:   'text-pink-400',
     };
-    return map[color] ?? 'text-slate-600';
+    return map[color] ?? 'text-white';
   }
 
   getUseCaseBgClass(emoji: string): string {
     const map: Record<string, string> = {
-      '💼': 'bg-blue-50', '📱': 'bg-emerald-50', '📸': 'bg-purple-50', '🌐': 'bg-orange-50',
+      '💼': 'bg-blue-500/10 border-blue-500/20 text-blue-300',
+      '📱': 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
+      '📸': 'bg-purple-500/10 border-purple-500/20 text-purple-300',
+      '🌐': 'bg-orange-500/10 border-orange-500/20 text-orange-300',
     };
-    return map[emoji] ?? 'bg-slate-50';
+    return map[emoji] ?? 'bg-white/5 border-white/10 text-gray-300';
   }
 }
