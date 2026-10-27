@@ -116,8 +116,8 @@ import { LanguageService } from '../../services/language/lang.service';
           </div>
         </div>
 
-        <!-- Image Column -->
-        <div class="lg:col-span-6 relative">
+        <!-- Image Column: Hidden on mobile and tablet (<lg) to streamline layout and eliminate mobile LCP image overhead -->
+        <div class="hidden lg:block lg:col-span-6 relative">
           <!-- Glow behind image -->
           <div class="absolute inset-0 bg-[#f76179]/20 blur-[100px] rounded-full"></div>
           
