@@ -1,481 +1,806 @@
-<!-- Internship Application Form -->
-<div class="min-h-screen">
-  <!-- Hero Section -->
-  <section class="relative h-[40vh] overflow-hidden pt-[100px] flex items-center mb-12">
-    <div class="absolute inset-0 bg-gradient-to-r from-red-500/10 to-orange-500/10"></div>
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-          Start Your Journey
-        </h1>
-        <p class="text-xl text-gray-300">
-          Join our internship program and gain valuable experience in the tech industry
-        </p>
-      </div>
-    </div>
-  </section>
+<!-- Upper Section Banner -->
+<app-upper-section [title]="'Apply for Internship'"></app-upper-section>
 
-  <div class="container mx-auto px-4 pb-16">
-    <div class="max-w-4xl mx-auto">
+<!-- Main Page Body -->
+<section class="bg-black text-white min-h-screen py-16 sm:py-24 relative overflow-hidden">
+  <!-- Ambient Atmospheric Glowing Orbs -->
+  <div
+    class="pointer-events-none absolute top-12 left-1/4 -translate-x-1/2 w-[700px] h-[700px] rounded-full blur-[220px] opacity-[0.14]"
+    style="background: radial-gradient(circle, #f76179, transparent 70%)"
+  ></div>
+  <div
+    class="pointer-events-none absolute bottom-24 right-10 w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.12]"
+    style="background: radial-gradient(circle, #1e3e62, transparent 75%)"
+  ></div>
 
-      <!-- Application Form -->
-      <div
-        class="bg-gray-800/30 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 lg:p-12 shadow-2xl"
-      >
-        <form
-          [formGroup]="internshipForm"
-          (ngSubmit)="onSubmit()"
-          class="space-y-12"
-        >
-          <!-- Personal Information Section -->
-          <div>
-            <div class="flex items-center gap-4 mb-8">
-              <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500">
-                <i class="fa-regular fa-user text-xl"></i>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid lg:grid-cols-12 gap-8 xl:gap-12 items-start">
+
+      <!-- ==========================================
+           LEFT COLUMN: STICKY SIDEBAR (INFO & PROGRESS)
+           ========================================== -->
+      <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
+        
+        <!-- Card 1: Program Overview & Value Proposition -->
+        <div class="rounded-3xl p-6 sm:p-8 bg-[#0c1017]/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f76179]/10 border border-[#f76179]/20 text-[#f76179] text-xs font-semibold uppercase tracking-wider mb-5">
+            <span class="w-2 h-2 rounded-full bg-[#f76179] animate-pulse"></span>
+            Batch 2026 • Open Now
+          </div>
+
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-3" style="text-wrap: balance">
+            Launch Your Software Career
+          </h2>
+          <p class="text-sm text-gray-400 font-normal leading-relaxed mb-6" style="text-wrap: pretty">
+            Join InfoAidTech's real-world engineering internship program. Build production features, collaborate with senior architects, and graduate with verified credentials.
+          </p>
+
+          <!-- Key Program Perks -->
+          <div class="space-y-3.5 border-t border-white/5 pt-5">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                <i class="fa-solid fa-laptop-code"></i>
               </div>
-              <h2 class="text-2xl md:text-3xl font-bold text-white">
-                Personal Information
-              </h2>
+              <div>
+                <h3 class="text-sm font-semibold text-white">Production-Grade Tasks</h3>
+                <p class="text-xs text-gray-400">Work on genuine full-stack, AI, and web development pipelines.</p>
+              </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Full Name -->
-              <div class="md:col-span-2">
-                <label class="block text-gray-300 font-medium mb-2">
-                  Full Name <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  formControlName="fullName"
-                  placeholder="Your full name which should appear on the certificates"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('fullName')?.invalid &&
-                    internshipForm.get('fullName')?.touched
-                  "
-                />
-                @if (internshipForm.get('fullName')?.invalid && internshipForm.get('fullName')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Full name is required (minimum 2 characters)
-                  </div>
-                }
-              </div>
 
-              <!-- Email -->
-              <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Email <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  formControlName="email"
-                  placeholder="your.email@example.com"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('email')?.invalid &&
-                    internshipForm.get('email')?.touched
-                  "
-                />
-                @if (internshipForm.get('email')?.invalid && internshipForm.get('email')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Valid email is required
-                  </div>
-                }
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                <i class="fa-solid fa-user-tie"></i>
               </div>
-
-              <!-- Date of Birth -->
               <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Date of Birth <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  formControlName="dateOfBirth"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('dateOfBirth')?.invalid &&
-                    internshipForm.get('dateOfBirth')?.touched
-                  "
-                />
-                @if (internshipForm.get('dateOfBirth')?.invalid && internshipForm.get('dateOfBirth')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Date of birth is required
-                  </div>
-                }
+                <h3 class="text-sm font-semibold text-white">Senior Mentorship</h3>
+                <p class="text-xs text-gray-400">Direct code reviews, architectural feedback, and industry guidance.</p>
               </div>
+            </div>
 
-              <!-- Country -->
-              <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Country <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  formControlName="country"
-                  placeholder="Your country"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('country')?.invalid &&
-                    internshipForm.get('country')?.touched
-                  "
-                />
-                @if (internshipForm.get('country')?.invalid && internshipForm.get('country')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Country is required
-                  </div>
-                }
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                <i class="fa-solid fa-award"></i>
               </div>
-
-              <!-- WhatsApp Number -->
               <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  WhatsApp Number <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="tel"
-                  formControlName="whatsapp"
-                  placeholder="+1 234 567 8900"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('whatsapp')?.invalid &&
-                    internshipForm.get('whatsapp')?.touched
-                  "
-                />
-                @if (internshipForm.get('whatsapp')?.invalid && internshipForm.get('whatsapp')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> WhatsApp number is required
-                  </div>
-                }
+                <h3 class="text-sm font-semibold text-white">Verified Certificate & LOR</h3>
+                <p class="text-xs text-gray-400">Verifiable digital credential with Letter of Recommendation for top performers.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-white">100% Remote & Flexible</h3>
+                <p class="text-xs text-gray-400">Self-paced execution designed to seamlessly complement university studies.</p>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Educational Information Section -->
-          <div class="pt-8 border-t border-gray-700/50">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
-                <i class="fa-solid fa-graduation-cap text-xl"></i>
-              </div>
-              <h2 class="text-2xl md:text-3xl font-bold text-white">
-                Education
-              </h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- College/University Name -->
-              <div class="md:col-span-2">
-                <label class="block text-gray-300 font-medium mb-2">
-                  College/University Name <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  formControlName="college"
-                  placeholder="Where do you study?"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('college')?.invalid &&
-                    internshipForm.get('college')?.touched
-                  "
-                />
-                @if (internshipForm.get('college')?.invalid && internshipForm.get('college')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> College/University name is required
-                  </div>
-                }
-              </div>
-
-              <!-- Highest Academic Qualification -->
-              <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Highest Academic Qualification
-                  <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  formControlName="qualification"
-                  placeholder="B.Tech, M.Sc, etc."
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('qualification')?.invalid &&
-                    internshipForm.get('qualification')?.touched
-                  "
-                />
-                @if (internshipForm.get('qualification')?.invalid && internshipForm.get('qualification')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Academic qualification is required
-                  </div>
-                }
-              </div>
-
-              <!-- Current Year of Course -->
-              <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Current Year of Course
-                  <span class="text-red-500">*</span>
-                </label>
-                <select
-                  formControlName="currentYear"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('currentYear')?.invalid &&
-                    internshipForm.get('currentYear')?.touched
-                  "
-                >
-                  <option value="" disabled selected>Select your current year</option>
-                  @for (option of currentYearOptions; track option.value) {
-                    <option [value]="option.value">{{ option.label }}</option>
-                  }
-                </select>
-                @if (internshipForm.get('currentYear')?.invalid && internshipForm.get('currentYear')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Current year is required
-                  </div>
-                }
-              </div>
-            </div>
+        <!-- Card 2: Live Form Completion Tracker -->
+        <div class="rounded-3xl p-6 bg-[#0c1017]/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Application Progress</span>
+            <span class="tabular-nums font-bold text-sm" [class.text-[#f76179]]="completionPercentage < 100" [class.text-emerald-400]="completionPercentage === 100">
+              {{ completionPercentage }}%
+            </span>
           </div>
 
-          <!-- Internship Preferences Section -->
-          <div class="pt-8 border-t border-gray-700/50">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500">
-                <i class="fa-solid fa-code text-xl"></i>
-              </div>
-              <h2 class="text-2xl md:text-3xl font-bold text-white">
-                Preferences
-              </h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Preferred Internship Domain -->
-              <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Internship Domain
-                  <span class="text-red-500">*</span>
-                </label>
-                <select
-                  formControlName="preferredDomain"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('preferredDomain')?.invalid &&
-                    internshipForm.get('preferredDomain')?.touched
-                  "
-                >
-                  <option value="" disabled selected>Select your preferred domain</option>
-                  @for (option of preferredDomainOptions; track option.value) {
-                    <option [value]="option.value">{{ option.label }}</option>
-                  }
-                </select>
-                @if (internshipForm.get('preferredDomain')?.invalid && internshipForm.get('preferredDomain')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Preferred domain is required
-                  </div>
-                }
-              </div>
-
-              <!-- Skill Level -->
-              <div>
-                <label class="block text-gray-300 font-medium mb-2">
-                  Evaluate Your Skill Level
-                  <span class="text-red-500">*</span>
-                </label>
-                <select
-                  formControlName="skillLevel"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('skillLevel')?.invalid &&
-                    internshipForm.get('skillLevel')?.touched
-                  "
-                >
-                  <option value="" disabled selected>Select your skill level</option>
-                  @for (option of skillLevelOptions; track option.value) {
-                    <option [value]="option.value">{{ option.label }}</option>
-                  }
-                </select>
-                @if (internshipForm.get('skillLevel')?.invalid && internshipForm.get('skillLevel')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Skill level is required
-                  </div>
-                }
-              </div>
-
-              <!-- LinkedIn Profile -->
-              <div class="md:col-span-2">
-                <label class="block text-gray-300 font-medium mb-2">
-                  LinkedIn Profile URL <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="url"
-                  formControlName="linkedinProfile"
-                  placeholder="https://www.linkedin.com/in/your-profile"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('linkedinProfile')?.invalid &&
-                    internshipForm.get('linkedinProfile')?.touched
-                  "
-                />
-                @if (internshipForm.get('linkedinProfile')?.invalid && internshipForm.get('linkedinProfile')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Valid LinkedIn profile URL is required
-                  </div>
-                }
-              </div>
-            </div>
+          <!-- Progress Track & Bar -->
+          <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden mb-3">
+            <div
+              class="h-full rounded-full transition-all duration-300 ease-out"
+              [style.width.%]="completionPercentage"
+              [class.bg-gradient-to-r]="true"
+              [class.from-[#f76179]]="completionPercentage < 100"
+              [class.to-[#f38d49]]="completionPercentage < 100"
+              [class.from-emerald-500]="completionPercentage === 100"
+              [class.to-teal-400]="completionPercentage === 100"
+            ></div>
           </div>
 
-          <!-- Discovery Section Section -->
-          <div class="pt-8 border-t border-gray-700/50">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                <i class="fa-solid fa-users text-xl"></i>
-              </div>
-              <h2 class="text-2xl md:text-3xl font-bold text-white">
-                Socials
-              </h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="md:col-span-2 mb-2">
-                <label class="block text-gray-300 font-medium mb-2">
-                  Where did you know about Info AidTech?
-                  <span class="text-red-500">*</span>
-                </label>
-                <select
-                  formControlName="source"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                  [class.border-red-500]="
-                    internshipForm.get('source')?.invalid &&
-                    internshipForm.get('source')?.touched
-                  "
-                >
-                  <option value="" disabled selected>Select an option</option>
-                  @for (option of sourceOptions; track option.value) {
-                    <option [value]="option.value">{{ option.label }}</option>
-                  }
-                </select>
-                @if (internshipForm.get('source')?.invalid && internshipForm.get('source')?.touched) {
-                  <div class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-exclamation"></i> Please select how you heard about us
-                  </div>
-                }
-              </div>
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span class="tabular-nums">
+              <strong class="text-white font-semibold">{{ completedRequiredCount }}</strong> of {{ totalRequiredCount }} required fields completed
+            </span>
+            @if (completionPercentage === 100) {
+              <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check"></i> Ready
+              </span>
+            } @else {
+              <span class="text-amber-400/90 font-medium">In Progress</span>
+            }
+          </div>
+        </div>
 
-              <!-- Telegram -->
-              <!-- <div>
-                <label class="block text-gray-300 font-medium mb-2 flex items-center gap-2">
-                  <i class="fa-brands fa-telegram text-[#26A5E4]"></i> Telegram Username
-                </label>
-                <input
-                  type="text"
-                  formControlName="telegram"
-                  placeholder="@yourusername"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                />
-              </div> -->
+        <!-- Card 3: 4-Step Selection Roadmap -->
+        <div class="rounded-3xl p-6 bg-[#0c1017]/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-gray-300 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-[#f76179]"></i>
+            Selection Timeline
+          </h3>
 
-              <!-- Instagram -->
-              <!-- <div>
-                <label class="block text-gray-300 font-medium mb-2 flex items-center gap-2">
-                   <i class="fa-brands fa-instagram text-[#E4405F]"></i> Instagram Handle
-                </label>
-                <input
-                  type="text"
-                  formControlName="instagram"
-                  placeholder="@yourhandle"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                />
-              </div> -->
-            </div>
+          <ol class="relative border-l border-white/10 ml-3 space-y-4">
+            <li class="ml-5">
+              <span class="absolute -left-2 flex items-center justify-center w-4 h-4 rounded-full bg-[#f76179] ring-4 ring-[#0c1017]"></span>
+              <h4 class="text-xs font-bold text-white">1. Form Submission</h4>
+              <p class="text-[11px] text-gray-400">Submit your academic details and domain preference.</p>
+            </li>
+            <li class="ml-5">
+              <span class="absolute -left-2 flex items-center justify-center w-4 h-4 rounded-full bg-gray-600 ring-4 ring-[#0c1017]"></span>
+              <h4 class="text-xs font-bold text-white">2. Evaluation (48-72h)</h4>
+              <p class="text-[11px] text-gray-400">Our HR review board assesses eligibility & credentials.</p>
+            </li>
+            <li class="ml-5">
+              <span class="absolute -left-2 flex items-center justify-center w-4 h-4 rounded-full bg-gray-600 ring-4 ring-[#0c1017]"></span>
+              <h4 class="text-xs font-bold text-white">3. Offer & Onboarding</h4>
+              <p class="text-[11px] text-gray-400">Receive your official offer letter and task portal access.</p>
+            </li>
+            <li class="ml-5">
+              <span class="absolute -left-2 flex items-center justify-center w-4 h-4 rounded-full bg-gray-600 ring-4 ring-[#0c1017]"></span>
+              <h4 class="text-xs font-bold text-white">4. Final Certification</h4>
+              <p class="text-[11px] text-gray-400">Complete curriculum projects to earn certificate & LOR.</p>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Card 4: Direct Support Assistance -->
+        <div class="rounded-3xl p-5 bg-white/[0.02] border border-white/5 text-center">
+          <p class="text-xs text-gray-400 mb-1">Need help or special accommodations?</p>
+          <a
+            href="mailto:support@infoaidtech.net"
+            class="text-xs font-semibold text-[#f76179] hover:underline inline-flex items-center gap-1.5"
+          >
+            <i class="fa-regular fa-envelope"></i> support&#64;infoaidtech.net
+          </a>
+        </div>
+
+      </aside>
+
+      <!-- ==========================================
+           RIGHT COLUMN: THE APPLICATION FORM COMPLEX
+           ========================================== -->
+      <main class="lg:col-span-8">
+        <div class="rounded-3xl p-6 sm:p-10 lg:p-12 bg-[#0c1017]/95 border border-white/10 backdrop-blur-2xl shadow-2xl relative">
+          
+          <!-- Form Header -->
+          <div class="mb-10 pb-6 border-b border-white/10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-2" style="text-wrap: balance">
+              Internship Application
+            </h1>
+            <p class="text-sm text-gray-400 font-normal leading-relaxed" style="text-wrap: pretty">
+              Please complete all mandatory sections with accurate information. All data is verified against official academic records.
+            </p>
           </div>
 
-          <!-- YouTube Membership -->
-          <div class="pt-8 border-t border-gray-700/50">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500">
-                <i class="fa-brands fa-youtube text-xl"></i>
-              </div>
-              <h2 class="text-2xl md:text-3xl font-bold text-white">YouTube Family</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 gap-6">
-              <div>
-                <p class="text-gray-400 mb-6 leading-relaxed">
-                  Secure your place in our YouTube family by becoming a member
-                  through the link below. Showcase your commitment by sharing a
-                  subscription screenshot here.
-                </p>
-                <div class="mb-8">
-                  <a
-                    href="https://youtube.com/@infoaidtech"
-                    target="_blank"
-                    class="inline-flex items-center gap-2 font-semibold text-red-500 hover:text-red-400 bg-red-500/10 px-5 py-3 rounded-xl transition-colors border border-red-500/20"
-                  >
-                    <i class="fa-solid fa-play"></i> Subscribe to InfoAidTech
-                  </a>
+          <form [formGroup]="internshipForm" (ngSubmit)="onSubmit()" class="space-y-10">
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 1: PERSONAL INFORMATION
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6">
+              <legend class="sr-only">Personal Information</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-[#f76179]/15 border border-[#f76179]/25 text-[#f76179] flex items-center justify-center text-sm font-bold shadow-sm">
+                  1
                 </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Personal Information</h3>
+                  <p class="text-xs text-gray-400">Official identity and communication coordinates</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 
-                <h3 class="text-white font-medium mb-3">Upload Screenshot</h3>
-                <div class="flex items-center gap-4">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    (change)="onFileSelected($event, 'youtubeScreenshot')"
-                    class="hidden"
-                    id="youtubeScreenshot"
-                  />
-                  <label
-                    for="youtubeScreenshot"
-                    class="px-6 py-3 bg-gray-800 border border-gray-600 hover:bg-gray-700 hover:border-gray-500 rounded-xl cursor-pointer text-white font-medium transition-all inline-flex items-center gap-2 shadow-sm shadow-black/20"
-                  >
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Choose File
+                <!-- Full Name (Full width on desktop) -->
+                <div class="md:col-span-2 space-y-1.5">
+                  <label for="fullName" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Full Legal Name <span class="text-[#f76179] font-bold" title="Required">*</span>
                   </label>
-                  <span class="text-gray-400 text-sm truncate max-w-[200px]">
-                    {{ internshipForm.get("youtubeScreenshot")?.value || "No file chosen" }}
-                  </span>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors text-sm">
+                      <i class="fa-regular fa-user"></i>
+                    </div>
+                    <input
+                      id="fullName"
+                      type="text"
+                      formControlName="fullName"
+                      placeholder="e.g. Alex Morgan (as it should appear on your certificate)"
+                      autocomplete="name"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('fullName')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('fullName')"
+                      [class.focus:border-red-500]="isFieldInvalid('fullName')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('fullName')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('fullName') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Email Address -->
+                <div class="space-y-1.5">
+                  <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Email Address <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors text-sm">
+                      <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <input
+                      id="email"
+                      type="email"
+                      formControlName="email"
+                      placeholder="alex.morgan@example.com"
+                      autocomplete="email"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('email')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('email')"
+                      [class.focus:border-red-500]="isFieldInvalid('email')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('email')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('email') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- WhatsApp / Phone -->
+                <div class="space-y-1.5">
+                  <label for="whatsapp" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    WhatsApp / Phone Number <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-400/80 group-focus-within:text-emerald-400 transition-colors text-sm">
+                      <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <input
+                      id="whatsapp"
+                      type="tel"
+                      formControlName="whatsapp"
+                      placeholder="+1 234 567 8900"
+                      autocomplete="tel"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('whatsapp')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('whatsapp')"
+                      [class.focus:border-red-500]="isFieldInvalid('whatsapp')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('whatsapp')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('whatsapp') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="space-y-1.5">
+                  <label for="dateOfBirth" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Date of Birth <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors text-sm">
+                      <i class="fa-regular fa-calendar"></i>
+                    </div>
+                    <input
+                      id="dateOfBirth"
+                      type="date"
+                      formControlName="dateOfBirth"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('dateOfBirth')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('dateOfBirth')"
+                      [class.focus:border-red-500]="isFieldInvalid('dateOfBirth')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('dateOfBirth')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('dateOfBirth') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Country / Region -->
+                <div class="space-y-1.5">
+                  <label for="country" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Country / Region <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors text-sm">
+                      <i class="fa-solid fa-earth-americas"></i>
+                    </div>
+                    <input
+                      id="country"
+                      type="text"
+                      formControlName="country"
+                      placeholder="e.g. United States, India, Bangladesh"
+                      autocomplete="country-name"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('country')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('country')"
+                      [class.focus:border-red-500]="isFieldInvalid('country')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('country')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('country') }}
+                    </p>
+                  }
+                </div>
+
+              </div>
+            </fieldset>
+
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 2: ACADEMIC BACKGROUND
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6 pt-8 border-t border-white/10">
+              <legend class="sr-only">Academic Information</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-orange-500/15 border border-orange-500/25 text-orange-400 flex items-center justify-center text-sm font-bold shadow-sm">
+                  2
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Academic Background</h3>
+                  <p class="text-xs text-gray-400">Current education and institutional affiliation</p>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Queries -->
-          <div class="pt-8 border-t border-gray-700/50">
-             <div class="flex items-center gap-4 mb-6">
-              <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center text-yellow-500">
-                <i class="fa-regular fa-comments text-xl"></i>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- College / University Name -->
+                <div class="md:col-span-2 space-y-1.5">
+                  <label for="college" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    College or University Name <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-400 transition-colors text-sm">
+                      <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <input
+                      id="college"
+                      type="text"
+                      formControlName="college"
+                      placeholder="e.g. Stanford University, IIT Bombay, Dhaka University"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('college')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('college')"
+                      [class.focus:border-red-500]="isFieldInvalid('college')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('college')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('college') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Highest Academic Qualification -->
+                <div class="space-y-1.5">
+                  <label for="qualification" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Degree / Qualification <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-400 transition-colors text-sm">
+                      <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <input
+                      id="qualification"
+                      type="text"
+                      formControlName="qualification"
+                      placeholder="e.g. B.Tech Computer Science, BCA, B.Sc"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('qualification')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('qualification')"
+                      [class.focus:border-red-500]="isFieldInvalid('qualification')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('qualification')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('qualification') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Current Year of Course (Select) -->
+                <div class="space-y-1.5">
+                  <label for="currentYear" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Current Year of Study <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-400 transition-colors text-sm">
+                      <i class="fa-regular fa-calendar-check"></i>
+                    </div>
+                    <select
+                      id="currentYear"
+                      formControlName="currentYear"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-10 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 appearance-none cursor-pointer"
+                      [class.border-red-500]="isFieldInvalid('currentYear')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('currentYear')"
+                      [class.focus:border-red-500]="isFieldInvalid('currentYear')"
+                    >
+                      <option value="" disabled selected class="bg-[#0f172a] text-gray-400">Select current year...</option>
+                      @for (opt of currentYearOptions; track opt.value) {
+                        <option [value]="opt.value" class="bg-[#0f172a] text-white py-2">{{ opt.label }}</option>
+                      }
+                    </select>
+                    <!-- Custom Chevron Arrow Indicator -->
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  @if (isFieldInvalid('currentYear')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('currentYear') }}
+                    </p>
+                  }
+                </div>
+
               </div>
-              <h2 class="text-2xl md:text-3xl font-bold text-white">Queries?</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 gap-6">
+            </fieldset>
+
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 3: INTERNSHIP PREFERENCES
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6 pt-8 border-t border-white/10">
+              <legend class="sr-only">Internship Preferences</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/25 text-purple-400 flex items-center justify-center text-sm font-bold shadow-sm">
+                  3
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Specialization & Profile</h3>
+                  <p class="text-xs text-gray-400">Select your specialization domain and skill evaluation</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- Preferred Domain (Select) -->
+                <div class="space-y-1.5">
+                  <label for="preferredDomain" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Internship Domain <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-purple-400 transition-colors text-sm">
+                      <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <select
+                      id="preferredDomain"
+                      formControlName="preferredDomain"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-10 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 appearance-none cursor-pointer"
+                      [class.border-red-500]="isFieldInvalid('preferredDomain')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('preferredDomain')"
+                      [class.focus:border-red-500]="isFieldInvalid('preferredDomain')"
+                    >
+                      <option value="" disabled selected class="bg-[#0f172a] text-gray-400">Select internship domain...</option>
+                      @for (opt of preferredDomainOptions; track opt.value) {
+                        <option [value]="opt.value" class="bg-[#0f172a] text-white py-2">{{ opt.label }}</option>
+                      }
+                    </select>
+                    <!-- Custom Chevron Arrow Indicator -->
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  @if (isFieldInvalid('preferredDomain')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('preferredDomain') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Evaluate Your Skill Level (Select) -->
+                <div class="space-y-1.5">
+                  <label for="skillLevel" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    Self Skill Evaluation <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-purple-400 transition-colors text-sm">
+                      <i class="fa-solid fa-chart-simple"></i>
+                    </div>
+                    <select
+                      id="skillLevel"
+                      formControlName="skillLevel"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-10 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 appearance-none cursor-pointer"
+                      [class.border-red-500]="isFieldInvalid('skillLevel')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('skillLevel')"
+                      [class.focus:border-red-500]="isFieldInvalid('skillLevel')"
+                    >
+                      <option value="" disabled selected class="bg-[#0f172a] text-gray-400">Select your skill level...</option>
+                      @for (opt of skillLevelOptions; track opt.value) {
+                        <option [value]="opt.value" class="bg-[#0f172a] text-white py-2">{{ opt.label }}</option>
+                      }
+                    </select>
+                    <!-- Custom Chevron Arrow Indicator -->
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  @if (isFieldInvalid('skillLevel')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('skillLevel') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- LinkedIn Profile URL (Full width) -->
+                <div class="md:col-span-2 space-y-1.5">
+                  <label for="linkedinProfile" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    LinkedIn Profile URL <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#0A66C2] transition-colors text-sm">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </div>
+                    <input
+                      id="linkedinProfile"
+                      type="url"
+                      formControlName="linkedinProfile"
+                      placeholder="https://www.linkedin.com/in/your-profile"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                      [class.border-red-500]="isFieldInvalid('linkedinProfile')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('linkedinProfile')"
+                      [class.focus:border-red-500]="isFieldInvalid('linkedinProfile')"
+                    />
+                  </div>
+                  @if (isFieldInvalid('linkedinProfile')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('linkedinProfile') }}
+                    </p>
+                  }
+                </div>
+
+              </div>
+            </fieldset>
+
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 4: SOCIALS & COMMUNITY VERIFICATION
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6 pt-8 border-t border-white/10">
+              <legend class="sr-only">Socials & Discovery</legend>
+
+              <div class="flex items-center gap-3 mb-6">
+                <div class="w-9 h-9 rounded-xl bg-blue-500/15 border border-blue-500/25 text-blue-400 flex items-center justify-center text-sm font-bold shadow-sm">
+                  4
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-white tracking-tight">Community & Verification</h3>
+                  <p class="text-xs text-gray-400">Referral source and community channel verification</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- Where did you hear about InfoAidTech? (Select) -->
+                <div class="space-y-1.5">
+                  <label for="source" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                    How did you discover us? <span class="text-[#f76179] font-bold" title="Required">*</span>
+                  </label>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-400 transition-colors text-sm">
+                      <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <select
+                      id="source"
+                      formControlName="source"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-10 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 appearance-none cursor-pointer"
+                      [class.border-red-500]="isFieldInvalid('source')"
+                      [class.focus:ring-red-500\/15]="isFieldInvalid('source')"
+                      [class.focus:border-red-500]="isFieldInvalid('source')"
+                    >
+                      <option value="" disabled selected class="bg-[#0f172a] text-gray-400">Select discovery channel...</option>
+                      @for (opt of sourceOptions; track opt.value) {
+                        <option [value]="opt.value" class="bg-[#0f172a] text-white py-2">{{ opt.label }}</option>
+                      }
+                    </select>
+                    <!-- Custom Chevron Arrow Indicator -->
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#f76179] transition-colors">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  @if (isFieldInvalid('source')) {
+                    <p class="text-xs text-red-400 flex items-center gap-1.5 mt-1 font-medium animate-fadeIn">
+                      <i class="fa-solid fa-circle-exclamation text-[11px]"></i> {{ getFieldError('source') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Telegram Username (Optional) -->
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <label for="telegram" class="block text-xs font-semibold uppercase tracking-wider text-gray-300">
+                      Telegram Username
+                    </label>
+                    <span class="text-[11px] text-gray-500">Optional</span>
+                  </div>
+                  <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#26A5E4] transition-colors text-sm">
+                      <i class="fa-brands fa-telegram"></i>
+                    </div>
+                    <input
+                      id="telegram"
+                      type="text"
+                      formControlName="telegram"
+                      placeholder="@yourusername"
+                      class="w-full h-12 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium pl-10 pr-4 placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200"
+                    />
+                  </div>
+                </div>
+
+                <!-- YouTube Verification Complex Card (Full width) -->
+                <div class="md:col-span-2 rounded-2xl p-5 sm:p-6 bg-white/[0.02] border border-white/10 space-y-4">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-red-600/15 border border-red-500/25 text-red-500 flex items-center justify-center text-lg shrink-0">
+                        <i class="fa-brands fa-youtube"></i>
+                      </div>
+                      <div>
+                        <h4 class="text-sm font-bold text-white">YouTube Community Channel</h4>
+                        <p class="text-xs text-gray-400">Subscribe for workshop streams, project briefs, and milestone updates.</p>
+                      </div>
+                    </div>
+
+                    <!-- Direct Subscribe Link -->
+                    <a
+                      href="https://youtube.com/@infoaidtech"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-600/15 hover:bg-red-600/25 text-red-400 border border-red-500/25 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shrink-0"
+                    >
+                      <i class="fa-brands fa-youtube text-red-500"></i>
+                      <span>Subscribe &#64;infoaidtech</span>
+                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70"></i>
+                    </a>
+                  </div>
+
+                  <!-- Screenshot Dropzone / File Picker -->
+                  <div class="pt-2">
+                    <input
+                      #fileInput
+                      type="file"
+                      accept="image/*"
+                      (change)="onFileSelected($event, 'youtubeScreenshot')"
+                      class="hidden"
+                      id="youtubeScreenshotInput"
+                    />
+
+                    @if (!selectedFileName) {
+                      <label
+                        for="youtubeScreenshotInput"
+                        class="flex flex-col items-center justify-center p-6 border border-dashed border-white/15 hover:border-[#f76179]/50 bg-white/[0.01] hover:bg-white/[0.03] rounded-xl cursor-pointer transition-all duration-200 group text-center"
+                      >
+                        <div class="w-10 h-10 rounded-full bg-white/5 group-hover:bg-[#f76179]/10 text-gray-400 group-hover:text-[#f76179] flex items-center justify-center mb-2.5 transition-colors">
+                          <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+                        </div>
+                        <p class="text-xs font-semibold text-white mb-1">
+                          Click to attach subscription screenshot <span class="text-gray-500 font-normal">(or drag & drop)</span>
+                        </p>
+                        <p class="text-[11px] text-gray-500">
+                          PNG, JPG, or WEBP up to 5 MB • Optional confirmation
+                        </p>
+                      </label>
+                    } @else {
+                      <div class="flex items-center justify-between p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-xl animate-fadeIn">
+                        <div class="flex items-center gap-3 truncate pr-4">
+                          <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                            <i class="fa-regular fa-image text-sm"></i>
+                          </div>
+                          <div class="truncate">
+                            <p class="text-xs font-semibold text-white truncate">{{ selectedFileName }}</p>
+                            <p class="text-[11px] text-emerald-400 flex items-center gap-1.5 font-medium">
+                              <i class="fa-solid fa-check text-[10px]"></i> Attached ({{ selectedFileSize }})
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          (click)="removeFile('youtubeScreenshot', fileInput)"
+                          class="p-2 text-gray-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors text-xs shrink-0"
+                          title="Remove attached file"
+                          aria-label="Remove attached file"
+                        >
+                          <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+              </div>
+            </fieldset>
+
+
+            <!-- ═══════════════════════════════════════
+                 SECTION 5: QUERIES & SPECIAL NOTES
+                 ═══════════════════════════════════════ -->
+            <fieldset class="space-y-6 pt-8 border-t border-white/10">
+              <legend class="sr-only">Queries & Notes</legend>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/25 text-amber-400 flex items-center justify-center text-sm font-bold shadow-sm">
+                    5
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-bold text-white tracking-tight">Additional Questions & Portfolio</h3>
+                    <p class="text-xs text-gray-400">Share any questions, GitHub portfolio links, or expectations</p>
+                  </div>
+                </div>
+                <span class="text-[11px] text-gray-500">Optional</span>
+              </div>
+
               <div>
                 <textarea
+                  id="queries"
                   formControlName="queries"
-                  rows="4"
-                  placeholder="Share any questions or concerns you have"
-                  class="w-full px-5 py-4 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all resize-y min-h-[120px]"
+                  rows="3"
+                  placeholder="Share any GitHub/portfolio links, specific project interests, or questions for our recruitment team..."
+                  class="w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-sm text-white font-medium placeholder:text-gray-500/70 focus:outline-none focus:border-[#f76179] focus:ring-4 focus:ring-[#f76179]/15 focus:bg-[#0c111d] hover:border-white/20 transition-all duration-200 resize-y min-h-[96px]"
                 ></textarea>
               </div>
-            </div>
-          </div>
+            </fieldset>
 
-          <!-- Submit Button -->
-          <div class="pt-10">
-            <button
-              type="submit"
-              [disabled]="internshipForm.invalid || isSubmitting"
-              class="w-full py-5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl font-bold text-white text-xl shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)] transition-all flex justify-center items-center gap-3 transform hover:-translate-y-1 active:translate-y-0 disabled:transform-none disabled:shadow-none"
-            >
-              @if (isSubmitting) {
-                <span class="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></span>
-                Processing...
-              } @else {
-                <i class="fa-solid fa-paper-plane"></i> Submit Application
+
+            <!-- ═══════════════════════════════════════
+                 SUBMISSION BAR & ACTION
+                 ═══════════════════════════════════════ -->
+            <div class="pt-8 border-t border-white/10 space-y-4">
+              
+              <!-- Completion Warning if Form Invalid -->
+              @if (internshipForm.invalid && internshipForm.touched) {
+                <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-xs flex items-center gap-3 animate-fadeIn">
+                  <i class="fa-solid fa-triangle-exclamation text-base shrink-0 text-red-400"></i>
+                  <span>Please complete all 12 required fields above marked with <strong class="text-white">*</strong> before submitting.</span>
+                </div>
               }
-            </button>
-            <p class="text-center text-gray-500 text-sm mt-4">By submitting, you agree to our Terms of Service.</p>
-          </div>
-        </form>
-      </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                [disabled]="isSubmitting"
+                class="w-full h-14 bg-gradient-to-r from-[#f76179] via-[#fa7389] to-[#ea4b64] hover:from-[#e54e66] hover:to-[#d43750] disabled:from-gray-800 disabled:to-gray-900 disabled:text-gray-500 disabled:border disabled:border-white/5 disabled:shadow-none rounded-2xl font-bold text-white text-base shadow-[0_10px_35px_rgba(247,97,121,0.3)] hover:shadow-[0_15px_45px_rgba(247,97,121,0.5)] transition-all duration-200 active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer disabled:cursor-not-allowed"
+              >
+                @if (isSubmitting) {
+                  <span class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                  <span>Verifying & Submitting Application...</span>
+                } @else {
+                  <i class="fa-solid fa-paper-plane text-sm"></i>
+                  <span>Submit Internship Application</span>
+                }
+              </button>
+
+              <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-500 pt-2 gap-2 text-center sm:text-left">
+                <span class="flex items-center gap-1.5 justify-center">
+                  <i class="fa-solid fa-lock text-[10px] text-emerald-400"></i>
+                  <span>SSL 256-bit Encrypted Submission</span>
+                </span>
+                <span>By submitting, you agree to our <a routerLink="/terms-of-service" class="text-gray-400 hover:text-white underline">Terms</a> & <a routerLink="/privacy-policy" class="text-gray-400 hover:text-white underline">Privacy Policy</a></span>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </main>
+
     </div>
   </div>
-</div>
+</section>
