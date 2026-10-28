@@ -51,11 +51,18 @@ interface FieldDef {
   isDate: boolean;
 }
 
-function generateClass(json: Record<string, any>, className: string, baseClass: string): string {
-  const fields: FieldDef[] = Object.entries(json).map(([key, value]) => {
-    const tsType = inferTsType(key, value);
-    return { key, tsType, defaultVal: getDefault(key, value, tsType), isDate: tsType === 'Date' };
-  });
+function generateClass(
+  json: Record<string, any>,
+  className: string,
+  baseClass: string,
+  omitSsPrefix: boolean = true
+): string {
+  const fields: FieldDef[] = Object.entries(json)
+    .filter(([key]) => !(omitSsPrefix && key.toUpperCase().startsWith('SS_')))
+    .map(([key, value]) => {
+      const tsType = inferTsType(key, value);
+      return { key, tsType, defaultVal: getDefault(key, value, tsType), isDate: tsType === 'Date' };
+    });
 
   const extendsClause = baseClass.trim() ? ` extends ${baseClass.trim()}` : '';
   const declarations = fields.map(f => `    ${f.key}: ${f.tsType};`).join('\n');
@@ -146,6 +153,15 @@ function syntaxHighlight(code: string): string {
               class="bg-gray-950 border border-gray-700 rounded-md text-amber-400 text-sm px-3 py-1.5 w-56 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all font-mono shadow-inner"
             />
           </div>
+          <label class="flex items-center gap-2 cursor-pointer select-none text-xs text-gray-400 hover:text-amber-400 transition-colors ml-2">
+            <input
+              type="checkbox"
+              [checked]="omitSsPrefix()"
+              (change)="toggleOmitSs()"
+              class="w-4 h-4 rounded border-gray-700 bg-gray-950 text-amber-500 accent-amber-500 cursor-pointer"
+            />
+            <span class="font-medium">Omit <code class="text-rose-400 font-mono">SS_*</code></span>
+          </label>
           <div class="flex-1"></div>
           <button
             type="button"
@@ -294,6 +310,9 @@ function syntaxHighlight(code: string): string {
           <span class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] shrink-0"></span>String <span class="text-gray-700 hidden sm:inline font-sans">( _D, _NAME, _ID )</span>
           </span>
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)] shrink-0"></span>Omit <span class="text-gray-700 hidden sm:inline font-sans">( SS_* system keys )</span>
+          </span>
           <div class="ml-auto hidden md:flex items-center gap-3 text-[11px] font-mono">
             <span class="flex items-center gap-1.5"><code class="text-amber-500 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">FLAG/STATUS</code> → <span class="text-gray-400">0</span></span>
             <span class="text-gray-700">|</span>
@@ -311,6 +330,7 @@ export class JsonToTsComponent implements OnInit {
   inputJson = signal('{}');
   className = signal('EnterYourClassName');
   baseClass = signal('BaseEntity');
+  omitSsPrefix = signal(true);
 
   output = signal('');
   error  = signal('');
@@ -393,9 +413,16 @@ export class JsonToTsComponent implements OnInit {
         this.error.set('Input must be a plain object { ... }, not an array or primitive.');
         return;
       }
-      this.output.set(generateClass(json, this.className().trim() || 'GeneratedModel', this.baseClass()));
+      this.output.set(generateClass(json, this.className().trim() || 'GeneratedModel', this.baseClass(), this.omitSsPrefix()));
     } catch (e: any) {
       this.error.set('JSON parse error: ' + e.message);
+    }
+  }
+
+  toggleOmitSs(): void {
+    this.omitSsPrefix.update(v => !v);
+    if (this.output()) {
+      this.generate();
     }
   }
 
