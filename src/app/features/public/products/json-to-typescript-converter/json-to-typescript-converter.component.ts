@@ -131,7 +131,8 @@ function syntaxHighlight(code: string): string {
           <div class="flex items-center gap-2">
             <label class="text-xs text-gray-500 whitespace-nowrap font-medium">Class name</label>
             <input
-              [(ngModel)]="className"
+              [ngModel]="className()"
+              (ngModelChange)="className.set($event)"
               placeholder="MyModel"
               class="bg-gray-950 border border-gray-700 rounded-md text-amber-400 text-sm px-3 py-1.5 w-48 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all font-mono shadow-inner"
             />
@@ -139,19 +140,22 @@ function syntaxHighlight(code: string): string {
           <div class="flex items-center gap-2">
             <label class="text-xs text-gray-500 whitespace-nowrap font-medium">Extends</label>
             <input
-              [(ngModel)]="baseClass"
+              [ngModel]="baseClass()"
+              (ngModelChange)="baseClass.set($event)"
               placeholder="BaseModel (optional)"
               class="bg-gray-950 border border-gray-700 rounded-md text-amber-400 text-sm px-3 py-1.5 w-56 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all font-mono shadow-inner"
             />
           </div>
           <div class="flex-1"></div>
           <button
+            type="button"
             (click)="clear()"
             class="text-xs font-bold tracking-wider text-gray-500 hover:text-red-400 px-3 py-1.5 rounded-md transition-colors"
           >
             ✕ CLEAR
           </button>
           <button
+            type="button"
             (click)="generate()"
             class="flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-gray-950 font-bold text-[13px] px-6 py-2 rounded-md tracking-widest transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:-translate-y-0.5"
           >
@@ -163,12 +167,14 @@ function syntaxHighlight(code: string): string {
         </div>
 
         <!-- Error -->
-        <div *ngIf="error()" class="flex items-center gap-3 px-6 py-2.5 bg-red-950/80 border-b border-red-900/50 text-red-400 text-[13px] shrink-0 font-medium">
-          <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-          </svg>
-          {{ error() }}
-        </div>
+        @if (error()) {
+          <div class="flex items-center gap-3 px-6 py-2.5 bg-red-950/80 border-b border-red-900/50 text-red-400 text-[13px] shrink-0 font-medium">
+            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            {{ error() }}
+          </div>
+        }
 
         <!-- Main panels -->
         <div class="flex flex-col md:flex-row flex-1 min-h-0 bg-gray-900/20">
@@ -178,7 +184,7 @@ function syntaxHighlight(code: string): string {
             <div class="flex items-center gap-3 px-5 py-2.5 bg-gray-900/80 border-b border-gray-800/80 shrink-0">
               <span class="text-[11px] font-bold tracking-[0.2em] text-gray-500">INPUT</span>
               <span class="text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-sm">JSON</span>
-              <button (click)="beautify()" class="text-[11px] font-medium text-amber-600 hover:text-amber-400 bg-gray-950 border border-gray-800 hover:border-amber-900/50 px-3 py-1.5 rounded transition-all ml-2 shadow-sm flex items-center gap-1.5">
+              <button type="button" (click)="beautify()" class="text-[11px] font-medium text-amber-600 hover:text-amber-400 bg-gray-950 border border-gray-800 hover:border-amber-900/50 px-3 py-1.5 rounded transition-all ml-2 shadow-sm flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                 Beautify
               </button>
@@ -186,10 +192,13 @@ function syntaxHighlight(code: string): string {
             </div>
             <div class="flex flex-1 min-h-0 overflow-auto bg-[#0a0f18]/50">
               <div class="select-none text-right text-xs leading-[24px] text-gray-700 border-r border-gray-800/50 px-3 py-4 min-w-[50px] shrink-0">
-                <div *ngFor="let n of inputLines()">{{ n }}</div>
+                @for (n of inputLines(); track $index) {
+                  <div>{{ n }}</div>
+                }
               </div>
               <textarea
-                [(ngModel)]="inputJson"
+                [ngModel]="inputJson()"
+                (ngModelChange)="inputJson.set($event)"
                 (keydown.Tab)="onTab($event)"
                 spellcheck="false"
                 placeholder="Paste your JSON object here..."
@@ -201,6 +210,7 @@ function syntaxHighlight(code: string): string {
           <!-- Divider arrow for desktop (hidden on mobile) -->
           <div class="hidden md:flex items-center justify-center w-12 bg-gray-900/50 shrink-0 z-10 border-x border-gray-800/30 shadow-inner">
             <button
+              type="button"
               (click)="generate()"
               title="Generate"
               class="w-8 h-8 flex items-center justify-center text-amber-600 hover:text-amber-400 hover:bg-gray-800 rounded-full transition-all hover:scale-110 active:scale-95 border border-transparent hover:border-gray-700"
@@ -216,41 +226,48 @@ function syntaxHighlight(code: string): string {
             <div class="flex items-center gap-3 px-5 py-2.5 bg-gray-900/80 border-t md:border-t-0 border-b border-gray-800/80 shrink-0">
               <span class="text-[11px] font-bold tracking-[0.2em] text-gray-500">OUTPUT</span>
               <span class="text-[10px] font-bold text-sky-500 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-sm">TYPESCRIPT</span>
-              <span *ngIf="output()" class="text-[11px] text-gray-600 ml-2 hidden sm:inline-block font-sans tracking-wide">{{ outputLineCount() }} {{ outputLineCount() === 1 ? 'line' : 'lines' }}</span>
+              @if (output()) {
+                <span class="text-[11px] text-gray-600 ml-2 hidden sm:inline-block font-sans tracking-wide">{{ outputLineCount() }} {{ outputLineCount() === 1 ? 'line' : 'lines' }}</span>
+              }
               
               <div class="ml-auto flex items-center">
-                <button
-                  *ngIf="output()"
-                  (click)="copyOutput()"
-                  class="flex items-center gap-1.5 text-xs font-medium border px-3 py-1.5 rounded-md transition-all shadow-sm"
-                  [class.text-emerald-400]="copied()"
-                  [class.border-emerald-800]="copied()"
-                  [class.bg-emerald-900/30]="copied()"
-                  [class.text-gray-400]="!copied()"
-                  [class.border-gray-700]="!copied()"
-                  [class.bg-gray-950]="!copied()"
-                  [class.hover:text-gray-200]="!copied()"
-                  [class.hover:border-gray-600]="!copied()"
-                >
-                  <svg *ngIf="copied()" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                  <svg *ngIf="!copied()" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                  {{ copied() ? 'Copied to Clipboard!' : 'Copy Code' }}
-                </button>
+                @if (output()) {
+                  <button
+                    type="button"
+                    (click)="copyOutput()"
+                    class="flex items-center gap-1.5 text-xs font-medium border px-3 py-1.5 rounded-md transition-all shadow-sm"
+                    [class.text-emerald-400]="copied()"
+                    [class.border-emerald-800]="copied()"
+                    [class.bg-emerald-900/30]="copied()"
+                    [class.text-gray-400]="!copied()"
+                    [class.border-gray-700]="!copied()"
+                    [class.bg-gray-950]="!copied()"
+                    [class.hover:text-gray-200]="!copied()"
+                    [class.hover:border-gray-600]="!copied()"
+                  >
+                    @if (copied()) {
+                      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    } @else {
+                      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    }
+                    {{ copied() ? 'Copied to Clipboard!' : 'Copy Code' }}
+                  </button>
+                }
               </div>
             </div>
 
             <div class="flex flex-1 min-h-0 overflow-auto bg-[#0a0f18]/50">
-              <ng-container *ngIf="output(); else emptyState">
+              @if (output()) {
                 <div class="select-none text-right text-xs leading-[24px] text-gray-700 border-r border-gray-800/50 px-3 py-4 min-w-[50px] shrink-0">
-                  <div *ngFor="let n of outputLines()">{{ n }}</div>
+                  @for (n of outputLines(); track $index) {
+                    <div>{{ n }}</div>
+                  }
                 </div>
                 <pre
                   class="flex-1 text-[13px] leading-[24px] p-4 overflow-auto text-gray-200 m-0 whitespace-pre bg-transparent font-mono"
                   [innerHTML]="highlightedOutput()"
                 ></pre>
-              </ng-container>
-
-              <ng-template #emptyState>
+              } @else {
                 <div class="flex-1 flex flex-col items-center justify-center gap-4 text-gray-700 p-8 text-center bg-[#0a0f18]/10">
                   <div class="w-20 h-20 rounded-2xl bg-gray-900/60 border border-gray-800 flex items-center justify-center shadow-inner">
                     <span class="text-4xl font-light tracking-tighter text-gray-600">{{ '{' }} {{ '}' }}</span>
@@ -260,7 +277,7 @@ function syntaxHighlight(code: string): string {
                     <p class="text-[13px] mt-1 text-gray-500 max-w-sm">Configure your settings and click <span class="text-amber-600 font-bold px-1">GENERATE</span> to produce your TypeScript class.</p>
                   </div>
                 </div>
-              </ng-template>
+              }
             </div>
           </div>
 
@@ -291,9 +308,9 @@ function syntaxHighlight(code: string): string {
 export class JsonToTsComponent implements OnInit {
   private readonly seo = inject(SeoService);
 
-  inputJson = "{}";
-  className = 'EnterYourClassName';
-  baseClass = 'BaseEntity';
+  inputJson = signal('{}');
+  className = signal('EnterYourClassName');
+  baseClass = signal('BaseEntity');
 
   output = signal('');
   error  = signal('');
@@ -340,19 +357,20 @@ export class JsonToTsComponent implements OnInit {
     );
   }
 
-  inputLineCount    = computed(() => Math.max(this.inputJson.split('\n').length, 1));
-  outputLineCount   = computed(() => this.output() ? this.output().split('\n').length : 0);
+  inputLineCount    = computed(() => Math.max(this.inputJson().split('\n').length, 1));
+  outputLineCount   = computed(() => (this.output() ? this.output().split('\n').length : 0));
   inputLines        = computed(() => Array.from({ length: Math.max(this.inputLineCount(), 24) }, (_, i) => i + 1));
   outputLines       = computed(() => Array.from({ length: Math.max(this.outputLineCount(), 24) }, (_, i) => i + 1));
   highlightedOutput = computed(() => syntaxHighlight(this.output()));
 
   beautify(): void {
-    if (!this.inputJson.trim()) return;
+    const raw = this.inputJson().trim();
+    if (!raw) return;
     try {
       // Use loose evaluation to fix missing quotes around keys, trailing commas, etc.
-      const looseParse = new Function('return ' + this.inputJson.trim() + ';');
+      const looseParse = new Function('return ' + raw + ';');
       const parsed = looseParse();
-      this.inputJson = JSON.stringify(parsed, null, 4);
+      this.inputJson.set(JSON.stringify(parsed, null, 4));
       this.error.set('');
     } catch (e: any) {
       this.error.set('Beautify failed: Could not parse input. Check for major syntax errors.');
@@ -361,44 +379,49 @@ export class JsonToTsComponent implements OnInit {
 
   generate(): void {
     this.error.set('');
-    if (!this.inputJson.trim()) {
+    const raw = this.inputJson().trim();
+    if (!raw) {
       this.error.set('Input is empty — paste a JSON object to continue.');
       return;
     }
     try {
       // Support loose/JS-object format too
-      const looseParse = new Function('return ' + this.inputJson.trim() + ';');
+      const looseParse = new Function('return ' + raw + ';');
       const json = looseParse();
       
       if (typeof json !== 'object' || Array.isArray(json) || json === null) {
         this.error.set('Input must be a plain object { ... }, not an array or primitive.');
         return;
       }
-      this.output.set(generateClass(json, this.className.trim() || 'GeneratedModel', this.baseClass));
+      this.output.set(generateClass(json, this.className().trim() || 'GeneratedModel', this.baseClass()));
     } catch (e: any) {
       this.error.set('JSON parse error: ' + e.message);
     }
   }
 
   clear(): void {
-    this.inputJson = "{}";
+    this.inputJson.set('{}');
     this.output.set('');
     this.error.set('');
   }
 
   copyOutput(): void {
-    navigator.clipboard.writeText(this.output()).then(() => {
-      this.copied.set(true);
-      setTimeout(() => this.copied.set(false), 2000);
-    });
+    if (!this.output()) return;
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(this.output()).then(() => {
+        this.copied.set(true);
+        setTimeout(() => this.copied.set(false), 2000);
+      });
+    }
   }
 
   onTab(event: any): void {
     event.preventDefault();
     const el = event.target as HTMLTextAreaElement;
     const start = el.selectionStart;
-    this.inputJson =
-      this.inputJson.substring(0, start) + '    ' + this.inputJson.substring(el.selectionEnd);
+    const current = this.inputJson();
+    const nextVal = current.substring(0, start) + '    ' + current.substring(el.selectionEnd);
+    this.inputJson.set(nextVal);
     setTimeout(() => { el.selectionStart = el.selectionEnd = start + 4; }, 0);
   }
 }

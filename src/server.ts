@@ -19,7 +19,7 @@ export function app(): express.Express {
   let lastIndexMtime = 0;
 
   function getIndexHtml(): string {
-    const targetPath = existsSync(indexPath) ? indexPath : indexCsrPath;
+    const targetPath = existsSync(indexCsrPath) ? indexCsrPath : indexPath;
     try {
       const stats = statSync(targetPath);
       if (stats.mtimeMs !== lastIndexMtime || !cachedIndexHtml) {
@@ -301,6 +301,10 @@ export function app(): express.Express {
     '/terms-of-service',
     '/privacy-policy',
     '/disclaimer',
+    '/json-to-ts',
+    '/image-converter',
+    '/conventional-commit-generator',
+    '/ghost-rewrite',
   ]);
 
   server.use((req, res, next) => {

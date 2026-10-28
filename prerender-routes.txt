@@ -6,3 +6,7 @@
 /terms-of-service
 /privacy-policy
 /disclaimer
+/json-to-ts
+/image-converter
+/conventional-commit-generator
+/ghost-rewrite
