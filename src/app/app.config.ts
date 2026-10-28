@@ -17,7 +17,6 @@ import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import {
   provideClientHydration,
-  withEventReplay,
   withHttpTransferCacheOptions,
 } from '@angular/platform-browser';
 import { CustomPreloadingStrategy } from './core/strategies/custom-preloading.strategy';
@@ -61,7 +60,6 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG(),    // ✅ Enhanced hydration with HTTP cache
     // Enhanced hydration with performance optimizations
     provideClientHydration(
-      withEventReplay(),
       withHttpTransferCacheOptions({
         includePostRequests: false // Only cache GET requests
       })
